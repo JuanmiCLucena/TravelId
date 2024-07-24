@@ -20,17 +20,14 @@ public class AdminAsientoController {
     private final ServicioAsiento servicioAsiento;
     private final ServicioCategoriaAsiento servicioCategoriaAsiento;
     private final ServicioVuelo servicioVuelo;
-    private final ServicioImagen servicioImagen;
 
-    private final FileSystemStorageService fileSystemStorageService;
 
 
     public AdminAsientoController(ServicioHabitacion servicioHabitacion, ServicioTipoHabitacion servicioTipoHabitacion, ServicioHotel servicioHotel, ServicioAsiento servicioAsiento, ServicioCategoriaAsiento servicioCategoriaAsiento, ServicioVuelo servicioVuelo, ServicioImagen servicioImagen, FileSystemStorageService fileSystemStorageService) {
         this.servicioAsiento = servicioAsiento;
         this.servicioCategoriaAsiento = servicioCategoriaAsiento;
         this.servicioVuelo = servicioVuelo;
-        this.servicioImagen = servicioImagen;
-        this.fileSystemStorageService = fileSystemStorageService;
+
     }
 
     @GetMapping
