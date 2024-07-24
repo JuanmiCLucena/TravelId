@@ -53,7 +53,7 @@ public class AdminActividadController {
             modelo.addAttribute("localizaciones", servicioLocalizacion.buscarEntidades());
             modelo.addAttribute("tipos", servicioTipoActividad.buscarEntidades());
 
-        return "adminDetallesActividad";
+        return "admin/adminDetallesActividad";
         } else {
             // Actividad no encontrado - htlm
             return "actividadNoEncontrado";
@@ -67,7 +67,7 @@ public class AdminActividadController {
         modelo.addAttribute("actividad", actividad);
         modelo.addAttribute("localizaciones", servicioLocalizacion.buscarEntidades());
         modelo.addAttribute("tipos", servicioTipoActividad.buscarEntidades());
-        return "adminNuevaActividad";
+        return "admin/adminNuevaActividad";
     }
 
     @PostMapping("/crear")

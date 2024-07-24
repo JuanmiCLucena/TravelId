@@ -53,7 +53,7 @@ public class AdminHotelController {
                     servicioHabitacion.obtenerPreciosActualesHabitacionesHotel(hotel.get()));
             modelo.addAttribute("localizaciones", servicioLocalizacion.buscarEntidades());
 
-        return "adminDetallesHotel";
+        return "admin/adminDetallesHabitacion";
         } else {
             // Hotel no encontrado - htlm
             return "hotelNoEncontrado";
@@ -66,7 +66,7 @@ public class AdminHotelController {
         Hotel hotel = new Hotel();
         modelo.addAttribute("hotel", hotel);
         modelo.addAttribute("localizaciones", servicioLocalizacion.buscarEntidades());
-        return "adminNuevoHotel";
+        return "admin/adminNuevoHotel";
     }
 
     @PostMapping("/crear")

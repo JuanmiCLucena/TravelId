@@ -55,7 +55,7 @@ public class AdminHabitacionController {
             modelo.addAttribute("hoteles", servicioHotel.buscarEntidades());
             modelo.addAttribute("tiposHabitacion", servicioTipoHabitacion.buscarEntidades());
 
-        return "adminDetallesHabitacion";
+        return "admin/adminDetallesHabitacion";
         } else {
             // Habitacion no encontrado - htlm
             return "habitacionNoEncontrado";
@@ -69,7 +69,7 @@ public class AdminHabitacionController {
         modelo.addAttribute("habitacion", habitacion);
         modelo.addAttribute("hoteles", servicioHotel.buscarEntidades());
         modelo.addAttribute("tiposHabitacion", servicioTipoHabitacion.buscarEntidades());
-        return "adminNuevaHabitacion";
+        return "admin/adminNuevaHabitacion";
     }
 
     @PostMapping("/crear")
