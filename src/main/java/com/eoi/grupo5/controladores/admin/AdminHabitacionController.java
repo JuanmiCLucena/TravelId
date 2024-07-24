@@ -47,7 +47,6 @@ public class AdminHabitacionController {
     @GetMapping("/{id}")
     public String detalles(Model modelo, @PathVariable Integer id) {
         Optional<Habitacion> habitacion = servicioHabitacion.encuentraPorId(id);
-        // Si no encontramos la habitacion no hemos encontrado la habitacion
         if(habitacion.isPresent()) {
             modelo.addAttribute("habitacion",habitacion.get());
             modelo.addAttribute("precioActual",

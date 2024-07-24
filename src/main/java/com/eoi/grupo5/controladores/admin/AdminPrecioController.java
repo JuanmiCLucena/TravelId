@@ -39,7 +39,6 @@ public class AdminPrecioController {
     @GetMapping("/{id}")
     public String detalles(Model modelo, @PathVariable Integer id) {
         Optional<Precio> precio = servicioPrecio.encuentraPorId(id);
-        // Si no encontramos el hotel no hemos encontrado el hotel
         if(precio.isPresent()) {
             modelo.addAttribute("precio",precio.get());
             modelo.addAttribute("habitaciones", servicioHabitacion.buscarEntidades());

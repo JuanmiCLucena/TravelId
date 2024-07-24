@@ -40,7 +40,6 @@ public class AdminAsientoController {
     @GetMapping("/{id}")
     public String detalles(Model modelo, @PathVariable Integer id) {
         Optional<Asiento> asiento = servicioAsiento.encuentraPorId(id);
-        // Si no encontramos la habitacion no hemos encontrado la habitacion
         if(asiento.isPresent()) {
             modelo.addAttribute("asiento",asiento.get());
             modelo.addAttribute("precioActual",
@@ -67,10 +66,20 @@ public class AdminAsientoController {
 
     @PostMapping("/crear")
     public String crear(
-            @ModelAttribute("asiento") Asiento asiento
+            @ModelAttribute("asiento") Asiento asiento,
+            @RequestParam("categoria.id") Integer categoriaId,
+            @RequestParam("vuelo.id") Integer vueloId
             ) {
 
         try {
+
+            CategoriaAsiento categoria = servicioCategoriaAsiento.encuentraPorId(categoriaId)
+                    .orElseThrow(() -> new IllegalArgumentException("Categoría no encontrada"));
+            asiento.setCategoria(categoria);
+
+            Vuelo vuelo = servicioVuelo.encuentraPorId(vueloId)
+                    .orElseThrow(() -> new IllegalArgumentException("Vuelo no encontrado"));
+            asiento.setVuelo(vuelo);
 
             servicioAsiento.guardar(asiento);
 
