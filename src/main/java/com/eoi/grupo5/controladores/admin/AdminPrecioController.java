@@ -2,10 +2,9 @@ package com.eoi.grupo5.controladores.admin;
 
 import com.eoi.grupo5.modelos.Hotel;
 import com.eoi.grupo5.modelos.Imagen;
-import com.eoi.grupo5.servicios.ServicioHabitacion;
-import com.eoi.grupo5.servicios.ServicioHotel;
-import com.eoi.grupo5.servicios.ServicioImagen;
-import com.eoi.grupo5.servicios.ServicioLocalizacion;
+import com.eoi.grupo5.modelos.Precio;
+import com.eoi.grupo5.modelos.TipoHabitacion;
+import com.eoi.grupo5.servicios.*;
 import com.eoi.grupo5.servicios.archivos.FileSystemStorageService;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Controller;
@@ -20,40 +19,37 @@ import java.util.Optional;
 @RequestMapping("/admin/precios")
 public class AdminPrecioController {
 
-    private final ServicioHotel servicioHotel;
+
+    private final ServicioPrecio servicioPrecio;
     private final ServicioHabitacion servicioHabitacion;
-    private final ServicioImagen servicioImagen;
-    private final ServicioLocalizacion servicioLocalizacion;
+    private final ServicioAsiento servicioAsiento;
+    private final ServicioActividad servicioActividad;
 
-    private final FileSystemStorageService fileSystemStorageService;
-
-
-    public AdminPrecioController(ServicioHotel servicioHotel, ServicioHabitacion servicioHabitacion, ServicioImagen servicioImagen, ServicioLocalizacion servicioLocalizacion, FileSystemStorageService fileSystemStorageService) {
-        this.servicioHotel = servicioHotel;
+    public AdminPrecioController(ServicioPrecio servicioPrecio, ServicioHabitacion servicioHabitacion, ServicioAsiento servicioAsiento, ServicioActividad servicioActividad) {
+        this.servicioPrecio = servicioPrecio;
         this.servicioHabitacion = servicioHabitacion;
-        this.servicioImagen = servicioImagen;
-        this.servicioLocalizacion = servicioLocalizacion;
-        this.fileSystemStorageService = fileSystemStorageService;
+        this.servicioAsiento = servicioAsiento;
+        this.servicioActividad = servicioActividad;
     }
 
     @GetMapping
     public String listar(Model modelo) {
-        List<Hotel> hoteles = servicioHotel.buscarEntidades();
-        modelo.addAttribute("hoteles",hoteles);
-        return "admin/adminHoteles";
+        List<Precio> precios = servicioPrecio.buscarEntidades();
+        modelo.addAttribute("precios",precios);
+        return "admin/adminPrecios";
     }
 
     @GetMapping("/{id}")
     public String detalles(Model modelo, @PathVariable Integer id) {
-        Optional<Hotel> hotel = servicioHotel.encuentraPorId(id);
+        Optional<Precio> precio = servicioPrecio.encuentraPorId(id);
         // Si no encontramos el hotel no hemos encontrado el hotel
-        if(hotel.isPresent()) {
-            modelo.addAttribute("hotel",hotel.get());
-            modelo.addAttribute("preciosActuales",
-                    servicioHabitacion.obtenerPreciosActualesHabitacionesHotel(hotel.get()));
-            modelo.addAttribute("localizaciones", servicioLocalizacion.buscarEntidades());
+        if(precio.isPresent()) {
+            modelo.addAttribute("precio",precio.get());
+            modelo.addAttribute("habitaciones", servicioHabitacion.buscarEntidades());
+            modelo.addAttribute("asientos", servicioAsiento.buscarEntidades());
+            modelo.addAttribute("actividades", servicioActividad.buscarEntidades());
 
-        return "adminDetallesHotel";
+        return "admin/adminDetallesPrecio";
         } else {
             // Hotel no encontrado - htlm
             return "hotelNoEncontrado";
@@ -63,31 +59,31 @@ public class AdminPrecioController {
 
     @GetMapping("/crear")
     public String mostrarPaginaCrear(Model modelo) {
-        Hotel hotel = new Hotel();
-        modelo.addAttribute("hotel", hotel);
-        modelo.addAttribute("localizaciones", servicioLocalizacion.buscarEntidades());
-        return "adminNuevoHotel";
+        Precio precio = new Precio();
+        modelo.addAttribute("precio", precio);
+        modelo.addAttribute("habitaciones", servicioHabitacion.buscarEntidades());
+        modelo.addAttribute("asientos", servicioAsiento.buscarEntidades());
+        modelo.addAttribute("actividades", servicioActividad.buscarEntidades());
+        return "admin/adminNuevoPrecio";
     }
 
     @PostMapping("/crear")
-    public String crear(@RequestParam(name = "imagen") MultipartFile imagen, @ModelAttribute("hotel") Hotel hotel) {
+    public String crear(
+            @ModelAttribute("precio") Precio precio,
+            @RequestParam("habitacion.id") Integer habitacionId,
+            @RequestParam("asiento.id") Integer asientoId,
+            @RequestParam("actividad.id") Integer actividadId
+    ) {
 
         try {
 
-            String FILE_NAME;
+            Hotel hotel = servicioHotel.encuentraPorId(hotelId).get();
+            habitacion.setHotel(hotel);
 
-            servicioHotel.guardar(hotel);
-            Imagen imagenBD = new Imagen();
-            imagenBD.setHotel(hotel);
-            imagenBD.setUrl(String.valueOf(hotel.getId()));
-            servicioImagen.guardar(imagenBD);
-            FILE_NAME = "hotel-" + hotel.getId() + "-" + imagenBD.getId() + "." + FilenameUtils.getExtension(imagen.getOriginalFilename());
-            imagenBD.setUrl(FILE_NAME);
-            hotel.getImagenesHotel().clear();
-            fileSystemStorageService.store(imagen, FILE_NAME);
+            TipoHabitacion tipo = servicioTipoHabitacion.encuentraPorId(tipoId).get();
+            habitacion.setTipo(tipo);
 
-            hotel.getImagenesHotel().add(imagenBD);
-            servicioHotel.guardar(hotel);
+          servicioPrecio.guardar(precio);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
