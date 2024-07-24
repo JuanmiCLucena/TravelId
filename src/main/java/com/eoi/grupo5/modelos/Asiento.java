@@ -40,6 +40,6 @@ public class Asiento {
     private Vuelo vuelo;
 
     @OneToMany(mappedBy = "asiento")
-    private List<Precio> precio;
+    private Set<Precio> precio = new HashSet<>();
 
 }
