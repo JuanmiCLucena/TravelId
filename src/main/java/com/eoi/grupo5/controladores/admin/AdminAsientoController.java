@@ -51,7 +51,7 @@ public class AdminAsientoController {
             modelo.addAttribute("vuelos", servicioVuelo.buscarEntidades());
             modelo.addAttribute("categoriasAsiento", servicioCategoriaAsiento.buscarEntidades());
 
-        return "admin/detallesAsiento";
+        return "admin/adminDetallesAsiento";
         } else {
             // Habitacion no encontrado - htlm
             return "asientoNoEncontrado";
@@ -65,7 +65,7 @@ public class AdminAsientoController {
         modelo.addAttribute("asiento", asiento);
         modelo.addAttribute("vuelos", servicioVuelo.buscarEntidades());
         modelo.addAttribute("categoriasAsiento", servicioCategoriaAsiento.buscarEntidades());
-        return "admin/nuevoAsiento";
+        return "admin/adminNuevoAsiento";
     }
 
     @PostMapping("/crear")

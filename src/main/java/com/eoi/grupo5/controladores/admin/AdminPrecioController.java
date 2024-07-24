@@ -37,14 +37,14 @@ public class AdminPrecioController {
     }
 
     @GetMapping
-    public String listaHoteles(Model modelo) {
+    public String listar(Model modelo) {
         List<Hotel> hoteles = servicioHotel.buscarEntidades();
         modelo.addAttribute("hoteles",hoteles);
         return "admin/adminHoteles";
     }
 
     @GetMapping("/{id}")
-    public String detallesHotel(Model modelo, @PathVariable Integer id) {
+    public String detalles(Model modelo, @PathVariable Integer id) {
         Optional<Hotel> hotel = servicioHotel.encuentraPorId(id);
         // Si no encontramos el hotel no hemos encontrado el hotel
         if(hotel.isPresent()) {
@@ -62,7 +62,7 @@ public class AdminPrecioController {
     }
 
     @GetMapping("/crear")
-    public String mostrarPaginaCrearHotel(Model modelo) {
+    public String mostrarPaginaCrear(Model modelo) {
         Hotel hotel = new Hotel();
         modelo.addAttribute("hotel", hotel);
         modelo.addAttribute("localizaciones", servicioLocalizacion.buscarEntidades());
@@ -70,7 +70,7 @@ public class AdminPrecioController {
     }
 
     @PostMapping("/crear")
-    public String crearHotel(@RequestParam(name = "imagen") MultipartFile imagen, @ModelAttribute("hotel") Hotel hotel) {
+    public String crear(@RequestParam(name = "imagen") MultipartFile imagen, @ModelAttribute("hotel") Hotel hotel) {
 
         try {
 
@@ -96,7 +96,7 @@ public class AdminPrecioController {
     }
 
     @DeleteMapping("/eliminar/{id}")
-    public String eliminarHotel(@PathVariable Integer id) {
+    public String eliminar(@PathVariable Integer id) {
         Optional<Hotel> optionalHotel = servicioHotel.encuentraPorId(id);
         if(optionalHotel.isPresent()) {
             servicioHotel.eliminarPorId(id);
