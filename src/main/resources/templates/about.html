@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Conócenos</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="Travelix Project" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="images/AAAfavicon.png" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      th:href="@{/plugins/font-awesome-4.7.0/css/font-awesome.min.css}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      th:href="@{/plugins/OwlCarousel2-2.2.1/owl.carousel.css}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      th:href="@{/plugins/OwlCarousel2-2.2.1/owl.theme.default.css}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      th:href="@{/plugins/OwlCarousel2-2.2.1/animate.css}"
+    />
+    <link th:href="@{/assetsA/dist/css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{/assets/vendor/aos/aos.css}" rel="stylesheet" />
+    <link
+      th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}"
+      rel="stylesheet"
+    />
+    <link
+      th:href="@{/assets/vendor/bootstrap-icons/bootstrap-icons.css}"
+      rel="stylesheet"
+    />
+    <link th:href="@{/assets/vendor/boxicons/css/boxicons.min.css}" rel="stylesheet" />
+    <link
+      th:href="@{/assets/vendor/glightbox/css/glightbox.min.css}"
+      rel="stylesheet"
+    />
+    <link th:href="@{/assets/vendor/remixicon/remixicon.css}" rel="stylesheet" />
+    <link th:href="@{/assets/vendor/swiper/swiper-bundle.min.css}" rel="stylesheet" />
+    <!--Estilos Principales-->
+    <link th:href="@{/styles/about_styles.css}" rel="stylesheet" type="text/css"  />
+    <link th:href="@{/styles/about_responsive.css}" rel="stylesheet" type="text/css"  />
+  </head>
+
+  <body>
+    <div class="super_container">
+      <!-- Header -->
+
+      <header th:replace="~{layout/plantilla :: header}"></header>
+      <div th:replace="~{layout/plantilla :: navMobile}"></div>
+
+       <!-- Home -->
+
+       <div class="home">
+        <div
+          class="home_background parallax-window"
+          data-parallax="scroll"
+          data-image-src="images/about_background.jpg"
+        ></div>
+        <div class="home_content">
+          <div class="home_title">CONOCENOS</div>
+        </div>
+      </div>
+
+      <!-- Intro -->
+
+      <div class="intro">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-7">
+              <div class="intro_image">
+                <img src="images/intro.png" alt="" />
+              </div>
+            </div>
+            <div class="col-lg-5">
+              <div class="intro_content">
+                <div class="intro_title">we have the best tours</div>
+                <p class="intro_text">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Vivamus quis vulputate eros, iaculis consequat nisl. Nunc et
+                  suscipit urna. Integer elementum orci eu vehicula pretium.
+                  Donec bibendum tristique condimentum. Aenean in lacus ligula.
+                  Phasellus euismod gravida eros. Aenean nec ipsum aliquet,
+                  pharetra magna id, interdum sapien. Etiam id lorem eu nisl
+                  pellentesque semper. Nullam tincidunt metus placerat, suscipit
+                  leo ut, tempus nulla. Fusce at eleifend tellus. Ut eleifend
+                  dui nunc, non fermentum quam placerat non. Etiam venenatis
+                  nibh augue, sed eleifend justo tristique eu
+                </p>
+                <div class="button intro_button">
+                  <div class="button_bcg"></div>
+                  <a href="#"
+                    >explore now<span></span><span></span><span></span
+                  ></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Milestones -->
+
+      <div class="milestones">
+        <div class="container">
+          <div class="row">
+          
+            <!-- Milestone -->
+            <div class="col-lg-4 milestone_col">
+              <div class="milestone text-center">
+                <div class="milestone_icon">
+                  <img src="images/reserva_resized.png" alt="" />
+                </div>
+                <div class="milestone_counter" data-end-value="1176">0</div>
+                <div class="milestone_text">Reservas</div>
+              </div>
+            </div>
+
+            <!-- Milestone -->
+            <div class="col-lg-4 milestone_col">
+              <div class="milestone text-center">
+                <div class="milestone_icon">
+                  <img src="images/milestone_3.png" alt="" />
+                </div>
+                <div class="milestone_counter" data-end-value="39">0</div>
+                <div class="milestone_text">Paises</div>
+              </div>
+            </div>
+
+            <!-- Milestone -->
+            <div class="col-lg-4 milestone_col">
+              <div class="milestone text-center">
+                <div class="milestone_icon">
+                  <img src="images/milestone_4.png" alt="" />
+                </div>
+                <div class="milestone_counter" data-end-value="127">0</div>
+                <div class="milestone_text">Actividades</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats">
+        <div class="container">
+          <div class="row">
+            <div class="col text-center">
+              <div class="section_title">¿Como trabajamos?</div>
+            </div>
+          </div>
+          <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+              <button
+                type="button"
+                data-bs-target="#myCarousel"
+                data-bs-slide-to="0"
+                class="active"
+                aria-current="true"
+                aria-label="Slide 1"
+              ></button>
+              <button
+                type="button"
+                data-bs-target="#myCarousel"
+                data-bs-slide-to="1"
+                aria-label="Slide 2"
+              ></button>
+              <button
+                type="button"
+                data-bs-target="#myCarousel"
+                data-bs-slide-to="2"
+                aria-label="Slide 3"
+              ></button>
+              <button
+              type="button"
+              data-bs-target="#myCarousel"
+              data-bs-slide-to="3"
+              aria-label="Slide 4"
+            ></button>
+            </div>
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <svg
+                  width="100%"
+                  height="100%"
+                  aria-hidden="true"
+                  preserveAspectRatio="xMidYMid slice"
+                  focusable="false"
+                ></svg>
+                <div id="A" class="container">
+                  <div class="carousel-caption text-start">
+                    <h3 class="textaca">¿Cómo funciona nuestro servicio?</h3>
+                    <p class="textaa">
+                      La información que aparece en nuestra Plataforma se basa
+                      en la información que nos proporcionan los Proveedores
+                      de servicios. Hacemos lo que está en nuestra mano para
+                      mantener la información actualizada en todo momento; sin
+                      embargo, las actualizaciones del contenido (como las
+                      descripciones y las listas de servicios que ofrecen los
+                      Alojamientos) pueden tardar unas horas en aparecer.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <svg
+                  width="100%"
+                  height="100%"
+                  aria-hidden="true"
+                  preserveAspectRatio="xMidYMid slice"
+                  focusable="false"
+                ></svg>
+                <div class="container">
+                  <div class="carousel-caption text-start">
+                    <h3 class="textaca" >¿Con quién trabajamos?</h3>
+                    <p class="textaa">
+                      Ningún Alojamiento es de nuestra propiedad. Cada
+                      Proveedor de servicios es una empresa independiente que
+                      ha acordado trabajar con nosotros de un modo determinado
+                      En la Plataforma encontrarás cuántos Alojamientos puedes
+                      reservar en todo el mundo a través de nosotros, y en
+                      nuestra página de resultados de búsqueda encontrarás
+                      cuántos de ellos podrían ser adecuados para ti en
+                      función de lo que nos has contado.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <svg
+                  width="100%"
+                  height="100%"
+                  aria-hidden="true"
+                  preserveAspectRatio="xMidYMid slice"
+                  focusable="false"
+                ></svg>
+                <div class="container">
+                  <div class="carousel-caption text-start">
+                    <h3 class="textaca">¿Cómo ganamos dinero?</h3>
+                    <p class="textaa">
+                      Nosotros no compramos ni (re)vendemos ningún producto ni
+                      servicio. Simplemente, cuando finaliza tu estancia, el
+                      Proveedor de servicios nos paga una comisión.
+                      El 80% de las ganancias de TravelID provienen de las comisiones de reservas
+                      y el 20% provienen de patrocinios privados. Ningun trabajdor de TravelID es explotado 
+                      los ingresoso de los trabajadores el 80% provienen de un ingreso fijo y el 20% provienen de extras
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <svg
+                  width="100%"
+                  height="100%"
+                  aria-hidden="true"
+                  preserveAspectRatio="xMidYMid slice"
+                  focusable="false"
+                ></svg>
+                <div class="container">
+                  <div class="carousel-caption text-start">
+                    <h3 class="textaca">¿Alguna vez eliminamos Proveedores de servicios de
+                      nuestra Plataforma?</h3>
+                    <p class="textaa">
+                        Por supuesto. Podemos hacerlo si nos enteramos de que
+                        han incumplido sus obligaciones contractuales, por
+                        ejemplo, o si han proporcionado una descripción
+                        imprecisa de su Alojamiento y no la corrigen cuando les
+                        solicitamos que lo hagan.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button
+              class="carousel-control-prev"
+              type="button"
+              data-bs-target="#myCarousel"
+              data-bs-slide="prev"
+            >
+              <span
+                class="carousel-control-prev-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button
+              class="carousel-control-next"
+              type="button"
+              data-bs-target="#myCarousel"
+              data-bs-slide="next"
+            >
+              <span
+                class="carousel-control-next-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+          <script src="assets/dist/js/bootstrap.bundle.min.js"></script>
+        </div>
+      </div>
+<!-- ======= Team Section ======= -->
+<section id="team" class="team">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="section-title" data-aos="fade-right">
+          <h2>Equipo 5 EOI</h2>
+        </div>
+      </div>
+      <div class="col-lg-12">
+        <div class="row">
+          <div class="col-lg-4 mt-4">
+            <div class="member" data-aos="zoom-in" data-aos-delay="100">
+              <div class="pic">
+                <img
+                  src="assets/img/team/team-1.jpg"
+                  class="img-fluid"
+                  alt=""
+                />
+              </div>
+              <div class="member-info">
+                <h4>Miguel Escudero Jiménez</h4>
+                <span>Programador Java Junior</span>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. At non dolor odit rem, provident corporis doloremque cumque tenetur animi iusto iste explicabo exercitationem illum quis sit harum ab soluta earum.
+                </p>
+                <div class="social">
+                  <a href=""><i class="ri-twitter-fill"></i></a>
+                  <a href=""><i class="ri-facebook-fill"></i></a>
+                  <a href=""><i class="ri-instagram-fill"></i></a>
+                  <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 mt-4">
+            <div class="member" data-aos="zoom-in" data-aos-delay="300">
+              <div class="pic">
+                <img
+                  src="assets/img/team/team-3.jpg"
+                  class="img-fluid"
+                  alt=""
+                />
+              </div>
+              <div class="member-info">
+                <h4>Andy Chen Cheng</h4>
+                <span>Programador Java Junior</span>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. At non dolor odit rem, provident corporis doloremque cumque tenetur animi iusto iste explicabo exercitationem illum quis sit harum ab soluta earum.
+                </p>
+                <div class="social">
+                  <a href=""><i class="ri-twitter-fill"></i></a>
+                  <a href=""><i class="ri-facebook-fill"></i></a>
+                  <a href=""><i class="ri-instagram-fill"></i></a>
+                  <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 mt-4">
+            <div class="member" data-aos="zoom-in" data-aos-delay="400">
+              <div class="pic">
+                <img
+                  src="assets/img/team/team-4.jpg"
+                  class="img-fluid"
+                  alt=""
+                />
+              </div>
+              <div class="member-info">
+                <h4>Juan Miguel Costa Lucena</h4>
+                <span>Programador Java Junior</span>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. At non dolor odit rem, provident corporis doloremque cumque tenetur animi iusto iste explicabo exercitationem illum quis sit harum ab soluta earum.
+                </p>
+                <div class="social">
+                  <a href=""><i class="ri-twitter-fill"></i></a>
+                  <a href=""><i class="ri-facebook-fill"></i></a>
+                  <a href=""><i class="ri-instagram-fill"></i></a>
+                  <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Team Section -->
+<!-- Add -->
+      <div class="add">
+        <div class="container">
+          <div class="row">
+            <div class="col">
+              <div class="add_container">
+                <div
+                  class="add_background"
+                  style="background-image: url(images/add.jpg)"
+                ></div>
+                <div class="add_content">
+                  <h1 class="add_title">thailand</h1>
+                  <div class="add_subtitle">From <span>$999</span></div>
+                  <div class="button add_button">
+                    <div class="button_bcg"></div>
+                    <a href="#"
+                      >explore now<span></span><span></span><span></span
+                    ></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+<!-- ======= Testimonials Section ======= -->
+<section id="testimonials" class="testimonials section-bg">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="section-title" data-aos="fade-right">
+          <h2>Testimonials</h2>
+          <p>
+            Magnam dolores commodi suscipit uisquam quos quisquam
+            cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat
+            sit in iste officiis commodi quidem hic quas.
+          </p>
+        </div>
+      </div>
+      <div class="col-lg-8" data-aos="fade-up" data-aos-delay="100">
+        <div
+          class="testimonials-slider swiper"
+          data-aos="fade-up"
+          data-aos-delay="100"
+        >
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <p>
+                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                  Proin iaculis purus consequat sem cure digni ssim donec
+                  porttitora entum suscipit rhoncus. Accusantium quam,
+                  ultricies eget id, aliquam eget nibh et. Maecen aliquam,
+                  risus at semper.
+                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                </p>
+                <img
+                  src="assets/img/testimonials/testimonials-1.jpg"
+                  class="testimonial-img"
+                  alt=""
+                />
+                <h3>Saul Goodman</h3>
+                <h4>Ceo &amp; Founder</h4>
+              </div>
+            </div>
+            <!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <p>
+                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                  Export tempor illum tamen malis malis eram quae irure
+                  esse labore quem cillum quid cillum eram malis quorum
+                  velit fore eram velit sunt aliqua noster fugiat irure
+                  amet legam anim culpa.
+                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                </p>
+                <img
+                  src="assets/img/testimonials/testimonials-2.jpg"
+                  class="testimonial-img"
+                  alt=""
+                />
+                <h3>Sara Wilsson</h3>
+                <h4>Designer</h4>
+              </div>
+            </div>
+            <!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <p>
+                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                  Enim nisi quem export duis labore cillum quae magna enim
+                  sint quorum nulla quem veniam duis minim tempor labore
+                  quem eram duis noster aute amet eram fore quis sint
+                  minim.
+                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                </p>
+                <img
+                  src="assets/img/testimonials/testimonials-3.jpg"
+                  class="testimonial-img"
+                  alt=""
+                />
+                <h3>Jena Karlis</h3>
+                <h4>Store Owner</h4>
+              </div>
+            </div>
+            <!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <p>
+                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                  Fugiat enim eram quae cillum dolore dolor amet nulla
+                  culpa multos export minim fugiat minim velit minim dolor
+                  enim duis veniam ipsum anim magna sunt elit fore quem
+                  dolore labore illum veniam.
+                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                </p>
+                <img
+                  src="assets/img/testimonials/testimonials-4.jpg"
+                  class="testimonial-img"
+                  alt=""
+                />
+                <h3>Matt Brandon</h3>
+                <h4>Freelancer</h4>
+              </div>
+            </div>
+            <!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <p>
+                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                  Quis quorum aliqua sint quem legam fore sunt eram irure
+                  aliqua veniam tempor noster veniam enim culpa labore
+                  duis sunt culpa nulla illum cillum fugiat legam esse
+                  veniam culpa fore nisi cillum quid.
+                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                </p>
+                <img
+                  src="assets/img/testimonials/testimonials-5.jpg"
+                  class="testimonial-img"
+                  alt=""
+                />
+                <h3>John Larson</h3>
+                <h4>Entrepreneur</h4>
+              </div>
+            </div>
+            <!-- End testimonial item -->
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Testimonials Section -->
+<!-- ======= Contact Section ======= -->
+<section id="contact" class="contact">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4" data-aos="fade-right">
+        <div class="section-title">
+          <h2>Contacto</h2>
+          <p>
+            aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+            aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+          </p>
+        </div>
+      </div>
+
+      <div class="col-lg-8" data-aos="fade-up" data-aos-delay="100">
+        <iframe
+          style="border: 0; width: 100%; height: 270px"
+          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12097.433213460943!2d-74.0062269!3d40.7101282!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb89d1fe6bc499443!2sDowntown+Conference+Center!5e0!3m2!1smk!2sbg!4v1539943755621"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+        <div class="info mt-4">
+          <i class="bi bi-geo-alt"></i>
+          <h4>Localizacion:</h4>
+          <p>Calle Concha Espina 5</p>
+        </div>
+        <div class="row">
+          <div class="col-lg-6 mt-4">
+            <div class="info">
+              <i class="bi bi-envelope"></i>
+              <h4>Email:</h4>
+              <p>info@example.com</p>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="info w-100 mt-4">
+              <i class="bi bi-phone"></i>
+              <h4>Telefono:</h4>
+              <p>+34 985 674 345</p>
+            </div>
+          </div>
+        </div>
+
+        <form
+          action="forms/contact.php"
+          method="post"
+          role="form"
+          class="php-email-form mt-4"
+        >
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <input
+                type="text"
+                name="name"
+                class="form-control"
+                id="name"
+                placeholder="Your Name"
+                required
+              />
+            </div>
+            <div class="col-md-6 form-group mt-3 mt-md-0">
+              <input
+                type="email"
+                class="form-control"
+                name="email"
+                id="email"
+                placeholder="Your Email"
+                required
+              />
+            </div>
+          </div>
+          <div class="form-group mt-3">
+            <input
+              type="text"
+              class="form-control"
+              name="subject"
+              id="subject"
+              placeholder="Subject"
+              required
+            />
+          </div>
+          <div class="form-group mt-3">
+            <textarea
+              class="form-control"
+              name="message"
+              rows="5"
+              placeholder="Message"
+              required
+            ></textarea>
+          </div>
+          <div class="my-3">
+            <div class="loading">Cargando</div>
+            <div class="error-message"></div>
+            <div class="sent-message">
+              Tu mensaje a sido enviado, muchas gracias!
+            </div>
+          </div>
+          <div class="text-center">
+            <button type="submit">Enviar mensaje</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+      <!-- Footer -->
+      <footer th:replace="~{layout/plantilla :: footer}"></footer>
+
+      <!-- Copyright -->
+      <div th:replace="~{layout/plantilla :: copyright}"></div>
+    </div>
+
+
+    <script src="assets/vendor/aos/aos.js"></script>
+    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="plugins/greensock/TweenMax.min.js"></script>
+    <script src="plugins/greensock/TimelineMax.min.js"></script>
+    <script src="plugins/scrollmagic/ScrollMagic.min.js"></script>
+    <script src="plugins/greensock/animation.gsap.min.js"></script>
+    <script src="plugins/greensock/ScrollToPlugin.min.js"></script>
+    <script src="plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+    <script src="plugins/easing/easing.js"></script>
+    <script src="plugins/parallax-js-master/parallax.min.js"></script>
+    <script src="js/about_custom.js"></script>
+  </body>
+</html>

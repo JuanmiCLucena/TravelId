@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Contact</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="Travelix Project" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      th:href="@{/plugins/font-awesome-4.7.0/css/font-awesome.min.css}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/login_styles.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/login_responsive.css}" />
+  </head>
+
+  <body>
+    <div class="super_container">
+      <!-- Header -->
+
+      <header th:replace="~{layout/plantilla :: header}"></header>
+      <div th:replace="~{layout/plantilla :: navMobile}"></div>
+
+
+      <!-- Formulario -->
+
+      <section class="vh-sm-100 custom-bg-section" style="background-image: url('/images/home_slider.jpg')">
+        <div class="container h-100 my-5">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col col-xl-10">
+              <div class="card" style="border-radius: 1rem;">
+                <div class="row g-0">
+                  <div class="col-md-6 col-lg-5 d-none d-md-block">
+                    <img src="/images/offer_4.jpg"
+                         alt="login form" class="img-fluid h-100" style="border-radius: 1rem 0 0 1rem;" />
+                  </div>
+                  <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                    <div class="card-body p-4 text-black">
+
+                      <form th:action="@{/register}" method="post" >
+
+                        <div class="d-flex align-items-center mb-3 pb-1">
+                          <span class="h1 fw-bold mb-0">Registro</span>
+                        </div>
+
+                        <h5 class="fw-normal mb-3 pb-3 d-none d-sm-block" style="letter-spacing: 1px;">Registra tu cuenta!</h5>
+
+                        <div data-mdb-input-init class="form-outline mb-4">
+                          <input type="email" name="email" id="form2Example17" class="form-control form-control-lg" />
+                          <label class="form-label" for="form2Example17">Correo Electrónico</label>
+                        </div>
+
+                        <div data-mdb-input-init class="form-outline mb-4">
+                          <input type="text" name="username" id="form2Example27" class="form-control form-control-lg" />
+                          <label class="form-label" for="form2Example27">Nombre Usuario</label>
+                        </div>
+
+                        <div data-mdb-input-init class="form-outline mb-4">
+                          <input type="password" name="password" id="form2Example37" class="form-control form-control-lg" />
+                          <label class="form-label" for="form2Example37">Contraseña</label>
+                        </div>
+
+                        <div data-mdb-input-init class="form-outline mb-4">
+                          <input type="password" name="repeatPassword" id="form2Example47" class="form-control form-control-lg" />
+                          <label class="form-label" for="form2Example47">Repetir Contraseña</label>
+                        </div>
+
+                        <div class="pt-1 mb-4">
+                          <button data-mdb-button-init data-mdb-ripple-init class="btn btn-dark btn-lg btn-block w-100" type="submit">Regístrate!</button>
+                        </div>
+                        <div>
+                          <a class="small text-muted" href="#!">Olvidó su contraseña?</a>
+                          <p class="mb-0 mb-5-sm pb-lg-2" style="color: #393f81;">¿Ya tienes una cuenta?
+                            <a th:href="@{/login}" style="color: #393f81;">Inicia sesión</a>
+                          </p>
+                          <a href="#!" class="small text-muted">Terminos de uso.</a>
+                          <a href="#!" class="small text-muted">Política de privacidad</a>
+                        </div>
+                      </form>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+
+      <footer th:replace="~{layout/plantilla :: footer}"></footer>
+
+      <!-- Copyright -->
+      <div th:replace="~{layout/plantilla :: copyright}"></div>
+    </div>
+
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="styles/bootstrap4/popper.js"></script>
+    <script src="styles/bootstrap4/bootstrap.min.js"></script>
+    <script src="plugins/parallax-js-master/parallax.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCIwF204lFZg1y4kPSIhKaHEXMLYxxuMhA"></script>
+    <script src="js/contact_custom.js"></script>
+  </body>
+</html>

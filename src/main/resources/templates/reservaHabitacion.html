@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Hoteles</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="Travelix Project" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      th:href="@{/plugins/font-awesome-4.7.0/css/font-awesome.min.css}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="plugins/colorbox/colorbox.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/reservaHabitacion_style.css}" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      th:href="@{/styles/reservaHabitacion_responsive.css}"
+    />
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/daterangepicker.css}" />
+  </head>
+
+  <body>
+    <div class="super_container">
+      <!-- Header -->
+
+      <header th:replace="~{layout/plantilla :: header}"></header>
+      <div th:replace="~{layout/plantilla :: navMobile}"></div>
+
+      <!-- Home -->
+
+      <div class="home">
+        <div
+          class="home_background parallax-window"
+          data-parallax="scroll"
+          th:attr="data-image-src=@{/images/blog_background.jpg}"
+        ></div>
+        <div class="home_content">
+          <div class="home_title">Formaliza tu reserva</div>
+        </div>
+      </div>
+
+      <!-- Blog -->
+      <div th:replace="~{fragments/formularioBaseReserva :: #formularioBaseReserva}"></div>
+
+      <!-- DetallesHabitacionReserva -->
+      <div th:replace="~{fragments/detalleHabitacionReservada :: #detalleHabitacionReservada}"></div>
+
+      <!-- imagenesHabitacion -->
+      <div th:replace="~{fragments/imagenHabitacion :: #imagenHabitacion}"></div>
+
+      <!-- Footer -->
+      <footer th:replace="~{layout/plantilla :: footer}"></footer>
+
+      <!-- Copyright -->
+      <div th:replace="~{layout/plantilla :: copyright}"></div>
+    </div>
+
+    <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+    <script th:src="@{/plugins/colorbox/jquery.colorbox-min.js}"></script>
+    <script th:src="@{/plugins/parallax-js-master/parallax.min.js}"></script>
+    <script th:src="@{/js/blog_custom.js}"></script>
+    <script th:src="@{/js/moment.min.js}"></script>
+    <script th:src="@{/js/daterangepicker.js}"></script>
+    <script th:src="@{/js/Hoteles_dropdown.js}"></script>
+    <script th:src="@{/js/jquery.waypoints.min.js}"></script>
+    <script th:src="@{/js/owl.carousel.min.js}"></script>
+  </body>
+</html>
+
+
+<!DOCTYPE html >
+
+<html layout:decorate="~{layout/layout}" xmlns:th="thymeleaf.org"  xmlns:layout="ultraq.net.nz/thymeleaf/layout" lang="es">
+
+<head>
+
+  <title> Lista de productosasdasdasd</title>
+
+</head>
+
+<body>
+
+<div layout:fragment="super_contentainer">
+
+  <div th:if="${#lists.isEmpty(listaProductos)}"><h1>Lista vacía</h1></div>
+
+  <div th:if="${listaProductos!=null }" th:replace="~{fragments/listaProductos :: listaProductos}"></div>
+
+  <section th:replace="~{fragments/latest_products::latest_products}"></section>
+
+</div>
+
+<script layout:fragment="script">
+
+</script>
+
+</body>
+
+</html>
+
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="es">
+<head><!--/*  Each token will be replaced by their respective titles in the resulting page. */-->
+  <title layout:title-pattern="$CONTENT_TITLE"></title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/fontawesome.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.3/jquery-ui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/SlickNav/1.0.0/jquery.slicknav.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mixitup/3.3.1/mixitup.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.3/themes/base/jquery-ui.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/SlickNav/1.0.0/slicknav.min.css" rel="stylesheet">
+  <script src="js/main.js"></script>
+  <link rel="stylesheet" href="/css/styleFruggy.css">
+</head>
+<body>
+<!--/* Standard layout can be mixed with Layout Dialect */-->
+<div th:replace="fragments/header :: header">
+</div>
+<!-- Page Preloder -->
+<div th:replace="~{fragments/preloader :: preloader}">
+</div>
+<div class="container" layout:fragment="content">
+</div>
+<div th:replace="fragments/footer :: footer">&copy; 2014 The Static Templates</div>
+<script layout:fragment="script">
+</script>
+</body>
+</html>
+
+<!DOCTYPE html >
+<html layout:decorate="~{layout/layout}" xmlns:th="http://www.thymeleaf.org"  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="es">
+<head>
+  <title> Lista de productosasdasdasd</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <div th:if="${#lists.isEmpty(listaProductos)}"><h1>Lista vacía</h1></div>
+  <div th:if="${listaProductos!=null }" th:replace="~{fragments/listaProductos :: listaProductos}"></div>
+  <section th:replace="~{fragments/latest_products::latest_products}"></section>
+</div>
+<script layout:fragment="script">
+</script>
+</body>
+</html>

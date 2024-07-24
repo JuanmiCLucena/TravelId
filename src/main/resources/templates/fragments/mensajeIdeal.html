@@ -1,0 +1,63 @@
+<!--packages start-->
+<section id="pack" class="packages" th:fragment="mensajeIdeal">
+    <div class="container">
+        <div class="gallary-header text-center">
+            <h2>Encuentra tu Hotel ideal</h2>
+            <p>
+                Explora nuestra selección de hoteles, desde lujosos resorts hasta
+                acogedores boutiques.<br />
+                Compara y reserva el alojamiento ideal para tu próxima
+                aventura.<br />
+                ¡Empieza tu viaje hacia una estancia inolvidable!
+            </p>
+        </div>
+
+        <div class="packages-content">
+            <div class="row">
+                <div class="col-12 col-lg-4 col-sm-6 d-flex" th:each="hotel : ${hoteles}">
+                    <a th:href="@{'/hotel/' + ${hotel.id}}" class="w-100 w-auto-sm">
+                        <div class="single-package-item">
+                            <!-- Mostrar la primera imagen del hotel o una imagen por defecto si no tiene imágenes -->
+                            <img th:src="@{${hotel.imagenesHotel.isEmpty()} ? '/images/Hoteles/Nobu_Hotel.jpg' : ${hotel.imagenesHotel.stream().findFirst().get().url}}" alt="Imagen del Hotel"/>
+
+                            <div class="single-package-item-txt">
+                                <h3 class="d-block d-sm-none d-xl-block">
+                                    <span th:text="${hotel.nombre}"></span> <span class="pull-right"></span>
+                                </h3>
+                                <div class="d-none d-sm-block d-xl-none">
+                                    <h3 th:text="${hotel.nombre}">Hotel Nombre</h3>
+                                </div>
+                                <div class="packages-para">
+                                    <p>
+                        <span class="d-inline-block">
+                            <i class="fa fa-angle-right"></i>
+                            <span class="d-inline-block" th:text="${hotel.localizacion.nombre}"> Berlín, Alemania</span>
+                        </span>
+                                    </p>
+                                    <p>
+                        <span class="d-inline-block">
+                            <i class="fa fa-star"></i>
+                            <span class="d-inline-block" th:text="${hotel.categoria + ' estrellas'}">4 estrellas</span>
+                        </span>
+                                    </p>
+                                    <p th:text="${hotel.descripcion}"></p>
+                                </div>
+
+                                <div class="packages-review">
+                                    <p>
+                                        <i class="fa fa-star" th:each="i : ${#numbers.sequence(1, hotel.categoria, 1)}"></i>
+                                    </p>
+                                </div>
+                                <div class="about-btn">
+                                    <button class="about-view packages-btn">Reservar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<!--/.packages-->

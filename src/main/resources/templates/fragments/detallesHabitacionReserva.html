@@ -1,0 +1,10 @@
+<section id="detalleHabitacionReservada" class="packages" th:fragment="detalleHabitacion">
+    <div class="hotel_title_content">
+        <h1 class="hotel_title" th:text="${habitacion.tipo.nombre}">Nombre Habitacion</h1>
+        <span th:text="${habitacion.capacidad}">Capacidad Habitación</span>
+        <i class="fa fa-users" aria-hidden="true"></i>
+        <span th:text="${habitacion.numeroCamas}"></span>
+        <i class="fa fa-bed" aria-hidden="true"></i>
+        <div class="hotel_location" th:text="${precioActual} + ' €'" > Precio Habitación </div>
+    </div>
+</section>

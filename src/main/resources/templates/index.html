@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Travelid</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="Travelix Project" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      href="plugins/font-awesome-4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="plugins/OwlCarousel2-2.2.1/owl.carousel.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="plugins/OwlCarousel2-2.2.1/owl.theme.default.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="plugins/OwlCarousel2-2.2.1/animate.css"
+    />
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/main_styles.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/main_responsive.css}" />
+  </head>
+
+  <body>
+    <div class="super_container">
+      <!-- Header -->
+
+      <header th:replace="~{layout/plantilla :: header}"></header>
+      <div th:replace="~{layout/plantilla :: navMobile}"></div>
+
+      <!-- Home -->
+
+      <div class="home">
+        <!-- Home Slider -->
+
+        <div class="home_slider_container">
+          <div class="owl-carousel owl-theme home_slider">
+            <!-- Slider Item -->
+            <div class="owl-item home_slider_item">
+              <!-- Image by https://unsplash.com/@anikindimitry -->
+              <div
+                class="home_slider_background"
+                style="background-image: url(images/pixelcut-export.jpeg)"
+              ></div>
+
+              <div class="home_slider_content text-center">
+                <div
+                  class="home_slider_content_inner"
+                  data-animation-in="flipInX"
+                  data-animation-out="animate-out fadeOut"
+                >
+                  <h1>Encuentra</h1>
+                  <h1>tu próxima aventura</h1>
+                  <div class="button home_slider_button">
+                    <div class="button_bcg"></div>
+                    <a href="actividades.html"
+                      >Comenzar mi viaje<span></span><span></span><span></span
+                    ></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slider Item -->
+            <div class="owl-item home_slider_item">
+              <div
+                class="home_slider_background"
+                style="background-image: url(images/Santorini.jpeg)"
+              ></div>
+
+              <div class="home_slider_content text-center">
+                <div
+                  class="home_slider_content_inner"
+                  data-animation-in="flipInX"
+                  data-animation-out="animate-out fadeOut"
+                >
+                  <h1 class="mb-2">Conoce</h1>
+                  <h1>tu lugar favorito</h1>
+                  <div class="button home_slider_button">
+                    <div class="button_bcg"></div>
+                    <a href="#"
+                      >Comenzar mi viaje<span></span><span></span><span></span
+                    ></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slider Item -->
+            <div class="owl-item home_slider_item">
+              <div
+                class="home_slider_background"
+                style="background-image: url(images/Tailandia.jpeg)"
+              ></div>
+
+              <div class="home_slider_content text-center">
+                <div
+                  class="home_slider_content_inner"
+                  data-animation-in="flipInX"
+                  data-animation-out="animate-out fadeOut"
+                >
+                  <h1 class="mb-4">viaja</h1>
+                  <h1>por todo el mundo</h1>
+                  <div class="button home_slider_button">
+                    <div class="button_bcg"></div>
+                    <a href="#"
+                      >Comenzar mi viaje<span></span><span></span><span></span
+                    ></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Home Slider Nav - Prev -->
+          <div class="home_slider_nav home_slider_prev">
+            <svg
+              version="1.1"
+              id="Layer_2"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              x="0px"
+              y="0px"
+              width="28px"
+              height="33px"
+              viewBox="0 0 28 33"
+              enable-background="new 0 0 28 33"
+              xml:space="preserve"
+            >
+              <defs>
+                <linearGradient id="home_grad_prev">
+                  <stop offset="0%" stop-color="#f0e6bd" />
+                  <stop offset="100%" stop-color="#f0e6bd" />
+                </linearGradient>
+              </defs>
+              <path
+                class="nav_path"
+                fill="#F3F6F9"
+                d="M19,0H9C4.029,0,0,4.029,0,9v15c0,4.971,4.029,9,9,9h10c4.97,0,9-4.029,9-9V9C28,4.029,23.97,0,19,0z
+					M26,23.091C26,27.459,22.545,31,18.285,31H9.714C5.454,31,2,27.459,2,23.091V9.909C2,5.541,5.454,2,9.714,2h8.571
+					C22.545,2,26,5.541,26,9.909V23.091z"
+              />
+              <polygon
+                class="nav_arrow"
+                fill="#F3F6F9"
+                points="15.044,22.222 16.377,20.888 12.374,16.885 16.377,12.882 15.044,11.55 9.708,16.885 11.04,18.219 
+					11.042,18.219 "
+              />
+            </svg>
+          </div>
+
+          <!-- Home Slider Nav - Next -->
+          <div class="home_slider_nav home_slider_next">
+            <svg
+              version="1.1"
+              id="Layer_3"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              x="0px"
+              y="0px"
+              width="28px"
+              height="33px"
+              viewBox="0 0 28 33"
+              enable-background="new 0 0 28 33"
+              xml:space="preserve"
+            >
+              <defs>
+                <linearGradient id="home_grad_next">
+                  <stop offset="0%" stop-color="#f0e6bd" />
+                  <stop offset="100%" stop-color="#f0e6bd" />
+                </linearGradient>
+              </defs>
+              <path
+                class="nav_path"
+                fill="#F3F6F9"
+                d="M19,0H9C4.029,0,0,4.029,0,9v15c0,4.971,4.029,9,9,9h10c4.97,0,9-4.029,9-9V9C28,4.029,23.97,0,19,0z
+				M26,23.091C26,27.459,22.545,31,18.285,31H9.714C5.454,31,2,27.459,2,23.091V9.909C2,5.541,5.454,2,9.714,2h8.571
+				C22.545,2,26,5.541,26,9.909V23.091z"
+              />
+              <polygon
+                class="nav_arrow"
+                fill="#F3F6F9"
+                points="13.044,11.551 11.71,12.885 15.714,16.888 11.71,20.891 13.044,22.224 18.379,16.888 17.048,15.554 
+				17.046,15.554 "
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Elige tu servicio -->
+
+      <div class="services d-flex justify-content-center my-4">
+        <nav class="navbar bg-body-tertiary rounded-5 p-3">
+          <form class="container-fluid justify-content-start">
+            <div class="d-flex flex-column flex-sm-row gap-2">
+              <button
+                class="btn btn-outline-info me-2 p-2 muestra-todos"
+                type="button"
+              >
+                Todos
+              </button>
+              <button
+                class="btn btn-outline-info me-2 p-2 muestra-vuelos"
+                type="button"
+              >
+                Vuelos
+              </button>
+              <button
+                class="btn btn-outline-info me-2 p-2 muestra-hoteles"
+                type="button"
+              >
+                Hoteles
+              </button>
+              <button
+                class="btn btn-outline-info me-2 p-2 muestra-actividades"
+                type="button"
+              >
+                Actividades
+              </button>
+            </div>
+          </form>
+        </nav>
+      </div>
+
+      <!-- Vuelos -->
+
+      <div class="offers vuelos">
+        <div class="container">
+          <div class="row">
+            <div class="col text-center">
+              <h2 class="section_title" id="vuelos">Vuelos</h2>
+            </div>
+          </div>
+          <div class="row offers_items">
+            <!-- Offers Item -->
+            <div class="col-lg-6 offers_col">
+              <div class="offers_item">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <a href="actividades.html">
+                      <div class="offers_image_container">
+                        <!-- Image by https://unsplash.com/@kensuarez -->
+                        <div
+                          class="offers_image_background"
+                          style="background-image: url(images/offer_1.jpg)"
+                        ></div>
+                        <div class="offer_name">
+                          <a href="#">grand castle</a>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="offers_content">
+                      <div class="offers_name">
+                        <h2 class="text-dark">Senderismo en Gran Castillo</h2>
+                      </div>
+
+                      <p class="offers_text">
+                        Suspendisse potenti. In faucibus massa. Lorem ipsum
+                        dolor sit amet, consectetur adipiscing elit. Nullam eu
+                        convallis tortor.
+                      </p>
+                      <div class="offers_link">
+                        <a href="actividades.html">read more</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Offers Item -->
+            <div class="col-lg-6 offers_col">
+              <div class="offers_item">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <a href="actividades.html">
+                      <div class="offers_image_container">
+                        <!-- Image by Egzon Bytyqi -->
+                        <div
+                          class="offers_image_background"
+                          style="background-image: url(images/offer_2.jpg)"
+                        ></div>
+                        <div class="offer_name">
+                          <a href="#">turkey hills</a>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="offers_content">
+                      <div class="offers_name">
+                        <h2 class="text-dark">Globo en Turquía</h2>
+                      </div>
+
+                      <p class="offers_text">
+                        Suspendisse potenti. In faucibus massa. Lorem ipsum
+                        dolor sit amet, consectetur adipiscing elit. Nullam eu
+                        convallis tortor.
+                      </p>
+                      <div class="offers_link">
+                        <a href="actividades.html">read more</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Offers Item -->
+            <div class="col-lg-6 offers_col">
+              <div class="offers_item">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <a href="actividades.html">
+                      <div class="offers_image_container">
+                        <!-- Image by https://unsplash.com/@nevenkrcmarek -->
+                        <div
+                          class="offers_image_background"
+                          style="background-image: url(images/offer_3.jpg)"
+                        ></div>
+                        <div class="offer_name">
+                          <a href="#">island dream</a>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="offers_content">
+                      <div class="offers_name">
+                        <h2 class="text-dark">La isla de tus sueños</h2>
+                      </div>
+
+                      <p class="offers_text">
+                        Suspendisse potenti. In faucibus massa. Lorem ipsum
+                        dolor sit amet, consectetur adipiscing elit. Nullam eu
+                        convallis tortor.
+                      </p>
+                      <div class="offers_link">
+                        <a href="actividades.html">read more</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Offers Item -->
+            <div class="col-lg-6 offers_col">
+              <div class="offers_item">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <a href="actividades.html">
+                      <div class="offers_image_container">
+                        <!-- Image by https://unsplash.com/@mantashesthaven -->
+                        <div
+                          class="offers_image_background"
+                          style="background-image: url(images/offer_4.jpg)"
+                        ></div>
+                        <div class="offer_name">
+                          <a href="#">travel light</a>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="offers_content">
+                      <div class="offers_name">
+                        <h2 class="text-dark">Explorando con lo Esencial</h2>
+                      </div>
+
+                      <p class="offers_text">
+                        Suspendisse potenti. In faucibus massa. Lorem ipsum
+                        dolor sit amet, consectetur adipiscing elit. Nullam eu
+                        convallis tortor.
+                      </p>
+
+                      <div class="offers_link">
+                        <a href="actividades.html">read more</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hoteles -->
+      <div class="offers hoteles">
+        <div class="container">
+          <div class="row">
+            <div class="col text-center">
+              <h2 class="section_title" id="hoteles">Hoteles</h2>
+            </div>
+          </div>
+          <div class="row offers_items">
+            <!-- Offers Item -->
+            <div class="col-lg-6 offers_col">
+              <div class="offers_item">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <a href="actividades.html">
+                      <div class="offers_image_container">
+                        <!-- Image by https://unsplash.com/@kensuarez -->
+                        <div
+                          class="offers_image_background"
+                          style="background-image: url(images/offer_1.jpg)"
+                        ></div>
+                        <div class="offer_name">
+                          <a href="#">grand castle</a>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="offers_content">
+                      <div class="offers_name">
+                        <h2 class="text-dark">Senderismo en Gran Castillo</h2>
+                      </div>
+
+                      <p class="offers_text">
+                        Suspendisse potenti. In faucibus massa. Lorem ipsum
+                        dolor sit amet, consectetur adipiscing elit. Nullam eu
+                        convallis tortor.
+                      </p>
+                      <div class="offers_link">
+                        <a href="actividades.html">read more</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Offers Item -->
+            <div class="col-lg-6 offers_col">
+              <div class="offers_item">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <a href="actividades.html">
+                      <div class="offers_image_container">
+                        <!-- Image by Egzon Bytyqi -->
+                        <div
+                          class="offers_image_background"
+                          style="background-image: url(images/offer_2.jpg)"
+                        ></div>
+                        <div class="offer_name">
+                          <a href="#">turkey hills</a>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="offers_content">
+                      <div class="offers_name">
+                        <h2 class="text-dark">Globo en Turquía</h2>
+                      </div>
+
+                      <p class="offers_text">
+                        Suspendisse potenti. In faucibus massa. Lorem ipsum
+                        dolor sit amet, consectetur adipiscing elit. Nullam eu
+                        convallis tortor.
+                      </p>
+                      <div class="offers_link">
+                        <a href="actividades.html">read more</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Offers Item -->
+            <div class="col-lg-6 offers_col">
+              <div class="offers_item">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <a href="actividades.html">
+                      <div class="offers_image_container">
+                        <!-- Image by https://unsplash.com/@nevenkrcmarek -->
+                        <div
+                          class="offers_image_background"
+                          style="background-image: url(images/offer_3.jpg)"
+                        ></div>
+                        <div class="offer_name">
+                          <a href="#">island dream</a>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="offers_content">
+                      <div class="offers_name">
+                        <h2 class="text-dark">La isla de tus sueños</h2>
+                      </div>
+
+                      <p class="offers_text">
+                        Suspendisse potenti. In faucibus massa. Lorem ipsum
+                        dolor sit amet, consectetur adipiscing elit. Nullam eu
+                        convallis tortor.
+                      </p>
+                      <div class="offers_link">
+                        <a href="actividades.html">read more</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Offers Item -->
+            <div class="col-lg-6 offers_col">
+              <div class="offers_item">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <a href="actividades.html">
+                      <div class="offers_image_container">
+                        <!-- Image by https://unsplash.com/@mantashesthaven -->
+                        <div
+                          class="offers_image_background"
+                          style="background-image: url(images/offer_4.jpg)"
+                        ></div>
+                        <div class="offer_name">
+                          <a href="#">travel light</a>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="offers_content">
+                      <div class="offers_name">
+                        <h2 class="text-dark">Explorando con lo Esencial</h2>
+                      </div>
+
+                      <p class="offers_text">
+                        Suspendisse potenti. In faucibus massa. Lorem ipsum
+                        dolor sit amet, consectetur adipiscing elit. Nullam eu
+                        convallis tortor.
+                      </p>
+
+                      <div class="offers_link">
+                        <a href="actividades.html">read more</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Offers - Actividades -->
+      <div class="offers actividades">
+        <div class="container">
+          <div class="row">
+            <div class="col text-center">
+              <h2 class="section_title" id="actividades">Actividades</h2>
+            </div>
+          </div>
+          <div class="row offers_items">
+            <!-- Offers Item -->
+            <div class="col-lg-6 offers_col">
+              <div class="offers_item">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <a href="actividades.html">
+                      <div class="offers_image_container">
+                        <!-- Image by https://unsplash.com/@kensuarez -->
+                        <div
+                          class="offers_image_background"
+                          style="background-image: url(images/offer_1.jpg)"
+                        ></div>
+                        <div class="offer_name">
+                          <a href="#">grand castle</a>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="offers_content">
+                      <div class="offers_name">
+                        <h2 class="text-dark">Senderismo en Gran Castillo</h2>
+                      </div>
+
+                      <p class="offers_text">
+                        Suspendisse potenti. In faucibus massa. Lorem ipsum
+                        dolor sit amet, consectetur adipiscing elit. Nullam eu
+                        convallis tortor.
+                      </p>
+                      <div class="offers_link">
+                        <a href="actividades.html">read more</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Offers Item -->
+            <div class="col-lg-6 offers_col">
+              <div class="offers_item">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <a href="actividades.html">
+                      <div class="offers_image_container">
+                        <!-- Image by Egzon Bytyqi -->
+                        <div
+                          class="offers_image_background"
+                          style="background-image: url(images/offer_2.jpg)"
+                        ></div>
+                        <div class="offer_name">
+                          <a href="#">turkey hills</a>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="offers_content">
+                      <div class="offers_name">
+                        <h2 class="text-dark">Globo en Turquía</h2>
+                      </div>
+
+                      <p class="offers_text">
+                        Suspendisse potenti. In faucibus massa. Lorem ipsum
+                        dolor sit amet, consectetur adipiscing elit. Nullam eu
+                        convallis tortor.
+                      </p>
+                      <div class="offers_link">
+                        <a href="actividades.html">read more</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Offers Item -->
+            <div class="col-lg-6 offers_col">
+              <div class="offers_item">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <a href="actividades.html">
+                      <div class="offers_image_container">
+                        <!-- Image by https://unsplash.com/@nevenkrcmarek -->
+                        <div
+                          class="offers_image_background"
+                          style="background-image: url(images/offer_3.jpg)"
+                        ></div>
+                        <div class="offer_name">
+                          <a href="#">island dream</a>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="offers_content">
+                      <div class="offers_name">
+                        <h2 class="text-dark">La isla de tus sueños</h2>
+                      </div>
+
+                      <p class="offers_text">
+                        Suspendisse potenti. In faucibus massa. Lorem ipsum
+                        dolor sit amet, consectetur adipiscing elit. Nullam eu
+                        convallis tortor.
+                      </p>
+                      <div class="offers_link">
+                        <a href="actividades.html">read more</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Offers Item -->
+            <div class="col-lg-6 offers_col">
+              <div class="offers_item">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <a href="actividades.html">
+                      <div class="offers_image_container">
+                        <!-- Image by https://unsplash.com/@mantashesthaven -->
+                        <div
+                          class="offers_image_background"
+                          style="background-image: url(images/offer_4.jpg)"
+                        ></div>
+                        <div class="offer_name">
+                          <a href="#">travel light</a>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="offers_content">
+                      <div class="offers_name">
+                        <h2 class="text-dark">Explorando con lo Esencial</h2>
+                      </div>
+
+                      <p class="offers_text">
+                        Suspendisse potenti. In faucibus massa. Lorem ipsum
+                        dolor sit amet, consectetur adipiscing elit. Nullam eu
+                        convallis tortor.
+                      </p>
+
+                      <div class="offers_link">
+                        <a href="actividades.html">read more</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer th:replace="~{layout/plantilla :: footer}"></footer>
+
+      <!-- Copyright -->
+      <div th:replace="~{layout/plantilla :: copyright}"></div>
+    </div>
+
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+    <script src="plugins/easing/easing.js"></script>
+    <script src="js/custom.js"></script>
+    <script src="js/oculta_muestra_main.js"></script>
+  </body>
+</html>
