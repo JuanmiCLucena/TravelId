@@ -38,14 +38,14 @@ public class AdminHabitacionController {
     }
 
     @GetMapping
-    public String listaHabitaciones(Model modelo) {
+    public String listar(Model modelo) {
         List<Habitacion> habitaciones = servicioHabitacion.buscarEntidades();
         modelo.addAttribute("habitaciones",habitaciones);
         return "admin/adminHabitaciones";
     }
 
     @GetMapping("/{id}")
-    public String detallesHabitacion(Model modelo, @PathVariable Integer id) {
+    public String detalles(Model modelo, @PathVariable Integer id) {
         Optional<Habitacion> habitacion = servicioHabitacion.encuentraPorId(id);
         // Si no encontramos la habitacion no hemos encontrado la habitacion
         if(habitacion.isPresent()) {
@@ -55,7 +55,7 @@ public class AdminHabitacionController {
             modelo.addAttribute("hoteles", servicioHotel.buscarEntidades());
             modelo.addAttribute("tiposHabitacion", servicioTipoHabitacion.buscarEntidades());
 
-        return "admin/detallesHabitacion";
+        return "adminDetallesHabitacion";
         } else {
             // Habitacion no encontrado - htlm
             return "habitacionNoEncontrado";
@@ -64,16 +64,16 @@ public class AdminHabitacionController {
     }
 
     @GetMapping("/crear")
-    public String mostrarPaginaCrearHabitacion(Model modelo) {
+    public String mostrarPaginaCrear(Model modelo) {
         Habitacion habitacion = new Habitacion();
         modelo.addAttribute("habitacion", habitacion);
         modelo.addAttribute("hoteles", servicioHotel.buscarEntidades());
         modelo.addAttribute("tiposHabitacion", servicioTipoHabitacion.buscarEntidades());
-        return "admin/nuevaHabitacion";
+        return "adminNuevaHabitacion";
     }
 
     @PostMapping("/crear")
-    public String crearHabitacion(
+    public String crear(
             @RequestParam(name = "imagen") MultipartFile imagen,
             @ModelAttribute("habitacion") Habitacion habitacion,
             @RequestParam("tipo.id") Integer tipoId,
@@ -110,7 +110,7 @@ public class AdminHabitacionController {
     }
 
     @DeleteMapping("/eliminar/{id}")
-    public String eliminarHabitacion(@PathVariable Integer id) {
+    public String eliminar(@PathVariable Integer id) {
         Optional<Habitacion> optionalHabitacion = servicioHabitacion.encuentraPorId(id);
         if(optionalHabitacion.isPresent()) {
             servicioHabitacion.eliminarPorId(id);

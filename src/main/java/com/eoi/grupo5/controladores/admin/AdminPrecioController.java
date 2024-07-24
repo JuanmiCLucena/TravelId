@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/admin/hoteles")
-public class AdminHotelController {
+@RequestMapping("/admin/precios")
+public class AdminPrecioController {
 
     private final ServicioHotel servicioHotel;
     private final ServicioHabitacion servicioHabitacion;
@@ -28,7 +28,7 @@ public class AdminHotelController {
     private final FileSystemStorageService fileSystemStorageService;
 
 
-    public AdminHotelController(ServicioHotel servicioHotel, ServicioHabitacion servicioHabitacion, ServicioImagen servicioImagen, ServicioLocalizacion servicioLocalizacion, FileSystemStorageService fileSystemStorageService) {
+    public AdminPrecioController(ServicioHotel servicioHotel, ServicioHabitacion servicioHabitacion, ServicioImagen servicioImagen, ServicioLocalizacion servicioLocalizacion, FileSystemStorageService fileSystemStorageService) {
         this.servicioHotel = servicioHotel;
         this.servicioHabitacion = servicioHabitacion;
         this.servicioImagen = servicioImagen;

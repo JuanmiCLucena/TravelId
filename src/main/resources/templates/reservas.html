@@ -31,8 +31,8 @@
 <div class="super_container">
     <!-- Header -->
 
-    <header th:replace="~{layout/plantilla :: header}"></header>
-    <div th:replace="~{layout/plantilla :: navMobile}"></div>
+    <header th:replace="~{fragments/plantilla :: header}"></header>
+    <div th:replace="~{fragments/plantilla :: navMobile}"></div>
 
     <div th:each="reserva : ${reservas}">
         <div>
@@ -42,10 +42,10 @@
 
     <!-- Footer -->
 
-    <footer th:replace="~{layout/plantilla :: footer}"></footer>
+    <footer th:replace="~{fragments/plantilla :: footer}"></footer>
 
     <!-- Copyright -->
-    <div th:replace="~{layout/plantilla :: copyright}"></div>
+    <div th:replace="~{fragments/plantilla :: copyright}"></div>
 </div>
 
 <script src="js/jquery-3.2.1.min.js"></script>
