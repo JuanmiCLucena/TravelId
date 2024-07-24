@@ -1,6 +1,7 @@
 package com.eoi.grupo5.servicios.archivos;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -21,8 +22,11 @@ public class FileSystemStorageService {
 
     private final Path rootLocation;
 
+    @Value("${directorio.fichero}")
+    private String value;
+
     public FileSystemStorageService() {
-        this.rootLocation = Paths.get("C:\\Users\\popie\\Desktop\\EOI\\Proyecto-Grupo-5\\Spring\\images");
+        this.rootLocation = Paths.get(value);
     }
 
 

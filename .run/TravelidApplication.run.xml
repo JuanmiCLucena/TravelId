@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="TravelidApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <option name="ACTIVE_PROFILES" value="spring.profiles.active=local" />
+    <module name="grupo5" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.eoi.grupo5.TravelidApplication" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
