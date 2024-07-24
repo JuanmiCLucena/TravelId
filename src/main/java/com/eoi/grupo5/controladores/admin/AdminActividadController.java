@@ -45,7 +45,6 @@ public class AdminActividadController {
     @GetMapping("/{id}")
     public String detalles(Model modelo, @PathVariable Integer id) {
         Optional<Actividad> actividad = servicioActividad.encuentraPorId(id);
-        // Si no encontramos el actividad no hemos encontrado el actividad
         if(actividad.isPresent()) {
             modelo.addAttribute("actividad",actividad.get());
             modelo.addAttribute("preciosActuales",
