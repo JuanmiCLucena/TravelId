@@ -53,7 +53,7 @@ public class AdminHotelController {
                     servicioHabitacion.obtenerPreciosActualesHabitacionesHotel(hotel.get()));
             modelo.addAttribute("localizaciones", servicioLocalizacion.buscarEntidades());
 
-        return "admin/adminDetallesHabitacion";
+        return "admin/adminDetallesHotel";
         } else {
             // Hotel no encontrado - htlm
             return "hotelNoEncontrado";
