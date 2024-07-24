@@ -2,6 +2,7 @@ package com.eoi.grupo5.servicios.archivos;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -22,11 +23,11 @@ public class FileSystemStorageService {
 
     private final Path rootLocation;
 
-    @Value("${directorio.fichero}")
-    private String value;
+    private final Environment environment;
 
-    public FileSystemStorageService() {
-        this.rootLocation = Paths.get(value);
+    public FileSystemStorageService(Environment environment) {
+        this.rootLocation = Paths.get(environment.getProperty("directorio.ficheros"));
+        this.environment = environment;
     }
 
 
