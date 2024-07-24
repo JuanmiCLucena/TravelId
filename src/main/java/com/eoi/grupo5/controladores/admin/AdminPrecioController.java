@@ -1,9 +1,6 @@
 package com.eoi.grupo5.controladores.admin;
 
-import com.eoi.grupo5.modelos.Hotel;
-import com.eoi.grupo5.modelos.Imagen;
-import com.eoi.grupo5.modelos.Precio;
-import com.eoi.grupo5.modelos.TipoHabitacion;
+import com.eoi.grupo5.modelos.*;
 import com.eoi.grupo5.servicios.*;
 import com.eoi.grupo5.servicios.archivos.FileSystemStorageService;
 import org.apache.commons.io.FilenameUtils;
@@ -70,34 +67,54 @@ public class AdminPrecioController {
     @PostMapping("/crear")
     public String crear(
             @ModelAttribute("precio") Precio precio,
-            @RequestParam("habitacion.id") Integer habitacionId,
-            @RequestParam("asiento.id") Integer asientoId,
-            @RequestParam("actividad.id") Integer actividadId
+            @RequestParam(name = "habitacion.id") Integer habitacionId,
+            @RequestParam(name = "asiento.id") Integer asientoId,
+            @RequestParam(name = "actividad.id") Integer actividadId
     ) {
 
         try {
+            boolean assigned = false;
 
-            Hotel hotel = servicioHotel.encuentraPorId(hotelId).get();
-            habitacion.setHotel(hotel);
+            if (habitacionId != null) {
+                Habitacion habitacion = servicioHabitacion.encuentraPorId(habitacionId)
+                        .orElseThrow(() -> new IllegalArgumentException("Habitación no encontrada"));
+                precio.setHabitacion(habitacion);
+                assigned = true;
+            }
 
-            TipoHabitacion tipo = servicioTipoHabitacion.encuentraPorId(tipoId).get();
-            habitacion.setTipo(tipo);
+            if (asientoId != null) {
+                Asiento asiento = servicioAsiento.encuentraPorId(asientoId)
+                        .orElseThrow(() -> new IllegalArgumentException("Asiento no encontrado"));
+                precio.setAsiento(asiento);
+                assigned = true;
+            }
 
-          servicioPrecio.guardar(precio);
+            if (actividadId != null) {
+                Actividad actividad = servicioActividad.encuentraPorId(actividadId)
+                        .orElseThrow(() -> new IllegalArgumentException("Actividad no encontrada"));
+                precio.setActividad(actividad);
+                assigned = true;
+            }
+
+            if (!assigned) {
+                throw new IllegalArgumentException("Debe proporcionar al menos uno de los IDs: habitacion.id, asiento.id, actividad.id");
+            }
+
+            servicioPrecio.guardar(precio);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
-        return "redirect:/admin/hoteles";
+        return "redirect:/admin/precios";
     }
 
     @DeleteMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Integer id) {
-        Optional<Hotel> optionalHotel = servicioHotel.encuentraPorId(id);
-        if(optionalHotel.isPresent()) {
-            servicioHotel.eliminarPorId(id);
+        Optional<Precio> optionalPrecio = servicioPrecio.encuentraPorId(id);
+        if(optionalPrecio.isPresent()) {
+            servicioPrecio.eliminarPorId(id);
         }
-        return "redirect:/admin/hoteles";
+        return "redirect:/admin/precios";
     }
 
 }
