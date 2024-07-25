@@ -5,9 +5,11 @@ import com.eoi.grupo5.modelos.Localizacion;
 import com.eoi.grupo5.modelos.Vuelo;
 import com.eoi.grupo5.servicios.*;
 import com.eoi.grupo5.servicios.archivos.FileSystemStorageService;
+import jakarta.validation.Valid;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -66,14 +68,22 @@ public class AdminLocalizacionController {
     }
 
     @PostMapping("/crear")
-    public String crear(@ModelAttribute("localizacion") Localizacion localizacion) {
-
+    public String crear(@Valid @ModelAttribute("localizacion") Localizacion localizacion, BindingResult result, Model modelo) {
+        if (result.hasErrors()) {
+            modelo.addAttribute("vuelos", servicioVuelo.buscarEntidades());
+            modelo.addAttribute("hoteles", servicioHotel.buscarEntidades());
+            modelo.addAttribute("actividades", servicioActividad.buscarEntidades());
+            return "admin/adminNuevaLocalizacion";
+        }
         try {
             servicioLocalizacion.guardar(localizacion);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            modelo.addAttribute("error", "Error al crear la localización: " + e.getMessage());
+            modelo.addAttribute("vuelos", servicioVuelo.buscarEntidades());
+            modelo.addAttribute("hoteles", servicioHotel.buscarEntidades());
+            modelo.addAttribute("actividades", servicioActividad.buscarEntidades());
+            return "admin/adminNuevaLocalizacion";
         }
-
         return "redirect:/admin/localizaciones";
     }
 
