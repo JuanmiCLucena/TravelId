@@ -46,18 +46,15 @@ public class AdminHotelController {
     @GetMapping("/{id}")
     public String detalles(Model modelo, @PathVariable Integer id) {
         Optional<Hotel> hotel = servicioHotel.encuentraPorId(id);
-        if(hotel.isPresent()) {
-            modelo.addAttribute("hotel",hotel.get());
-            modelo.addAttribute("preciosActuales",
-                    servicioHabitacion.obtenerPreciosActualesHabitacionesHotel(hotel.get()));
+        if (hotel.isPresent()) {
+            modelo.addAttribute("hotel", hotel.get());
+            modelo.addAttribute("preciosActuales", servicioHabitacion.obtenerPreciosActualesHabitacionesHotel(hotel.get()));
             modelo.addAttribute("localizaciones", servicioLocalizacion.buscarEntidades());
-
-        return "admin/adminDetallesHotel";
+            return "admin/adminDetallesHotel";
         } else {
-            // Hotel no encontrado - htlm
-            return "hotelNoEncontrado";
+            modelo.addAttribute("error", "Hotel no encontrado");
+            return "admin/adminHoteles";
         }
-
     }
 
     @GetMapping("/crear")

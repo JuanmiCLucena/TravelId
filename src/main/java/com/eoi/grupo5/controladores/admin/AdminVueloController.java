@@ -1,6 +1,5 @@
 package com.eoi.grupo5.controladores.admin;
 
-import com.eoi.grupo5.modelos.Hotel;
 import com.eoi.grupo5.modelos.Imagen;
 import com.eoi.grupo5.modelos.Vuelo;
 import com.eoi.grupo5.servicios.*;
@@ -18,6 +17,7 @@ import java.util.Optional;
 @RequestMapping("/admin/vuelos")
 public class AdminVueloController {
 
+    private final ServicioCompaniaVuelo servicioCompaniaVuelo;
     private final ServicioVuelo servicioVuelo;
     private final ServicioAsiento servicioAsiento;
     private final ServicioImagen servicioImagen;
@@ -26,7 +26,8 @@ public class AdminVueloController {
     private final FileSystemStorageService fileSystemStorageService;
 
 
-    public AdminVueloController(ServicioVuelo servicioVuelo, ServicioAsiento servicioAsiento, ServicioImagen servicioImagen, ServicioLocalizacion servicioLocalizacion, FileSystemStorageService fileSystemStorageService) {
+    public AdminVueloController(ServicioCompaniaVuelo servicioCompaniaVuelo, ServicioVuelo servicioVuelo, ServicioAsiento servicioAsiento, ServicioImagen servicioImagen, ServicioLocalizacion servicioLocalizacion, FileSystemStorageService fileSystemStorageService) {
+        this.servicioCompaniaVuelo = servicioCompaniaVuelo;
         this.servicioVuelo = servicioVuelo;
         this.servicioAsiento = servicioAsiento;
         this.servicioImagen = servicioImagen;
@@ -44,18 +45,16 @@ public class AdminVueloController {
     @GetMapping("/{id}")
     public String detalles(Model modelo, @PathVariable Integer id) {
         Optional<Vuelo> vuelo = servicioVuelo.encuentraPorId(id);
-        if(vuelo.isPresent()) {
-            modelo.addAttribute("vuelo",vuelo.get());
-            modelo.addAttribute("preciosActuales",
-                    servicioAsiento.obtenerPreciosActualesAsientosVuelo(vuelo.get()));
+        if (vuelo.isPresent()) {
+            modelo.addAttribute("vuelo", vuelo.get());
+            modelo.addAttribute("preciosActuales", servicioAsiento.obtenerPreciosActualesAsientosVuelo(vuelo.get()));
             modelo.addAttribute("localizaciones", servicioLocalizacion.buscarEntidades());
-
+            modelo.addAttribute("companias", servicioCompaniaVuelo.buscarEntidades());
             return "admin/adminDetallesVuelo";
         } else {
-            // Hotel no encontrado - htlm
-            return "vueloNoEncontrado";
+            modelo.addAttribute("error", "Vuelo no encontrado");
+            return "admin/adminVuelos";
         }
-
     }
 
     @GetMapping("/crear")
@@ -67,28 +66,38 @@ public class AdminVueloController {
     }
 
     @PostMapping("/crear")
-    public String crear(@RequestParam(name = "imagen") MultipartFile imagen, @ModelAttribute("vuelo") Vuelo vuelo) {
-
+    public String crear(@RequestParam("imagen") MultipartFile imagen, @ModelAttribute("vuelo") Vuelo vuelo) {
         try {
-
-            String FILE_NAME;
-
+            // Guardar el vuelo primero para obtener el ID
             servicioVuelo.guardar(vuelo);
+
+            // Crear y guardar una imagen temporalmente con URL temporal
             Imagen imagenBD = new Imagen();
             imagenBD.setVuelo(vuelo);
-            imagenBD.setUrl(String.valueOf(vuelo.getId()));
+            imagenBD.setUrl("");  // Deja la URL en blanco por ahora
             servicioImagen.guardar(imagenBD);
-            FILE_NAME = "vuelo-" + vuelo.getId() + "-" + imagenBD.getId() + "." + FilenameUtils.getExtension(imagen.getOriginalFilename());
-            imagenBD.setUrl(FILE_NAME);
-            fileSystemStorageService.store(imagen, FILE_NAME);
+
+            // Generar el nombre del archivo y guardar la imagen
+            String extension = FilenameUtils.getExtension(imagen.getOriginalFilename());
+            String fileName = "vuelo-" + vuelo.getId() + "-" + imagenBD.getId() + "." + extension;
+            fileSystemStorageService.store(imagen, fileName);
+
+            // Actualizar la URL de la imagen en la base de datos
+            imagenBD.setUrl(fileName);
+            servicioImagen.guardar(imagenBD);
+
+            // Asociar la imagen con el vuelo y guardar el vuelo nuevamente
             vuelo.setImagen(imagenBD);
             servicioVuelo.guardar(vuelo);
+
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
 
         return "redirect:/admin/vuelos";
     }
+
+
 
     @DeleteMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Integer id) {
