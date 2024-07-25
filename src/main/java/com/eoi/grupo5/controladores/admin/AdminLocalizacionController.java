@@ -1,8 +1,11 @@
 package com.eoi.grupo5.controladores.admin;
 
+import com.eoi.grupo5.modelos.Habitacion;
 import com.eoi.grupo5.modelos.Imagen;
 import com.eoi.grupo5.modelos.Localizacion;
 import com.eoi.grupo5.modelos.Vuelo;
+import com.eoi.grupo5.paginacion.PaginaRespuestaHabitaciones;
+import com.eoi.grupo5.paginacion.PaginaRespuestaLocalizaciones;
 import com.eoi.grupo5.servicios.*;
 import com.eoi.grupo5.servicios.archivos.FileSystemStorageService;
 import jakarta.validation.Valid;
@@ -34,9 +37,15 @@ public class AdminLocalizacionController {
     }
 
     @GetMapping
-    public String listar(Model modelo) {
-        List<Localizacion> localizaciones = servicioLocalizacion.buscarEntidades();
+    public String listar(
+            Model modelo,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        PaginaRespuestaLocalizaciones<Localizacion> localizacionesPage = servicioLocalizacion.buscarEntidadesPaginadas(page, size);
+        List<Localizacion> localizaciones = localizacionesPage.getContent();
         modelo.addAttribute("localizaciones",localizaciones);
+        modelo.addAttribute("page", localizacionesPage);
         return "admin/adminLocalizaciones";
     }
 

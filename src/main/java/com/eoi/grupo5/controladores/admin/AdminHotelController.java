@@ -1,7 +1,10 @@
 package com.eoi.grupo5.controladores.admin;
 
+import com.eoi.grupo5.modelos.Habitacion;
 import com.eoi.grupo5.modelos.Hotel;
 import com.eoi.grupo5.modelos.Imagen;
+import com.eoi.grupo5.paginacion.PaginaRespuestaHabitaciones;
+import com.eoi.grupo5.paginacion.PaginaRespuestaHoteles;
 import com.eoi.grupo5.servicios.ServicioHabitacion;
 import com.eoi.grupo5.servicios.ServicioHotel;
 import com.eoi.grupo5.servicios.ServicioImagen;
@@ -37,9 +40,15 @@ public class AdminHotelController {
     }
 
     @GetMapping
-    public String listar(Model modelo) {
-        List<Hotel> hoteles = servicioHotel.buscarEntidades();
+    public String listar(
+            Model modelo,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        PaginaRespuestaHoteles<Hotel> hotelesPage = servicioHotel.buscarEntidadesPaginadas(page, size);
+        List<Hotel> hoteles = hotelesPage.getContent();
         modelo.addAttribute("hoteles",hoteles);
+        modelo.addAttribute("page", hotelesPage);
         return "admin/adminHoteles";
     }
 

@@ -1,7 +1,10 @@
 package com.eoi.grupo5.controladores.admin;
 
+import com.eoi.grupo5.modelos.Habitacion;
 import com.eoi.grupo5.modelos.Imagen;
 import com.eoi.grupo5.modelos.Vuelo;
+import com.eoi.grupo5.paginacion.PaginaRespuestaHabitaciones;
+import com.eoi.grupo5.paginacion.PaginaRespuestaVuelos;
 import com.eoi.grupo5.servicios.*;
 import com.eoi.grupo5.servicios.archivos.FileSystemStorageService;
 import org.apache.commons.io.FilenameUtils;
@@ -36,9 +39,15 @@ public class AdminVueloController {
     }
 
     @GetMapping
-    public String listar(Model modelo) {
-        List<Vuelo> vuelos = servicioVuelo.buscarEntidades();
+    public String listar(
+            Model modelo,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        PaginaRespuestaVuelos<Vuelo> vuelosPage = servicioVuelo.buscarEntidadesPaginadas(page, size);
+        List<Vuelo> vuelos = vuelosPage.getContent();
         modelo.addAttribute("vuelos",vuelos);
+        modelo.addAttribute("page", vuelosPage);
         return "admin/adminVuelos";
     }
 

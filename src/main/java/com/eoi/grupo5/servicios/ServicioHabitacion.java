@@ -1,9 +1,16 @@
 package com.eoi.grupo5.servicios;
 
+import com.eoi.grupo5.modelos.Actividad;
 import com.eoi.grupo5.modelos.Habitacion;
 import com.eoi.grupo5.modelos.Hotel;
 import com.eoi.grupo5.modelos.Precio;
+import com.eoi.grupo5.paginacion.PaginaRespuestaActividades;
+import com.eoi.grupo5.paginacion.PaginaRespuestaHabitaciones;
 import com.eoi.grupo5.repos.RepoHabitacion;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,6 +23,20 @@ public class ServicioHabitacion extends AbstractBusinessServiceSoloEnt<Habitacio
 
     protected ServicioHabitacion(RepoHabitacion repoHabitacion) {
         super(repoHabitacion);
+    }
+
+    public PaginaRespuestaHabitaciones<Habitacion> buscarEntidadesPaginadas(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Habitacion> habitacionPage = getRepo().findAll(pageable);
+
+        PaginaRespuestaHabitaciones<Habitacion> respuesta = new PaginaRespuestaHabitaciones<>();
+        respuesta.setContent(habitacionPage.getContent());
+        respuesta.setSize(habitacionPage.getSize());
+        respuesta.setTotalSize(habitacionPage.getTotalElements());
+        respuesta.setPage(habitacionPage.getNumber());
+        respuesta.setTotalPages(habitacionPage.getTotalPages());
+
+        return respuesta;
     }
 
     public Precio getPrecioActual(Habitacion habitacion, LocalDateTime fechaActual) {
