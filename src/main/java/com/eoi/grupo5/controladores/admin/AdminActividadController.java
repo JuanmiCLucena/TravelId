@@ -5,14 +5,12 @@ import com.eoi.grupo5.modelos.Imagen;
 import com.eoi.grupo5.servicios.*;
 import com.eoi.grupo5.servicios.archivos.FileSystemStorageService;
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.format.datetime.DateFormatter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,16 +36,15 @@ public class AdminActividadController {
     }
 
     @GetMapping
-    public String listaActividades(Model modelo) {
+    public String listar(Model modelo) {
         List<Actividad> actividades = servicioActividad.buscarEntidades();
         modelo.addAttribute("actividades",actividades);
         return "admin/adminActividades";
     }
 
     @GetMapping("/{id}")
-    public String detallesActividad(Model modelo, @PathVariable Integer id) {
+    public String detalles(Model modelo, @PathVariable Integer id) {
         Optional<Actividad> actividad = servicioActividad.encuentraPorId(id);
-        // Si no encontramos el actividad no hemos encontrado el actividad
         if(actividad.isPresent()) {
             modelo.addAttribute("actividad",actividad.get());
             modelo.addAttribute("preciosActuales",
@@ -55,7 +52,7 @@ public class AdminActividadController {
             modelo.addAttribute("localizaciones", servicioLocalizacion.buscarEntidades());
             modelo.addAttribute("tipos", servicioTipoActividad.buscarEntidades());
 
-        return "admin/detallesActividad";
+        return "admin/adminDetallesActividad";
         } else {
             // Actividad no encontrado - htlm
             return "actividadNoEncontrado";
@@ -64,16 +61,16 @@ public class AdminActividadController {
     }
 
     @GetMapping("/crear")
-    public String mostrarPaginaCrearActividad(Model modelo) {
+    public String mostrarPaginaCrear(Model modelo) {
         Actividad actividad = new Actividad();
         modelo.addAttribute("actividad", actividad);
         modelo.addAttribute("localizaciones", servicioLocalizacion.buscarEntidades());
         modelo.addAttribute("tipos", servicioTipoActividad.buscarEntidades());
-        return "admin/nuevaActividad";
+        return "admin/adminNuevaActividad";
     }
 
     @PostMapping("/crear")
-    public String crearActividad(@RequestParam(name = "imagen") MultipartFile imagen, @ModelAttribute("actividad") Actividad actividad) {
+    public String crear(@RequestParam(name = "imagen") MultipartFile imagen, @ModelAttribute("actividad") Actividad actividad) {
 
         try {
 
@@ -99,7 +96,7 @@ public class AdminActividadController {
     }
 
     @DeleteMapping("/eliminar/{id}")
-    public String eliminarActividad(@PathVariable Integer id) {
+    public String eliminar(@PathVariable Integer id) {
         Optional<Actividad> optionalActividad = servicioActividad.encuentraPorId(id);
         if(optionalActividad.isPresent()) {
             servicioActividad.eliminarPorId(id);

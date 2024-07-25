@@ -1,7 +1,7 @@
-<!doctype html>
-<html lang="es_ES" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Detalles Hotel</title>
+    <title>Localizaciones</title>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="description" content="Travelix Project" />
@@ -45,52 +45,55 @@
     <link
             rel="stylesheet"
             type="text/css"
-            th:href="@{/styles/single_listing_styles.css}"
+            th:href="@{/styles/admin_styles.css}"
     />
     <link
             rel="stylesheet"
             type="text/css"
-            th:href="@{/styles/single_listing_responsive.css}"
+            th:href="@{/styles/admin_responsive.css}"
     />
 </head>
-
 <body>
-<div class="super_container">
-    <!-- Header -->
 
-    <header th:replace="~{fragments/plantilla :: header}"></header>
-    <div th:replace="~{fragments/plantilla :: navMobile}"></div>
+    <header th:replace="~{admin/fragments/fragmentos :: adminHeader}"></header>
+    <div th:replace="~{admin/fragments/fragmentos :: adminNavMobile}"></div>
 
-    <!-- Home -->
+    <div class="container main">
 
-    <div class="home">
-        <div
-                class="home_background parallax-window"
-                data-parallax="scroll"
-                data-image-src="/images/home_slider.jpg"
-        ></div>
-        <div class="home_content">
-            <div class="home_title">Hotel no encontrado!</div>
-        </div>
-    </div>
+        <button type="button" class="btn btn-outline-info mb-3">
+            <a class="text-decoration-none text-dark" th:href="@{'/admin/localizaciones/crear'}">Crear Localizacion</a>
+        </button>
 
-
-        <!-- Footer -->
-
-        <footer th:replace="~{fragments/plantilla :: footer}"></footer>
-
-        <!-- Copyright -->
-        <div th:replace="~{fragments/plantilla :: copyright}"></div>
+        <table class="table table-striped">
+            <thead>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th></th>
+            </thead>
+            <tbody>
+                <tr th:each="localizacion : ${localizaciones}">
+                    <td th:text="${localizacion.id}"></td>
+                    <td th:text="${localizacion.nombre}"></td>
+                    <td class="d-flex gap-2">
+                        <form th:action="@{'/admin/localizaciones/' + ${localizacion.id}}" th:method="get">
+                            <button type="submit" class="btn btn-outline-info">Actualizar</button>
+                        </form>
+                        <form th:action="@{'/admin/localizaciones/eliminar/' + ${localizacion.id}}" th:method="delete">
+                            <button type="submit" class="btn btn-outline-danger">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
-    <script th:src="@{/styles/bootstrap4/popper.js}"></script>
-    <script th:src="@{/styles/bootstrap4/bootstrap.min.js}"></script>
     <script th:src="@{/plugins/easing/easing.js}"></script>
     <script th:src="@{/plugins/parallax-js-master/parallax.min.js}"></script>
     <script th:src="@{/plugins/colorbox/jquery.colorbox-min.js}"></script>
     <script th:src="@{/plugins/OwlCarousel2-2.2.1/owl.carousel.js}"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCIwF204lFZg1y4kPSIhKaHEXMLYxxuMhA"></script>
     <script th:src="@{/js/single_listing_custom.js}"></script>
+
 </body>
 </html>

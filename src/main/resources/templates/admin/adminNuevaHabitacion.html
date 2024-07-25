@@ -56,37 +56,44 @@
 
   <body>
 
-      <header th:replace="~{admin/fragments/fragments :: adminHeader}"></header>
-      <div th:replace="~{admin/fragments/fragments :: adminNavMobile}"></div>
+      <header th:replace="~{admin/fragments/fragmentos :: adminHeader}"></header>
+      <div th:replace="~{admin/fragments/fragmentos :: adminNavMobile}"></div>
 
         <div class="container w-50 d-flex justify-content-center main">
-          <form class="d-flex gap-3 flex-column" action="/admin/hoteles/crear" method="post" enctype="multipart/form-data" th:object="${hotel}">
+          <form class="d-flex gap-3 flex-column" action="/admin/habitaciones/crear" method="post" enctype="multipart/form-data" th:object="${habitacion}">
             <div class="form-group">
-              <label for="nombre">Nombre Hotel:</label>
-              <input type="text" class="form-control" name="nombre" id="nombre" th:field="*{nombre}">
-            </div>
-
-            <div class="form-group">
-              <label for="categoria">Categoría:</label>
-              <input type="number" class="form-control" name="categoria" id="categoria" th:field="*{categoria}">
-            </div>
-
-            <div class="form-group">
-              <label for="descripcion">Descripción:</label>
-              <input type="text" class="form-control" name="descripcion" id="descripcion" th:field="*{descripcion}">
-            </div>
-
-            <div class="form-group">
-              <label for="contacto">Contacto:</label>
-              <input type="text" class="form-control" name="contacto" id="contacto" th:field="*{contacto}">
-            </div>
-
-            <div class="form-group">
-              <label for="localizacion">Localización:</label>
-              <select class="form-control" name="localizacion" id="localizacion" th:field="*{localizacion.id}">
-                <option  th:each="localizacion : ${localizaciones}" th:value="${localizacion.id}" th:text="${localizacion.nombre}" th:selected="${hotel.localizacion != null and hotel.localizacion.id == localizacion.id}"></option>
+              <label for="tipoNombre">Tipo de Habitación</label>
+              <select class="form-control" id="tipoNombre" th:field="*{tipo.id}">
+                <option th:each="tipo : ${tiposHabitacion}" th:value="${tipo.id}" th:text="${tipo.nombre}" th:selected="${habitacion.tipo != null and habitacion.tipo.id == tipo.id}"></option>
               </select>
             </div>
+
+            <div class="form-group">
+              <label for="numero">Numero de Habitación:</label>
+              <input type="number" class="form-control" name="numero" id="numero" th:field="*{numero}">
+            </div>
+
+            <div class="form-group">
+              <label for="capacidad">Capacidad de Habitación:</label>
+              <input type="text" class="form-control" name="capacidad" id="capacidad" th:field="*{capacidad}">
+            </div>
+
+            <div class="form-group">
+              <label for="numeroCamas">Numero de Camas:</label>
+              <input type="text" class="form-control" name="numeroCamas" id="numeroCamas" th:field="*{numeroCamas}">
+            </div>
+
+            <div class="form-group">
+              <label for="hotelNombre">Hotel:</label>
+              <select class="form-control" id="hotelNombre" th:field="*{hotel.id}">
+                <option th:each="hotel : ${hoteles}" th:value="${hotel.id}" th:text="${hotel.nombre}" th:selected="${habitacion.hotel != null and habitacion.hotel.id == hotel.id}"></option>
+              </select>
+            </div>
+
+<!--            <div class="form-group">-->
+<!--              <label for="precio">Precio Habitación:</label>-->
+<!--              <input type="text" class="form-control" name="precio" id="precio" th:field="*{precio}">-->
+<!--            </div>-->
 
             <div class="form-group">
               <label for="imagen">Imagen:</label>

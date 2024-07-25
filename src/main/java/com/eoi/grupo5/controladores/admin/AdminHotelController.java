@@ -13,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,23 +37,22 @@ public class AdminHotelController {
     }
 
     @GetMapping
-    public String listaHoteles(Model modelo) {
+    public String listar(Model modelo) {
         List<Hotel> hoteles = servicioHotel.buscarEntidades();
         modelo.addAttribute("hoteles",hoteles);
         return "admin/adminHoteles";
     }
 
     @GetMapping("/{id}")
-    public String detallesHotel(Model modelo, @PathVariable Integer id) {
+    public String detalles(Model modelo, @PathVariable Integer id) {
         Optional<Hotel> hotel = servicioHotel.encuentraPorId(id);
-        // Si no encontramos el hotel no hemos encontrado el hotel
         if(hotel.isPresent()) {
             modelo.addAttribute("hotel",hotel.get());
             modelo.addAttribute("preciosActuales",
                     servicioHabitacion.obtenerPreciosActualesHabitacionesHotel(hotel.get()));
             modelo.addAttribute("localizaciones", servicioLocalizacion.buscarEntidades());
 
-        return "admin/detallesHotel";
+        return "admin/adminDetallesHotel";
         } else {
             // Hotel no encontrado - htlm
             return "hotelNoEncontrado";
@@ -63,15 +61,15 @@ public class AdminHotelController {
     }
 
     @GetMapping("/crear")
-    public String mostrarPaginaCrearHotel(Model modelo) {
+    public String mostrarPaginaCrear(Model modelo) {
         Hotel hotel = new Hotel();
         modelo.addAttribute("hotel", hotel);
         modelo.addAttribute("localizaciones", servicioLocalizacion.buscarEntidades());
-        return "admin/nuevoHotel";
+        return "admin/adminNuevoHotel";
     }
 
     @PostMapping("/crear")
-    public String crearHotel(@RequestParam(name = "imagen") MultipartFile imagen, @ModelAttribute("hotel") Hotel hotel) {
+    public String crear(@RequestParam(name = "imagen") MultipartFile imagen, @ModelAttribute("hotel") Hotel hotel) {
 
         try {
 
@@ -97,7 +95,7 @@ public class AdminHotelController {
     }
 
     @DeleteMapping("/eliminar/{id}")
-    public String eliminarHotel(@PathVariable Integer id) {
+    public String eliminar(@PathVariable Integer id) {
         Optional<Hotel> optionalHotel = servicioHotel.encuentraPorId(id);
         if(optionalHotel.isPresent()) {
             servicioHotel.eliminarPorId(id);
