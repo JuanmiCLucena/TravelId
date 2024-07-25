@@ -41,11 +41,7 @@ public class AdminPrecioController {
         Optional<Precio> precio = servicioPrecio.encuentraPorId(id);
         if(precio.isPresent()) {
             modelo.addAttribute("precio",precio.get());
-            modelo.addAttribute("habitaciones", servicioHabitacion.buscarEntidades());
-            modelo.addAttribute("asientos", servicioAsiento.buscarEntidades());
-            modelo.addAttribute("actividades", servicioActividad.buscarEntidades());
-
-        return "admin/adminDetallesPrecio";
+            return "admin/adminDetallesPrecio";
         } else {
             // Hotel no encontrado - htlm
             return "hotelNoEncontrado";
