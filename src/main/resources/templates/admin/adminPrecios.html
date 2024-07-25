@@ -68,18 +68,11 @@
             <thead>
                 <th>Id</th>
                 <th>Valor</th>
-                <th>Habitacion</th>
-                <th>Vuelo</th>
-                <th>Actividad</th>
-                <th></th>
             </thead>
             <tbody>
                 <tr th:each="precio : ${precios}">
                     <td th:text="${precio.id}"></td>
                     <td th:text="${precio.valor}"></td>
-                    <td th:text="${precio.habitacion}"></td>
-                    <td th:text="${precio.vuelo}"></td>
-                    <td th:text="${precio.actividad}"></td>
                     <td class="d-flex gap-2">
                         <form th:action="@{'/admin/precios/' + ${precio.id}}" th:method="get">
                             <button type="submit" class="btn btn-outline-info">Actualizar</button>
