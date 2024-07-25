@@ -2,6 +2,7 @@ package com.eoi.grupo5.controladores.admin;
 
 import com.eoi.grupo5.modelos.Actividad;
 import com.eoi.grupo5.modelos.Imagen;
+import com.eoi.grupo5.paginacion.PaginaRespuestaActividades;
 import com.eoi.grupo5.servicios.*;
 import com.eoi.grupo5.servicios.archivos.FileSystemStorageService;
 import org.apache.commons.io.FilenameUtils;
@@ -36,9 +37,15 @@ public class AdminActividadController {
     }
 
     @GetMapping
-    public String listar(Model modelo) {
-        List<Actividad> actividades = servicioActividad.buscarEntidades();
+    public String listar(
+            Model modelo,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        PaginaRespuestaActividades<Actividad> actividadesPage = servicioActividad.buscarEntidadesPaginadas(page, size);
+        List<Actividad> actividades = actividadesPage.getContent();
         modelo.addAttribute("actividades",actividades);
+        modelo.addAttribute("page", actividadesPage);
         return "admin/adminActividades";
     }
 

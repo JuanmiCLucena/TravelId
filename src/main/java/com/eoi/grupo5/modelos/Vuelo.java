@@ -27,6 +27,14 @@ public class Vuelo {
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @Column(name = "nombre", length = 100, nullable = false)
+    @NotNull(message = "El nombre del vuelo no puede ser nulo")
+    private String nombre;
+
+    @Column(name = "descripcion", length = 250)
+    @Size(max = 250, message = "La descripción no puede tener más de 250 caracteres")
+    private String descripcion;
+
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @Column(name = "fechaSalida")
     @NotNull(message = "La fecha de salida no puede ser nula")
@@ -55,13 +63,5 @@ public class Vuelo {
     @OneToOne
     @JoinColumn(name = "idImagen")
     private Imagen imagen;
-
-    @Column(name = "nombre", length = 100, nullable = false)
-    @NotNull(message = "El nombre del vuelo no puede ser nulo")
-    private String nombre;
-
-    @Column(name = "descripcion", length = 250)
-    @Size(max = 250, message = "La descripción no puede tener más de 250 caracteres")
-    private String descripcion;
 
 }

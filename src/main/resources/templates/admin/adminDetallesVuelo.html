@@ -69,15 +69,25 @@
           </div>
 
           <div class="form-group">
-            <label for="compania">Origen:</label>
-            <select class="form-control" id="compania" th:field="*{compania.id}">
-              <option th:each="compania : ${companias}" th:value="${compania.id}" th:text="${compania.nombre}" th:selected="${compania.id != null and vuelo.compania.id == compania.id}"></option>
-            </select>
+            <label for="descripcion">Descripción</label>
+            <input type="text" class="form-control" id="descripcion" th:value="${vuelo.descripcion}" th:field="*{descripcion}">
           </div>
 
           <div class="form-group">
-            <label for="descripcion">Descripción</label>
-            <input type="text" class="form-control" id="descripcion" th:value="${vuelo.descripcion}" th:field="*{descripcion}">
+            <label for="fechaSalida">Fecha Salida</label>
+            <input type="datetime-local" class="form-control" name="fechaSalida" id="fechaSalida" th:field="*{fechaSalida}">
+          </div>
+
+          <div class="form-group">
+            <label for="fechaLlegada">Fecha Llegada</label>
+            <input type="datetime-local" class="form-control" name="fechaLlegada" id="fechaLlegada" th:field="*{fechaLlegada}">
+          </div>
+
+          <div class="form-group">
+            <label for="compania">Compañia:</label>
+            <select class="form-control" id="compania" th:field="*{compania.id}">
+              <option th:each="compania : ${companias}" th:value="${compania.id}" th:text="${compania.nombre}" th:selected="${compania.id != null and vuelo.compania.id == compania.id}"></option>
+            </select>
           </div>
 
           <div class="form-group">
@@ -92,16 +102,6 @@
             <select class="form-control" id="destino" th:field="*{destino.id}">
               <option th:each="localizacion : ${localizaciones}" th:value="${localizacion.id}" th:text="${localizacion.nombre}" th:selected="${localizacion.id != null and vuelo.destino.id == localizacion.id}"></option>
             </select>
-          </div>
-
-          <div class="form-group">
-            <label for="fechaSalida">Fecha Salida</label>
-            <input type="datetime-local" class="form-control" name="fechaSalida" id="fechaSalida" th:field="*{fechaSalida}">
-          </div>
-
-          <div class="form-group">
-            <label for="fechaLlegada">Fecha Llegada</label>
-            <input type="datetime-local" class="form-control" name="fechaLlegada" id="fechaLlegada" th:field="*{fechaLlegada}">
           </div>
 
           <div class="form-group">
