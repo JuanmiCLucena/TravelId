@@ -66,9 +66,9 @@ public class AdminPrecioController {
     @PostMapping("/crear")
     public String crear(
             @ModelAttribute("precio") Precio precio,
-            @RequestParam(name = "habitacion.id") Integer habitacionId,
-            @RequestParam(name = "asiento.id") Integer asientoId,
-            @RequestParam(name = "actividad.id") Integer actividadId
+            @RequestParam(name = "habitacion.id", required = false) Integer habitacionId,
+            @RequestParam(name = "asiento.id", required = false) Integer asientoId,
+            @RequestParam(name = "actividad.id", required = false) Integer actividadId
     ) {
 
         try {
