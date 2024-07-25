@@ -37,6 +37,9 @@
                                 <a th:href="@{/admin/vuelos}">Vuelos</a>
                             </li>
                             <li class="main_nav_item">
+                                <a th:href="@{/admin/asientos}">Asientos</a>
+                            </li>
+                            <li class="main_nav_item">
                                 <a th:href="@{/admin/hoteles}">Hoteles</a>
                             </li>
                             <li class="main_nav_item">
@@ -44,6 +47,12 @@
                             </li>
                             <li class="main_nav_item">
                                 <a th:href="@{/admin/actividades}">Actividades</a>
+                            </li>
+                            <li class="main_nav_item">
+                                <a th:href="@{/admin/precios}">Precios</a>
+                            </li>
+                            <li class="main_nav_item">
+                                <a th:href="@{/admin/localizaciones}">Localizaciones</a>
                             </li>
 
                             <li class="main_nav_item" sec:authorize="isAuthenticated()">
@@ -78,11 +87,12 @@
         </div>
         <ul>
             <li class="menu_item"><a th:href="@{/admin/vuelos}">Vuelos</a></li>
+            <li class="menu_item"><a th:href="@{/admin/asientos}">Asientos</a></li>
             <li class="menu_item"><a th:href="@{/admin/hoteles}">Hoteles</a></li>
-            <li class="menu_item">
-                <a th:href="@{/admin/actividades}">Actividades</a>
-            </li>
+            <li class="menu_item"><a th:href="@{/admin/habitaciones}">Habitaciones</a></li>
+            <li class="menu_item"><a th:href="@{/admin/actividades}">Actividades</a></li>
             <li class="menu_item"><a th:href="@{/admin/precios}">Precios</a></li>
+            <li class="menu_item"><a th:href="@{/admin/localizaciones}">Localizaciones</a></li>
             <li class="menu_item" sec:authorize="!isAuthenticated()">
                 <a th:href="@{/login}">Login</a>
             </li>
