@@ -27,6 +27,12 @@ public class Actividad {
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @Column(name = "maximosAsistentes")
+    private Integer maximosAsistentes;
+
+    @Column(name = "asistentesConfirmados")
+    private Integer asistentesConfirmados;
+
     @Column(name = "nombre", length = 45)
     @NotNull(message = "Introduce un nombre de Actividad")
     @Size(max = 45, message = "El nombre no puede tener más de 45 caracteres")

@@ -37,6 +37,16 @@ public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Int
         return repoReserva.save(reserva);
     }
 
+    public boolean reservarActividad(Reserva reserva, Actividad actividad) {
+        if (actividad.getAsistentesConfirmados() < actividad.getMaximosAsistentes()) {
+            reserva.getActividades().add(actividad);
+            actividad.setAsistentesConfirmados(actividad.getAsistentesConfirmados() + 1);
+            repoReserva.save(reserva);
+            return true;
+        }
+        return false;
+    }
+
     public void addHabitacionToReserva(Reserva reserva, Integer idHabitacion, LocalDateTime fechaInicio, LocalDateTime fechaFin) {
         Optional<Habitacion> optionalHabitacion = repoHabitacion.findById(idHabitacion);
         if (optionalHabitacion.isPresent()) {

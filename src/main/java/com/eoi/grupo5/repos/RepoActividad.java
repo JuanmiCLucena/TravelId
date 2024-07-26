@@ -24,4 +24,6 @@ public interface RepoActividad extends JpaRepository<Actividad, Integer>, JpaSpe
 
     Page<Actividad> findAll(@Nullable Specification<Actividad> spec, @Nonnull Pageable pageable);
 
+
+
 }
