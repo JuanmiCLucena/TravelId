@@ -20,7 +20,7 @@ public interface RepoVuelo extends JpaRepository<Vuelo, Integer> {
 
     @Query(
             "SELECT v FROM Vuelo v " +
-                    "WHERE v.fechaSalida >= :fechaActual " +
+                    "WHERE v.fechaSalida > :fechaActual " +
                     "AND v.fechaLlegada > :fechaActual " +
                     "AND EXISTS (" +
                     "    SELECT a FROM v.asientos a " +

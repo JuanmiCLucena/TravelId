@@ -53,31 +53,31 @@ public class ReservaController {
         return "redirect:/reservas";
     }
 
-    @PostMapping("/asiento/reservar")
-    public String reservarAsiento(@RequestParam Integer idAsiento,
-                                  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaInicio,
-                                  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaFin,
-                                  Principal principal) {
-        Optional<Usuario> optionalUsuario = repoUsuario.findByNombreUsuario(principal.getName());
-        if (optionalUsuario.isPresent()) {
-            Usuario usuario = optionalUsuario.get();
-            Reserva reserva = servicioReserva.crearReserva(usuario, fechaInicio, fechaFin);
-            servicioReserva.reservarAsiento(reserva, idAsiento);
-        }
-        return "redirect:/reservas";
-    }
-
-    @PostMapping("/habitacion/reservar")
-    public String reservarHabitacion(@RequestParam Integer idHabitacion,
-                                     @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaInicio,
-                                     @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaFin,
-                                     Principal principal) {
-        Optional<Usuario> optionalUsuario = repoUsuario.findByNombreUsuario(principal.getName());
-        if (optionalUsuario.isPresent()) {
-            Usuario usuario = optionalUsuario.get();
-            Reserva reserva = servicioReserva.crearReserva(usuario, fechaInicio, fechaFin);
-            servicioReserva.reservarHabitacion(reserva, idHabitacion);
-        }
-        return "redirect:/reservas";
-    }
+//    @PostMapping("/asiento/reservar")
+//    public String reservarAsiento(@RequestParam Integer idAsiento,
+//                                  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaInicio,
+//                                  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaFin,
+//                                  Principal principal) {
+//        Optional<Usuario> optionalUsuario = repoUsuario.findByNombreUsuario(principal.getName());
+//        if (optionalUsuario.isPresent()) {
+//            Usuario usuario = optionalUsuario.get();
+//            Reserva reserva = servicioReserva.crearReserva(usuario, fechaInicio, fechaFin);
+//            servicioReserva.reservarAsiento(reserva, idAsiento);
+//        }
+//        return "redirect:/reservas";
+//    }
+//
+//    @PostMapping("/habitacion/reservar")
+//    public String reservarHabitacion(@RequestParam Integer idHabitacion,
+//                                     @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaInicio,
+//                                     @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaFin,
+//                                     Principal principal) {
+//        Optional<Usuario> optionalUsuario = repoUsuario.findByNombreUsuario(principal.getName());
+//        if (optionalUsuario.isPresent()) {
+//            Usuario usuario = optionalUsuario.get();
+//            Reserva reserva = servicioReserva.crearReserva(usuario, fechaInicio, fechaFin);
+//            servicioReserva.reservarHabitacion(reserva, idHabitacion);
+//        }
+//        return "redirect:/reservas";
+//    }
 }
