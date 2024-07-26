@@ -1,6 +1,8 @@
 package com.eoi.grupo5.controladores.admin;
 
 import com.eoi.grupo5.modelos.*;
+import com.eoi.grupo5.paginacion.PaginaRespuestaHabitaciones;
+import com.eoi.grupo5.paginacion.PaginaRespuestaPrecios;
 import com.eoi.grupo5.servicios.*;
 import com.eoi.grupo5.servicios.archivos.FileSystemStorageService;
 import org.apache.commons.io.FilenameUtils;
@@ -30,9 +32,15 @@ public class AdminPrecioController {
     }
 
     @GetMapping
-    public String listar(Model modelo) {
-        List<Precio> precios = servicioPrecio.buscarEntidades();
+    public String listar(
+            Model modelo,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        PaginaRespuestaPrecios<Precio> preciosPage = servicioPrecio.buscarEntidadesPaginadas(page, size);
+        List<Precio> precios = preciosPage.getContent();
         modelo.addAttribute("precios",precios);
+        modelo.addAttribute("page", preciosPage);
         return "admin/adminPrecios";
     }
 

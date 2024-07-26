@@ -59,6 +59,8 @@
     <div th:replace="~{admin/fragments/fragmentos :: adminNavMobile}"></div>
 
     <div class="container main">
+        <!-- Mensaje de error -->
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
         <button type="button" class="btn btn-outline-info mb-3">
             <a class="text-decoration-none text-dark" th:href="@{'/admin/hoteles/crear'}">Crear Hotel</a>
@@ -85,6 +87,38 @@
                 </tr>
             </tbody>
         </table>
+
+        <!-- Paginación -->
+        <div class="d-flex justify-content-center">
+            <ul class="pagination d-flex gap-3" th:if="${page != null && !page.getContent().isEmpty()}">
+                <!-- Página anterior -->
+                <li th:if="${page.hasPrevious()}" class="page-item">
+                    <a class="page-link"
+                       th:href="@{/admin/hoteles(page=${page.page - 1}, size=${page.size})}"
+                       aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                <!-- Páginas numeradas -->
+                <li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+                    th:classappend="${i == page.page} ? 'page-item active' : 'page-item'">
+                    <a class="page-link"
+                       th:href="@{/admin/hoteles(page=${i}, size=${page.size})}"
+                       th:text="${i + 1}"></a>
+                </li>
+
+                <!-- Página siguiente -->
+                <li th:if="${page.hasNext()}" class="page-item">
+                    <a class="page-link"
+                       th:href="@{/admin/hoteles(page=${page.page + 1}, size=${page.size})}"
+                       aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
     </div>
 
     <script th:src="@{/js/jquery-3.2.1.min.js}"></script>

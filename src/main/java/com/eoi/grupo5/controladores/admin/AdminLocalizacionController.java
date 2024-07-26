@@ -1,13 +1,18 @@
 package com.eoi.grupo5.controladores.admin;
 
+import com.eoi.grupo5.modelos.Habitacion;
 import com.eoi.grupo5.modelos.Imagen;
 import com.eoi.grupo5.modelos.Localizacion;
 import com.eoi.grupo5.modelos.Vuelo;
+import com.eoi.grupo5.paginacion.PaginaRespuestaHabitaciones;
+import com.eoi.grupo5.paginacion.PaginaRespuestaLocalizaciones;
 import com.eoi.grupo5.servicios.*;
 import com.eoi.grupo5.servicios.archivos.FileSystemStorageService;
+import jakarta.validation.Valid;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,9 +37,15 @@ public class AdminLocalizacionController {
     }
 
     @GetMapping
-    public String listar(Model modelo) {
-        List<Localizacion> localizaciones = servicioLocalizacion.buscarEntidades();
+    public String listar(
+            Model modelo,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        PaginaRespuestaLocalizaciones<Localizacion> localizacionesPage = servicioLocalizacion.buscarEntidadesPaginadas(page, size);
+        List<Localizacion> localizaciones = localizacionesPage.getContent();
         modelo.addAttribute("localizaciones",localizaciones);
+        modelo.addAttribute("page", localizacionesPage);
         return "admin/adminLocalizaciones";
     }
 
@@ -66,14 +77,22 @@ public class AdminLocalizacionController {
     }
 
     @PostMapping("/crear")
-    public String crear(@ModelAttribute("localizacion") Localizacion localizacion) {
-
+    public String crear(@Valid @ModelAttribute("localizacion") Localizacion localizacion, BindingResult result, Model modelo) {
+        if (result.hasErrors()) {
+            modelo.addAttribute("vuelos", servicioVuelo.buscarEntidades());
+            modelo.addAttribute("hoteles", servicioHotel.buscarEntidades());
+            modelo.addAttribute("actividades", servicioActividad.buscarEntidades());
+            return "admin/adminNuevaLocalizacion";
+        }
         try {
             servicioLocalizacion.guardar(localizacion);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            modelo.addAttribute("error", "Error al crear la localización: " + e.getMessage());
+            modelo.addAttribute("vuelos", servicioVuelo.buscarEntidades());
+            modelo.addAttribute("hoteles", servicioHotel.buscarEntidades());
+            modelo.addAttribute("actividades", servicioActividad.buscarEntidades());
+            return "admin/adminNuevaLocalizacion";
         }
-
         return "redirect:/admin/localizaciones";
     }
 
