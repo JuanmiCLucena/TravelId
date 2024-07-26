@@ -2,10 +2,8 @@ package com.eoi.grupo5.servicios;
 
 import com.eoi.grupo5.modelos.*;
 import com.eoi.grupo5.repos.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -37,17 +35,22 @@ public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Int
         return repoReserva.save(reserva);
     }
 
-    public boolean reservarActividad(Reserva reserva, Actividad actividad) {
-        if (actividad.getAsistentesConfirmados() < actividad.getMaximosAsistentes()) {
-            reserva.getActividades().add(actividad);
-            actividad.setAsistentesConfirmados(actividad.getAsistentesConfirmados() + 1);
-            repoReserva.save(reserva);
-            return true;
+    public boolean reservarActividad(Reserva reserva, Integer idActividad) {
+        Optional<Actividad> optionalActividad = repoActividad.findById(idActividad);
+        if (optionalActividad.isPresent()) {
+            Actividad actividad = optionalActividad.get();
+            if (actividad.getAsistentesConfirmados() < actividad.getMaximosAsistentes()) {
+                reserva.getActividades().add(actividad);
+                actividad.setAsistentesConfirmados(actividad.getAsistentesConfirmados() + 1);
+                repoActividad.save(actividad);
+                repoReserva.save(reserva);
+                return true;
+            }
         }
         return false;
     }
 
-    public void addHabitacionToReserva(Reserva reserva, Integer idHabitacion, LocalDateTime fechaInicio, LocalDateTime fechaFin) {
+    public void reservarHabitacion(Reserva reserva, Integer idHabitacion, LocalDateTime fechaInicio, LocalDateTime fechaFin) {
         Optional<Habitacion> optionalHabitacion = repoHabitacion.findById(idHabitacion);
         if (optionalHabitacion.isPresent()) {
             Habitacion habitacion = optionalHabitacion.get();
@@ -61,7 +64,7 @@ public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Int
         }
     }
 
-    public void addAsientoToReserva(Reserva reserva, Integer idAsiento, LocalDateTime fechaVuelo, LocalDateTime horaVuelo) {
+    public void reservarAsiento(Reserva reserva, Integer idAsiento, LocalDateTime fechaVuelo, LocalDateTime horaVuelo) {
         Optional<Asiento> optionalAsiento = repoAsiento.findById(idAsiento);
         if (optionalAsiento.isPresent()) {
             Asiento asiento = optionalAsiento.get();

@@ -70,9 +70,6 @@ public class AdminLocalizacionController {
     public String mostrarPaginaCrear(Model modelo) {
         Localizacion localizacion = new Localizacion();
         modelo.addAttribute("localizacion", localizacion);
-        modelo.addAttribute("vuelos", servicioVuelo.buscarEntidades());
-        modelo.addAttribute("hoteles", servicioHotel.buscarEntidades());
-        modelo.addAttribute("actividades", servicioActividad.buscarEntidades());
         return "admin/adminNuevaLocalizacion";
     }
 
