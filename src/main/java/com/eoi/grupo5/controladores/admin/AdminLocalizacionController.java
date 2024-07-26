@@ -27,13 +27,15 @@ public class AdminLocalizacionController {
     private final ServicioVuelo servicioVuelo;
     private final ServicioHotel servicioHotel;
     private final ServicioActividad servicioActividad;
+    private final ServicioPais servicioPais;
 
 
-    public AdminLocalizacionController(ServicioLocalizacion servicioLocalizacion, ServicioVuelo servicioVuelo, ServicioHotel servicioHotel, ServicioActividad servciActividad) {
+    public AdminLocalizacionController(ServicioLocalizacion servicioLocalizacion, ServicioVuelo servicioVuelo, ServicioHotel servicioHotel, ServicioActividad servciActividad, ServicioPais servicioPais) {
         this.servicioLocalizacion = servicioLocalizacion;
         this.servicioVuelo = servicioVuelo;
         this.servicioHotel = servicioHotel;
         this.servicioActividad = servciActividad;
+        this.servicioPais = servicioPais;
     }
 
     @GetMapping
@@ -57,6 +59,7 @@ public class AdminLocalizacionController {
             modelo.addAttribute("vuelos", servicioVuelo.buscarEntidades());
             modelo.addAttribute("hoteles", servicioHotel.buscarEntidades());
             modelo.addAttribute("actividades", servicioActividad.buscarEntidades());
+            modelo.addAttribute("paises", servicioPais.buscarEntidades());
 
             return "admin/adminDetallesLocalizacion";
         } else {
@@ -70,6 +73,8 @@ public class AdminLocalizacionController {
     public String mostrarPaginaCrear(Model modelo) {
         Localizacion localizacion = new Localizacion();
         modelo.addAttribute("localizacion", localizacion);
+        modelo.addAttribute("paises", servicioPais.buscarEntidades());
+
         return "admin/adminNuevaLocalizacion";
     }
 
