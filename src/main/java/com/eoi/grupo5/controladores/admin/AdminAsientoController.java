@@ -1,6 +1,8 @@
 package com.eoi.grupo5.controladores.admin;
 
 import com.eoi.grupo5.modelos.*;
+import com.eoi.grupo5.paginacion.PaginaRespuestaAsientos;
+import com.eoi.grupo5.paginacion.PaginaRespuestaHabitaciones;
 import com.eoi.grupo5.servicios.*;
 import com.eoi.grupo5.servicios.archivos.FileSystemStorageService;
 import org.apache.commons.io.FilenameUtils;
@@ -31,9 +33,15 @@ public class AdminAsientoController {
     }
 
     @GetMapping
-    public String listar(Model modelo) {
-        List<Asiento> asientos = servicioAsiento.buscarEntidades();
+    public String listar(
+            Model modelo,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        PaginaRespuestaAsientos<Asiento> asientosPage = servicioAsiento.buscarEntidadesPaginadas(page, size);
+        List<Asiento> asientos = asientosPage.getContent();
         modelo.addAttribute("asientos",asientos);
+        modelo.addAttribute("page", asientosPage);
         return "admin/adminAsientos";
     }
 

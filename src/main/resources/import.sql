@@ -31,9 +31,28 @@ INSERT INTO companias_vuelo (nombre, contacto) VALUES ('Compania 3', 'contacto3@
 INSERT INTO companias_vuelo (nombre, contacto) VALUES ('Compania 4', 'contacto4@compania.com');
 
 -- Insertar datos en la tabla de vuelos
-INSERT INTO vuelos (nombre, descripcion, fecha_salida, fecha_llegada, id_compania, id_imagen, id_origen, id_destino) VALUES ('Vuelo 1', 'Descripción Vuelo 1','2024-07-01 08:30:00', '2024-07-01 12:00:00', (SELECT id FROM companias_vuelo WHERE nombre = 'Compania 1'), (SELECT id FROM imagenes WHERE url = '/images/Hoteles/Hilton_Vienna_Plaza.jpg'), (SELECT id FROM localizaciones WHERE nombre = 'Localizacion 1'), (SELECT id FROM localizaciones WHERE nombre = 'Localizacion 2'));
-INSERT INTO vuelos (nombre, descripcion, fecha_salida, fecha_llegada, id_compania, id_imagen, id_origen, id_destino) VALUES ('Vuelo 2','Descripción Vuelo 2','2024-07-02 14:45:00', '2024-07-02 18:15:00', (SELECT id FROM companias_vuelo WHERE nombre = 'Compania 2'), (SELECT id FROM imagenes WHERE url = '/images/Hoteles/Hotel_Artemide_2.jpg'), (SELECT id FROM localizaciones WHERE nombre = 'Localizacion 2'), (SELECT id FROM localizaciones WHERE nombre = 'Localizacion 3'));
-INSERT INTO vuelos (nombre, descripcion, fecha_salida, fecha_llegada, id_compania, id_imagen, id_origen, id_destino) VALUES ('Vuelo 3','Descripción Vuelo 3','2024-07-04 21:15:00', '2024-07-05 00:45:00', (SELECT id FROM companias_vuelo WHERE nombre = 'Compania 4'), (SELECT id FROM imagenes WHERE url = '/images/Hoteles/Nobu_Hotel.jpg'), (SELECT id FROM localizaciones WHERE nombre = 'Localizacion 3'), (SELECT id FROM localizaciones WHERE nombre = 'Localizacion 1'));
+INSERT INTO vuelos (nombre, descripcion, fecha_salida, fecha_llegada, id_compania, id_imagen, id_origen, id_destino) VALUES ('Vuelo 1', 'Descripción Vuelo 1', '2024-07-28 08:30:00', '2024-07-28 12:00:00', (SELECT id FROM companias_vuelo WHERE nombre = 'Compania 1'), (SELECT id FROM imagenes WHERE url = '/images/Hoteles/Hilton_Vienna_Plaza.jpg'), (SELECT id FROM localizaciones WHERE nombre = 'Localizacion 1'), (SELECT id FROM localizaciones WHERE nombre = 'Localizacion 2'));
+
+INSERT INTO vuelos (nombre, descripcion, fecha_salida, fecha_llegada, id_compania, id_imagen, id_origen, id_destino) VALUES ('Vuelo 2', 'Descripción Vuelo 2', '2024-07-29 14:45:00', '2024-07-29 18:15:00', (SELECT id FROM companias_vuelo WHERE nombre = 'Compania 2'), (SELECT id FROM imagenes WHERE url = '/images/Hoteles/Hotel_Artemide_2.jpg'), (SELECT id FROM localizaciones WHERE nombre = 'Localizacion 2'), (SELECT id FROM localizaciones WHERE nombre = 'Localizacion 3'));
+
+INSERT INTO vuelos (nombre, descripcion, fecha_salida, fecha_llegada, id_compania, id_imagen, id_origen, id_destino) VALUES ('Vuelo 3', 'Descripción Vuelo 3', '2024-08-01 21:15:00', '2024-08-02 00:45:00', (SELECT id FROM companias_vuelo WHERE nombre = 'Compania 4'), (SELECT id FROM imagenes WHERE url = '/images/Hoteles/Nobu_Hotel.jpg'), (SELECT id FROM localizaciones WHERE nombre = 'Localizacion 3'), (SELECT id FROM localizaciones WHERE nombre = 'Localizacion 1'));
+
+-- Insertar datos en la tabla de categoría de asiento
+INSERT INTO categorias_asiento (nombre) VALUES ('Económica');
+INSERT INTO categorias_asiento (nombre) VALUES ('Primera Clase');
+INSERT INTO categorias_asiento (nombre) VALUES ('Business');
+INSERT INTO categorias_asiento (nombre) VALUES ('Premium Economy');
+INSERT INTO categorias_asiento (nombre) VALUES ('Economy Plus');
+INSERT INTO categorias_asiento (nombre) VALUES ('Clase Ejecutiva');
+
+-- Insertar datos en la tabla de asientos
+INSERT INTO asientos (numero, id_categoria, id_vuelo) VALUES ('12A', (SELECT id FROM categorias_asiento WHERE nombre = 'Económica'), (SELECT id FROM vuelos WHERE nombre = 'Vuelo 1'));
+
+INSERT INTO asientos (numero, id_categoria, id_vuelo) VALUES ('15B', (SELECT id FROM categorias_asiento WHERE nombre = 'Económica'), (SELECT id FROM vuelos WHERE nombre = 'Vuelo 2'));
+
+INSERT INTO asientos (numero, id_categoria, id_vuelo) VALUES ('2F', (SELECT id FROM categorias_asiento WHERE nombre = 'Primera Clase'), (SELECT id FROM vuelos WHERE nombre = 'Vuelo 3'));
+
+
 
 -- Inserta los tipos de habitación en la base de datos
 INSERT INTO tipo_habitacion (nombre, descripcion) VALUES ('Individual', 'Habitación con una cama individual');

@@ -1,7 +1,6 @@
 package com.eoi.grupo5.modelos;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -20,7 +19,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Vuelo {
+public class VueloForm {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,9 +58,5 @@ public class Vuelo {
 
     @OneToMany(mappedBy = "vuelo")
     private Set<Asiento> asientos = new HashSet<>();
-
-    @OneToOne
-    @JoinColumn(name = "idImagen")
-    private Imagen imagen;
 
 }

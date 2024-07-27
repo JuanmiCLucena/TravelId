@@ -1,6 +1,6 @@
 /* Formulario */
 /* Container styles */
-.container {
+.formulario {
     max-width: 600px;
     margin: 50px auto;
     padding: 20px;
@@ -12,7 +12,7 @@
 }
 
 /* Form heading styles */
-.container h3 {
+.formulario h3 {
     text-align: center;
     color: #333;
     margin-bottom: 20px;
@@ -20,14 +20,14 @@
 }
 
 /* Form label styles */
-.container .form-group label {
+.formulario .form-group label {
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
     color: #555;
 }
 /* Form input styles */
-.container .form-group input[type="email"] {
+.formulario .form-group input[type="email"] {
     width: calc(100% - 20px);
     padding: 10px;
     margin-bottom: 20px;
@@ -35,7 +35,7 @@
     border-radius: 5px;
     font-size: 16px;
 }
-.container .form-group input[type="tel"] {
+.formulario .form-group input[type="tel"] {
     width: calc(100% - 20px);
     padding: 10px;
     margin-bottom: 20px;
@@ -43,7 +43,7 @@
     border-radius: 5px;
     font-size: 16px;
 }
-.container .form-group input[type="text"] {
+.formulario .form-group input[type="text"] {
     width: calc(100% - 20px);
     padding: 10px;
     margin-bottom: 20px;
@@ -52,7 +52,7 @@
     font-size: 16px;
 }
 /* Form input styles */
-.container .form-group input[type="date"] {
+.formulario .form-group input[type="date"] {
     width: calc(100% - 20px);
     padding: 10px;
     margin-bottom: 20px;
@@ -62,12 +62,12 @@
 }
 
 /* Hidden input field */
-.container .form-group input[type="hidden"] {
+.formulario .form-group input[type="hidden"] {
     display: none;
 }
 
 /* Submit button styles */
-.container .form-group input[type="submit"] {
+.formulario .form-group input[type="submit"] {
     width: 100%;
     padding: 15px;
     background-color: #7300ff;
@@ -79,7 +79,7 @@
     transition: background-color 0.3s ease;
 }
 
-.container .form-group input[type="submit"]:hover {
+.formulario .form-group input[type="submit"]:hover {
     background-color: #5700b37d;
 }
 
@@ -361,13 +361,10 @@ section {
 *********************************/
 
 .header {
-    position: fixed;
+    position: absolute;
     width: 100%;
     background: rgba(12, 58, 95, 0.7);
     z-index: 12;
-}
-.header.scrolled {
-    background: rgba(12, 58, 95, 0.9);
 }
 
 .main_nav_col {
