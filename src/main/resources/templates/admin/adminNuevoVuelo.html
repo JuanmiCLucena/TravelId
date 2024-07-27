@@ -82,8 +82,10 @@
             </div>
 
             <div class="form-group">
-              <label for="compania">Compañia de Vuelo:</label>
-              <input type="text" class="form-control" name="compania" id="compania" th:field="*{compania}">
+              <label for="compania">Compañia:</label>
+              <select class="form-control" id="compania" th:field="*{compania.id}">
+                <option th:each="compania : ${companias}" th:value="${compania.id}" th:text="${compania.nombre}" th:selected="${compania.id != null and vuelo.compania.id == compania.id}"></option>
+              </select>
             </div>
 
             <div class="form-group">
