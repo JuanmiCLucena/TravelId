@@ -31,8 +31,8 @@ public class Asiento {
     @NotNull(message = "Debe asignarse una categoría al asiento")
     private CategoriaAsiento categoria;
 
-    @OneToMany(mappedBy = "asiento")
-    private Set<AsientoReservado> asientosReservados = new HashSet<>();
+    @ManyToMany(mappedBy = "asientos")
+    private Set<Reserva> reservas = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "idVuelo", foreignKey = @ForeignKey(name = "fkAsiVuelos"), nullable = false)
