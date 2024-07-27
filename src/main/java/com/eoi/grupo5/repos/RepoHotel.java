@@ -24,10 +24,12 @@ public interface RepoHotel extends JpaRepository<Hotel, Integer> {
                     "WHERE EXISTS (" +
                     "    SELECT r FROM h.habitaciones r " +
                     "    WHERE NOT EXISTS (" +
-                    "        SELECT hr FROM r.habitacionesReservadas hr " +
-                    "        WHERE hr.fechaInicio < :fechaFin " +
-                    "        AND hr.fechaFin > :fechaInicio " +
+                    "        SELECT res FROM r.reservas res " +
+                    "        WHERE res.fechaInicio < :fechaFin " +
+                    "        AND res.fechaFin > :fechaInicio " +
                     "    )" +
-                    ")")
+                    ")"
+    )
     List<Hotel> findHotelesDisponibles(@Param("fechaInicio") LocalDateTime fechaInicio, @Param("fechaFin") LocalDateTime fechaFin);
+
 }

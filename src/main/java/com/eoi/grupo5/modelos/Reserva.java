@@ -48,22 +48,26 @@ public class Reserva {
     @JoinTable(
             name = "asientosReservadas",
             joinColumns = @JoinColumn(name = "idReserva", foreignKey = @ForeignKey(name = "fkAsresReservas")),
-            inverseJoinColumns = @JoinColumn(name = "idAsiento", foreignKey = @ForeignKey(name = "fkActresActividades")))
-    private Set<AsientoReservado> asientos = new HashSet<>();
+            inverseJoinColumns = @JoinColumn(name = "idAsiento", foreignKey = @ForeignKey(name = "fkAsresAsientos"))
+    )
+    private Set<Asiento> asientosReservados = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
             name = "habitacionesReservadas",
             joinColumns = @JoinColumn(name = "idReserva", foreignKey = @ForeignKey(name = "fkHabresReservas")),
-            inverseJoinColumns = @JoinColumn(name = "idHabitacion", foreignKey = @ForeignKey(name = "fkActresActividades")))
-    private Set<HabitacionReservada> habitaciones = new HashSet<>();
+            inverseJoinColumns = @JoinColumn(name = "idHabitacion", foreignKey = @ForeignKey(name = "fkHabresHabitaciones"))
+    )
+    private Set<Habitacion> habitacionesReservadas = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
-    name = "actividadesReservadas",
-    joinColumns = @JoinColumn(name = "idReserva", foreignKey = @ForeignKey(name = "fkActresReservas")),
-    inverseJoinColumns = @JoinColumn(name = "idActividad", foreignKey = @ForeignKey(name = "fkActresActividades")))
-    private Set<Actividad> actividades = new HashSet<>();
+            name = "actividadesReservadas",
+            joinColumns = @JoinColumn(name = "idReserva", foreignKey = @ForeignKey(name = "fkActresReservas")),
+            inverseJoinColumns = @JoinColumn(name = "idActividad", foreignKey = @ForeignKey(name = "fkActresActividades"))
+    )
+    private Set<Actividad> actividadesReservadas = new HashSet<>();
+
 
     @OneToOne
     @JoinColumn(name = "idPago", referencedColumnName = "id")

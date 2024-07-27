@@ -12,18 +12,14 @@ public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Int
 
     private final RepoReserva repoReserva;
     private final RepoHabitacion repoHabitacion;
-    private final RepoHabitacionReservada repoHabitacionReservada;
     private final RepoAsiento repoAsiento;
-    private final RepoAsientoReservado repoAsientoReservado;
     private final RepoActividad repoActividad;
 
-    protected ServicioReserva(RepoReserva repoReserva, RepoHabitacion repoHabitacion, RepoHabitacionReservada repoHabitacionReservada, RepoVuelo repoVuelo, RepoAsiento repoAsiento, RepoAsientoReservado repoAsientoReservado, RepoActividad repoActividad) {
+    protected ServicioReserva(RepoReserva repoReserva, RepoHabitacion repoHabitacion, RepoAsiento repoAsiento, RepoActividad repoActividad) {
         super(repoReserva);
         this.repoReserva = repoReserva;
         this.repoHabitacion = repoHabitacion;
-        this.repoHabitacionReservada = repoHabitacionReservada;
         this.repoAsiento = repoAsiento;
-        this.repoAsientoReservado = repoAsientoReservado;
         this.repoActividad = repoActividad;
     }
 
@@ -35,46 +31,88 @@ public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Int
         return repoReserva.save(reserva);
     }
 
-    public boolean reservarActividad(Reserva reserva, Integer idActividad) {
-        Optional<Actividad> optionalActividad = repoActividad.findById(idActividad);
-        if (optionalActividad.isPresent()) {
-            Actividad actividad = optionalActividad.get();
-            if (actividad.getAsistentesConfirmados() < actividad.getMaximosAsistentes()) {
-                reserva.getActividades().add(actividad);
-                actividad.setAsistentesConfirmados(actividad.getAsistentesConfirmados() + 1);
-                repoActividad.save(actividad);
+    public void añadirHabitacion(Integer reservaId, Integer idHabitacion, LocalDateTime fechaInicio, LocalDateTime fechaFin) {
+        Optional<Reserva> optionalReserva = repoReserva.findById(reservaId);
+        if (optionalReserva.isPresent()) {
+            Reserva reserva = optionalReserva.get();
+            Optional<Habitacion> optionalHabitacion = repoHabitacion.findById(idHabitacion);
+            if (optionalHabitacion.isPresent()) {
+                Habitacion habitacion = optionalHabitacion.get();
+                reserva.getHabitacionesReservadas().add(habitacion);
+                reserva.setFechaInicio(fechaInicio);
+                reserva.setFechaFin(fechaFin);
                 repoReserva.save(reserva);
-                return true;
+            } else {
+                throw new RuntimeException("No se encontró la habitación.");
             }
-        }
-        return false;
-    }
-
-    public void reservarHabitacion(Reserva reserva, Integer idHabitacion, LocalDateTime fechaInicio, LocalDateTime fechaFin) {
-        Optional<Habitacion> optionalHabitacion = repoHabitacion.findById(idHabitacion);
-        if (optionalHabitacion.isPresent()) {
-            Habitacion habitacion = optionalHabitacion.get();
-            HabitacionReservadaId habitacionReservadaId = new HabitacionReservadaId(habitacion.getId(), reserva.getId());
-            HabitacionReservada habitacionReservada = new HabitacionReservada(habitacionReservadaId, habitacion, reserva, fechaInicio, fechaFin);
-            reserva.getHabitacionesReservadas().add(habitacionReservada);
-            repoReserva.save(reserva);
-            repoHabitacionReservada.save(habitacionReservada);
         } else {
-            throw new RuntimeException("No se encontró la habitación.");
+            throw new RuntimeException("No se encontró la reserva.");
         }
     }
 
-    public void reservarAsiento(Reserva reserva, Integer idAsiento, LocalDateTime fechaVuelo, LocalDateTime horaVuelo) {
-        Optional<Asiento> optionalAsiento = repoAsiento.findById(idAsiento);
-        if (optionalAsiento.isPresent()) {
-            Asiento asiento = optionalAsiento.get();
-            AsientoReservadoId asientoReservadoId = new AsientoReservadoId(asiento.getId(), reserva.getId());
-            AsientoReservado asientoReservado = new AsientoReservado(asientoReservadoId, asiento, reserva, fechaVuelo, horaVuelo);
-            reserva.getAsientosReservados().add(asientoReservado);
-            repoReserva.save(reserva);
-            repoAsientoReservado.save(asientoReservado);
+    public void añadirActividad(Integer reservaId, Integer idActividad, LocalDateTime fechaInicio, LocalDateTime fechaFin) {
+        Optional<Reserva> optionalReserva = repoReserva.findById(reservaId);
+        if (optionalReserva.isPresent()) {
+            Reserva reserva = optionalReserva.get();
+            Optional<Actividad> optionalActividad = repoActividad.findById(idActividad);
+            if (optionalActividad.isPresent()) {
+                Actividad actividad = optionalActividad.get();
+                if (actividad.getFechaInicio().isBefore(fechaFin) && actividad.getFechaFin().isAfter(fechaInicio)) {
+                    if (actividad.getAsistentesConfirmados() < actividad.getMaximosAsistentes()) {
+                        reserva.getActividadesReservadas().add(actividad);
+                        actividad.setAsistentesConfirmados(actividad.getAsistentesConfirmados() + 1);
+                        repoActividad.save(actividad);
+                        repoReserva.save(reserva);
+                    } else {
+                        throw new RuntimeException("La actividad ha alcanzado el máximo de asistentes.");
+                    }
+                } else {
+                    throw new RuntimeException("Las fechas de la actividad no se superponen con las de la reserva.");
+                }
+            } else {
+                throw new RuntimeException("No se encontró la actividad.");
+            }
         } else {
-            throw new RuntimeException("No se encontró el asiento.");
+            throw new RuntimeException("No se encontró la reserva.");
+        }
+    }
+
+    public void añadirAsiento(Integer reservaId, Integer idAsiento) {
+        Optional<Reserva> optionalReserva = repoReserva.findById(reservaId);
+        if (optionalReserva.isPresent()) {
+            Reserva reserva = optionalReserva.get();
+            Optional<Asiento> optionalAsiento = repoAsiento.findById(idAsiento);
+            if (optionalAsiento.isPresent()) {
+                Asiento asiento = optionalAsiento.get();
+                reserva.getAsientosReservados().add(asiento);
+                repoReserva.save(reserva);
+            } else {
+                throw new RuntimeException("No se encontró el asiento.");
+            }
+        } else {
+            throw new RuntimeException("No se encontró la reserva.");
+        }
+    }
+
+    public void confirmarReserva(Integer reservaId) {
+        Optional<Reserva> optionalReserva = repoReserva.findById(reservaId);
+        if (optionalReserva.isPresent()) {
+            Reserva reserva = optionalReserva.get();
+            reserva.setCancelado(false);
+            repoReserva.save(reserva);
+        } else {
+            throw new RuntimeException("No se encontró la reserva.");
+        }
+    }
+
+    public void cancelarReserva(Integer reservaId) {
+        Optional<Reserva> optionalReserva = repoReserva.findById(reservaId);
+        if (optionalReserva.isPresent()) {
+            Reserva reserva = optionalReserva.get();
+            reserva.setCancelado(true);
+            repoReserva.save(reserva);
+        } else {
+            throw new RuntimeException("No se encontró la reserva.");
         }
     }
 }
