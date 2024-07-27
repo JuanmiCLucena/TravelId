@@ -1,5 +1,6 @@
 package com.eoi.grupo5.controladores;
 
+import com.eoi.grupo5.email.CustomEmailService;
 import com.eoi.grupo5.modelos.DetallesUsuario;
 import com.eoi.grupo5.modelos.Usuario;
 import com.eoi.grupo5.repos.RepoDetallesUsuario;
@@ -17,14 +18,16 @@ import java.util.Optional;
 @Controller
 public class LoginController {
 
-    RepoUsuario repoUsuario;
-    RepoDetallesUsuario repoDetallesUsuario;
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final RepoUsuario repoUsuario;
+    private final RepoDetallesUsuario repoDetallesUsuario;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final CustomEmailService emailService;
 
-    public LoginController(RepoUsuario repoUsuario, BCryptPasswordEncoder bCryptPasswordEncoder, RepoDetallesUsuario detallesUsuario){
+    public LoginController(RepoUsuario repoUsuario, BCryptPasswordEncoder bCryptPasswordEncoder, RepoDetallesUsuario detallesUsuario, CustomEmailService emailService){
         this.repoUsuario = repoUsuario;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.repoDetallesUsuario = detallesUsuario;
+        this.emailService = emailService;
     }
 
     @GetMapping("/login")
@@ -50,6 +53,7 @@ public class LoginController {
     @GetMapping("/register")
     String Register(Model modelo) {
         return "register";
+
     }
 
     @PostMapping("/register")
@@ -62,6 +66,7 @@ public class LoginController {
             details.setUsu(newUser);
             repoDetallesUsuario.save(details);
             repoUsuario.save(newUser);
+            emailService.sendSimpleMessage(details.getEmail(), "Bienvenido a Travel ID " + details.getNombre(), "Bienvenido a Travel ID" + details.getNombre());
 
             return "index";
         } else {

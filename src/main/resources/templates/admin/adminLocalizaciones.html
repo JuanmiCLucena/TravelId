@@ -69,13 +69,15 @@
             <thead>
                 <th>Id</th>
                 <th>Nombre</th>
-                <th></th>
+                <th>Destino</th>
             </thead>
             <tbody>
                 <tr th:each="localizacion : ${localizaciones}">
                     <td th:text="${localizacion.id}"></td>
                     <td th:text="${localizacion.nombre}"></td>
+
                     <td class="d-flex gap-2 justify-content-end">
+                      
                         <form th:action="@{'/admin/localizaciones/' + ${localizacion.id}}" th:method="get">
                             <button type="submit" class="btn btn-info"><i class="bi bi-pencil text-white"></i></button>
                         </form>
