@@ -3,6 +3,7 @@ package com.eoi.grupo5.controladores.admin;
 import com.eoi.grupo5.modelos.Habitacion;
 import com.eoi.grupo5.modelos.Imagen;
 import com.eoi.grupo5.modelos.Vuelo;
+import com.eoi.grupo5.modelos.VueloForm;
 import com.eoi.grupo5.paginacion.PaginaRespuestaHabitaciones;
 import com.eoi.grupo5.paginacion.PaginaRespuestaVuelos;
 import com.eoi.grupo5.servicios.*;
@@ -75,8 +76,20 @@ public class AdminVueloController {
     }
 
     @PostMapping("/crear")
-    public String crear(@RequestParam("imagen") MultipartFile imagen, @ModelAttribute("vuelo") Vuelo vuelo) {
+    public String crear(@RequestParam MultipartFile imagen, @ModelAttribute("vuelo") VueloForm vueloForm) {
         try {
+
+            Vuelo vuelo = new Vuelo();
+            vuelo.setId(vueloForm.getId());
+            vuelo.setNombre(vueloForm.getNombre());
+            vuelo.setCompania(vueloForm.getCompania());
+            vuelo.setDescripcion(vueloForm.getDescripcion());
+            vuelo.setFechaSalida(vueloForm.getFechaSalida());
+            vuelo.setFechaLlegada(vueloForm.getFechaLlegada());
+            vuelo.setDestino(vueloForm.getDestino());
+            vuelo.setOrigen(vueloForm.getOrigen());
+            vuelo.setAsientos(vueloForm.getAsientos());
+
             // Guardar el vuelo primero para obtener el ID
             servicioVuelo.guardar(vuelo);
 
@@ -85,6 +98,8 @@ public class AdminVueloController {
             imagenBD.setVuelo(vuelo);
             imagenBD.setUrl("");  // Deja la URL en blanco por ahora
             servicioImagen.guardar(imagenBD);
+
+            vuelo.setImagen(imagenBD);
 
             // Generar el nombre del archivo y guardar la imagen
             String extension = FilenameUtils.getExtension(imagen.getOriginalFilename());

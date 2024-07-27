@@ -2,6 +2,7 @@ package com.eoi.grupo5.controladores;
 
 import com.eoi.grupo5.modelos.Hotel;
 import com.eoi.grupo5.modelos.Vuelo;
+import com.eoi.grupo5.paginacion.PaginaRespuestaVuelos;
 import com.eoi.grupo5.servicios.ServicioAsiento;
 import com.eoi.grupo5.servicios.ServicioVuelo;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,8 +28,17 @@ public class VueloController {
 
     @GetMapping("vuelos/lista")
     public String listaVuelos(Model modelo) {
-        List<Vuelo> vuelos = servicioVuelo.buscarEntidades();
-        modelo.addAttribute("vuelos", vuelos);
+
+        int page = 0;
+        int size = 6;
+
+        LocalDateTime fechaActual = LocalDateTime.now();
+
+        // Obtener los vuelos disponibles paginados
+        PaginaRespuestaVuelos<Vuelo> vuelosPaginados = servicioVuelo.obtenerVuelosDisponiblesPaginados(page, size, fechaActual);
+        modelo.addAttribute("vuelos", vuelosPaginados.getContent());
+        modelo.addAttribute("totalPages", vuelosPaginados.getTotalPages());
+        modelo.addAttribute("currentPage", vuelosPaginados.getPage());
         return "vuelos";
     }
 

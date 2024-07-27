@@ -32,20 +32,20 @@ public class LoginController {
         return "login";
     }
 
-    @PostMapping("/login")
-    public String processLogin(@Valid @RequestParam String username, @RequestParam String password, Model model){
-        Optional<Usuario> optionalUsuario = repoUsuario.findByNombreUsuario(username);
-        if (optionalUsuario.isPresent() && optionalUsuario.get().getPassword().equals(bCryptPasswordEncoder.encode(password))){
-            Usuario usuario = optionalUsuario.get();
-            model.addAttribute("usuario", usuario);
-            model.addAttribute("msg", "Usuario encontrado");
-            return "redirect:/";
-        } else {
-            model.addAttribute("msg", "Usuario no encontrado");
-            return "redirect:/login?error=true";
-        }
-
-    }
+//    @PostMapping("/login")
+//    public String processLogin(@Valid @RequestParam String username, @RequestParam String password, Model model){
+//        Optional<Usuario> optionalUsuario = repoUsuario.findByNombreUsuario(username);
+//        if (optionalUsuario.isPresent() && optionalUsuario.get().getPassword().equals(bCryptPasswordEncoder.encode(password))){
+//            Usuario usuario = optionalUsuario.get();
+//            model.addAttribute("usuario", usuario);
+//            model.addAttribute("msg", "Usuario encontrado");
+//            return "redirect:/";
+//        } else {
+//            model.addAttribute("msg", "Usuario no encontrado");
+//            return "redirect:/login?error=true";
+//        }
+//
+//    }
 
     @GetMapping("/register")
     String Register(Model modelo) {

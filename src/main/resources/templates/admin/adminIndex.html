@@ -59,7 +59,14 @@
     <div th:replace="~{admin/fragments/fragmentos :: adminNavMobile}"></div>
 
     <div class="container main">
-        <h1>Bienvenido [[${username}]] !!!</h1>
+
+        <div class="row">
+        <div class="col-lg-12">
+            <h1>Bienvenido, <span th:text="${username}">Usuario</span>!</h1>
+            <p class="lead">Este es el panel de administración donde puedes gestionar todos los aspectos de la aplicación.</p>
+        </div>
+    </div>
+
     </div>
 
     <script th:src="@{/js/jquery-3.2.1.min.js}"></script>

@@ -62,8 +62,8 @@
   <!-- Mensaje de error -->
   <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-  <button type="button" class="btn btn-outline-info mb-3">
-    <a class="text-decoration-none text-dark" th:href="@{'/admin/vuelos/crear'}">Crear Vuelo</a>
+  <button type="button" class="btn btn-success mb-3">
+    <a class="text-decoration-none text-white" th:href="@{'/admin/vuelos/crear'}">Crear Vuelo</a>
   </button>
 
   <table class="table table-striped">
@@ -82,7 +82,7 @@
       <td th:text="${vuelo.destino.nombre}"></td>
       <td th:text="${vuelo.fechaSalida}"></td>
       <td th:text="${vuelo.fechaLlegada}"></td>
-      <td class="d-flex gap-2">
+      <td class="d-flex gap-2 justify-content-end">
         <form th:action="@{'/admin/vuelos/' + ${vuelo.id}}" th:method="get">
           <button type="submit" class="btn btn-outline-info">Actualizar</button>
         </form>
