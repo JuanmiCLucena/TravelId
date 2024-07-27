@@ -293,6 +293,13 @@ section {
   z-index: 12;
 }
 
+.adminHeader {
+  position: absolute;
+  width: 100%;
+  background: rgba(0, 50, 0, 0.7);
+  z-index: 12;
+}
+
 
 .phone {
   display: inline-block;

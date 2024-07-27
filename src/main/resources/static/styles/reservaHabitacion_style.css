@@ -367,6 +367,13 @@ section {
     z-index: 12;
 }
 
+.adminHeader {
+    position: absolute;
+    width: 100%;
+    background: rgba(0, 50, 0, 0.7);
+    z-index: 12;
+}
+
 .main_nav_col {
     height: 143px;
     -webkit-transition: all 400ms ease;
