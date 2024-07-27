@@ -1,7 +1,12 @@
 package com.eoi.grupo5.servicios;
 
 import com.eoi.grupo5.modelos.*;
+import com.eoi.grupo5.paginacion.PaginaRespuestaPrecios;
+import com.eoi.grupo5.paginacion.PaginaRespuestaReservas;
 import com.eoi.grupo5.repos.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -114,5 +119,19 @@ public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Int
         } else {
             throw new RuntimeException("No se encontró la reserva.");
         }
+    }
+
+    public PaginaRespuestaReservas<Reserva> buscarEntidadesPaginadas(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Reserva> reservaPage = getRepo().findAll(pageable);
+
+        PaginaRespuestaReservas<Reserva> respuesta = new PaginaRespuestaReservas<>();
+        respuesta.setContent(reservaPage.getContent());
+        respuesta.setSize(reservaPage.getSize());
+        respuesta.setTotalSize(reservaPage.getTotalElements());
+        respuesta.setPage(reservaPage.getNumber());
+        respuesta.setTotalPages(reservaPage.getTotalPages());
+
+        return respuesta;
     }
 }
