@@ -1,7 +1,7 @@
 package com.eoi.grupo5.modelos;
 
+import com.eoi.grupo5.dtos.VueloFormDto;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -63,5 +63,20 @@ public class Vuelo {
     @OneToOne
     @JoinColumn(name = "idImagen")
     private Imagen imagen;
+
+    // Helpers
+    public static Vuelo from(VueloFormDto vueloFormDto) {
+        Vuelo vuelo = new Vuelo();
+        vuelo.setId(vueloFormDto.getId());
+        vuelo.setNombre(vueloFormDto.getNombre());
+        vuelo.setCompania(vueloFormDto.getCompania());
+        vuelo.setDescripcion(vueloFormDto.getDescripcion());
+        vuelo.setFechaSalida(vueloFormDto.getFechaSalida());
+        vuelo.setFechaLlegada(vueloFormDto.getFechaLlegada());
+        vuelo.setDestino(vueloFormDto.getDestino());
+        vuelo.setOrigen(vueloFormDto.getOrigen());
+        vuelo.setAsientos(vueloFormDto.getAsientos());
+        return vuelo;
+    }
 
 }

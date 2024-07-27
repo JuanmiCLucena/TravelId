@@ -1,10 +1,8 @@
 package com.eoi.grupo5.controladores.admin;
 
-import com.eoi.grupo5.modelos.Habitacion;
 import com.eoi.grupo5.modelos.Imagen;
 import com.eoi.grupo5.modelos.Vuelo;
-import com.eoi.grupo5.modelos.VueloForm;
-import com.eoi.grupo5.paginacion.PaginaRespuestaHabitaciones;
+import com.eoi.grupo5.dtos.VueloFormDto;
 import com.eoi.grupo5.paginacion.PaginaRespuestaVuelos;
 import com.eoi.grupo5.servicios.*;
 import com.eoi.grupo5.servicios.archivos.FileSystemStorageService;
@@ -77,19 +75,11 @@ public class AdminVueloController {
     }
 
     @PostMapping("/crear")
-    public String crear(@RequestParam MultipartFile imagen, @ModelAttribute("vuelo") VueloForm vueloForm) {
+    public String crear(@RequestParam MultipartFile imagen, @ModelAttribute("vuelo") VueloFormDto vueloFormDto) {
         try {
 
-            Vuelo vuelo = new Vuelo();
-            vuelo.setId(vueloForm.getId());
-            vuelo.setNombre(vueloForm.getNombre());
-            vuelo.setCompania(vueloForm.getCompania());
-            vuelo.setDescripcion(vueloForm.getDescripcion());
-            vuelo.setFechaSalida(vueloForm.getFechaSalida());
-            vuelo.setFechaLlegada(vueloForm.getFechaLlegada());
-            vuelo.setDestino(vueloForm.getDestino());
-            vuelo.setOrigen(vueloForm.getOrigen());
-            vuelo.setAsientos(vueloForm.getAsientos());
+            // Mapeamos el vuelo del formulario a nuestra entidad Vuelo
+            Vuelo vuelo = Vuelo.from(vueloFormDto);
 
             // Guardar el vuelo primero para obtener el ID
             servicioVuelo.guardar(vuelo);
