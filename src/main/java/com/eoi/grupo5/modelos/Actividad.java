@@ -58,7 +58,7 @@ public class Actividad {
     @NotNull(message = "La actividad debe tener un tipo")
     private TipoActividad tipo;
 
-    @ManyToMany(mappedBy = "actividades")
+    @ManyToMany(mappedBy = "actividadesReservadas")
     private Set<Reserva> reservas = new HashSet<>();
 
     @ManyToOne

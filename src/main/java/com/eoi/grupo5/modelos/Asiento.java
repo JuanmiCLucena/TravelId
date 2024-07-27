@@ -31,7 +31,7 @@ public class Asiento {
     @NotNull(message = "Debe asignarse una categoría al asiento")
     private CategoriaAsiento categoria;
 
-    @ManyToMany(mappedBy = "asientos")
+    @ManyToMany(mappedBy = "asientosReservados")
     private Set<Reserva> reservas = new HashSet<>();
 
     @ManyToOne

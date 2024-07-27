@@ -38,7 +38,7 @@ public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Int
             Optional<Habitacion> optionalHabitacion = repoHabitacion.findById(idHabitacion);
             if (optionalHabitacion.isPresent()) {
                 Habitacion habitacion = optionalHabitacion.get();
-                reserva.getHabitaciones().add(habitacion);
+                reserva.getHabitacionesReservadas().add(habitacion);
                 reserva.setFechaInicio(fechaInicio);
                 reserva.setFechaFin(fechaFin);
                 repoReserva.save(reserva);
@@ -59,7 +59,7 @@ public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Int
                 Actividad actividad = optionalActividad.get();
                 if (actividad.getFechaInicio().isBefore(fechaFin) && actividad.getFechaFin().isAfter(fechaInicio)) {
                     if (actividad.getAsistentesConfirmados() < actividad.getMaximosAsistentes()) {
-                        reserva.getActividades().add(actividad);
+                        reserva.getActividadesReservadas().add(actividad);
                         actividad.setAsistentesConfirmados(actividad.getAsistentesConfirmados() + 1);
                         repoActividad.save(actividad);
                         repoReserva.save(reserva);
@@ -84,7 +84,7 @@ public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Int
             Optional<Asiento> optionalAsiento = repoAsiento.findById(idAsiento);
             if (optionalAsiento.isPresent()) {
                 Asiento asiento = optionalAsiento.get();
-                reserva.getAsientos().add(asiento);
+                reserva.getAsientosReservados().add(asiento);
                 repoReserva.save(reserva);
             } else {
                 throw new RuntimeException("No se encontró el asiento.");
