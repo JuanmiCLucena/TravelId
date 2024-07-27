@@ -15,7 +15,7 @@
 
 <!-- Usuarios -->
 
-<header th:fragment="header" class="header" >
+<header th:fragment="header" th:class="${#authorization.expression('hasAuthority(''ADMIN'')') ? 'adminHeader' : 'header'}">
     <!-- Main Navigation -->
 
     <nav class="main_nav nav">
@@ -54,6 +54,10 @@
 
                             <li class="main_nav_item" sec:authorize="isAuthenticated()">
                                 <a th:href="@{/reservas}">Tus Reservas</a>
+                            </li>
+
+                            <li class="main_nav_item" sec:authorize="hasAuthority('ADMIN')">
+                                <a th:href="@{/admin/inicio}">Panel Admin</a>
                             </li>
 
                             <li class="main_nav_item" sec:authorize="isAuthenticated()">
@@ -284,6 +288,12 @@
                             </li>
                             <li class="footer_nav_item">
                                 <a th:href="@{/conocenos}">Conócenos</a>
+                            </li>
+                            <li class="footer_nav_item" sec:authorize="isAuthenticated()">
+                                <a th:href="@{/reservas}">Tus Reservas</a>
+                            </li>
+                            <li class="footer_nav_item" sec:authorize="hasAuthority('ADMIN')">
+                                <a th:href="@{/admin/inicio}">Panel Admin</a>
                             </li>
                             <li sec:authorize="!isAuthenticated()" class="footer_nav_item">
                                 <a  th:href="@{/login}">Inicio de Sesión</a>

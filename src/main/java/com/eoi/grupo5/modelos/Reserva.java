@@ -44,11 +44,19 @@ public class Reserva {
     private Usuario usu;
 
 
-    @OneToMany(mappedBy = "reserva")
-    private Set<AsientoReservado> asientosReservados = new HashSet<>();
+    @ManyToMany
+    @JoinTable(
+            name = "asientosReservadas",
+            joinColumns = @JoinColumn(name = "idReserva", foreignKey = @ForeignKey(name = "fkAsresReservas")),
+            inverseJoinColumns = @JoinColumn(name = "idAsiento", foreignKey = @ForeignKey(name = "fkActresActividades")))
+    private Set<AsientoReservado> asientos = new HashSet<>();
 
-    @OneToMany(mappedBy = "reserva")
-    private Set<HabitacionReservada> habitacionesReservadas = new HashSet<>();
+    @ManyToMany
+    @JoinTable(
+            name = "habitacionesReservadas",
+            joinColumns = @JoinColumn(name = "idReserva", foreignKey = @ForeignKey(name = "fkHabresReservas")),
+            inverseJoinColumns = @JoinColumn(name = "idHabitacion", foreignKey = @ForeignKey(name = "fkActresActividades")))
+    private Set<HabitacionReservada> habitaciones = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
