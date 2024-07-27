@@ -37,15 +37,34 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
         Role rol = new Role();
         rol.setRoleName("admin");
 
+        Usuario usuario2 = new Usuario();
+        DetallesUsuario detalles2 = new DetallesUsuario("user@gmail.com");
+        Role rol2 = new Role();
+        rol2.setRoleName("user");
+
+
+        usuario2.setNombreUsuario("user");
+        usuario2.setPassword(bCryptPasswordEncoder.encode("user"));
+        usuario2.setDetalles(detalles2);
+        usuario2.getRoles().add(rol2);
+
         usuario.setNombreUsuario("admin");
         usuario.setPassword(bCryptPasswordEncoder.encode("admin"));
         usuario.setDetalles(detalles);
         usuario.getRoles().add(rol);
 
+        rol2.getUsuarios().add(usuario2);
         rol.getUsuarios().add(usuario);
+
         detalles.setUsu(usuario);
+        detalles2.setUsu(usuario2);
+
         repoRole.save(rol);
+        repoRole.save(rol2);
+
         repoDetallesUsuario.save(detalles);
+        repoDetallesUsuario.save(detalles2);
         repoUsuario.save(usuario);
+        repoUsuario.save(usuario2);
     }
 }
