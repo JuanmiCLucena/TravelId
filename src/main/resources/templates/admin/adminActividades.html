@@ -60,7 +60,7 @@
 
     <div class="container main">
 
-        <button type="button" class="btn btn-outline-info mb-3">
+        <button type="button" class="btn btn-success mb-3">
             <a class="text-decoration-none text-dark" th:href="@{'/admin/actividades/crear'}">Crear Actividad</a>
         </button>
 
@@ -74,7 +74,7 @@
                 <tr th:each="actividad : ${actividades}">
                     <td th:text="${actividad.id}"></td>
                     <td th:text="${actividad.nombre}"></td>
-                    <td class="d-flex gap-2">
+                    <td class="d-flex gap-2 justify-content-end">
                         <form th:action="@{'/admin/actividades/' + ${actividad.id}}" th:method="get">
                             <button type="submit" class="btn btn-outline-info">Actualizar</button>
                         </form>
