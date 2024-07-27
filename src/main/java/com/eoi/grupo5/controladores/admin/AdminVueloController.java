@@ -72,6 +72,7 @@ public class AdminVueloController {
         Vuelo vuelo = new Vuelo();
         modelo.addAttribute("vuelo", vuelo);
         modelo.addAttribute("localizaciones", servicioLocalizacion.buscarEntidades());
+        modelo.addAttribute("companias", servicioCompaniaVuelo.buscarEntidades());
         return "admin/adminNuevoVuelo";
     }
 
