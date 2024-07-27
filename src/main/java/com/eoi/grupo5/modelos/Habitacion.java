@@ -49,7 +49,7 @@ public class Habitacion {
     @NotNull(message = "La habitación debe tener un Hotel asociado")
     private Hotel hotel;
 
-    @ManyToMany(mappedBy = "habitaciones")
+    @ManyToMany(mappedBy = "habitacionesReservadas")
     private Set<Reserva> reservas = new HashSet<>();
 
     @OneToMany(mappedBy = "habitacionImagen",cascade = CascadeType.ALL, orphanRemoval = true)

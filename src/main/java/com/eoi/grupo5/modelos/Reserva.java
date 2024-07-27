@@ -50,7 +50,7 @@ public class Reserva {
             joinColumns = @JoinColumn(name = "idReserva", foreignKey = @ForeignKey(name = "fkAsresReservas")),
             inverseJoinColumns = @JoinColumn(name = "idAsiento", foreignKey = @ForeignKey(name = "fkAsresAsientos"))
     )
-    private Set<Asiento> asientos = new HashSet<>();
+    private Set<Asiento> asientosReservados = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
@@ -58,7 +58,7 @@ public class Reserva {
             joinColumns = @JoinColumn(name = "idReserva", foreignKey = @ForeignKey(name = "fkHabresReservas")),
             inverseJoinColumns = @JoinColumn(name = "idHabitacion", foreignKey = @ForeignKey(name = "fkHabresHabitaciones"))
     )
-    private Set<Habitacion> habitaciones = new HashSet<>();
+    private Set<Habitacion> habitacionesReservadas = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
@@ -66,7 +66,7 @@ public class Reserva {
             joinColumns = @JoinColumn(name = "idReserva", foreignKey = @ForeignKey(name = "fkActresReservas")),
             inverseJoinColumns = @JoinColumn(name = "idActividad", foreignKey = @ForeignKey(name = "fkActresActividades"))
     )
-    private Set<Actividad> actividades = new HashSet<>();
+    private Set<Actividad> actividadesReservadas = new HashSet<>();
 
 
     @OneToOne
