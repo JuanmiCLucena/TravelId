@@ -37,8 +37,7 @@ public class Imagen {
     @JoinColumn(name = "idHabitacion")
     private Habitacion habitacionImagen;
 
-    @OneToOne
-    @JoinColumn(name = "idVuelo")
+    @OneToOne(mappedBy = "imagen")
     private Vuelo vuelo;
 }
 
