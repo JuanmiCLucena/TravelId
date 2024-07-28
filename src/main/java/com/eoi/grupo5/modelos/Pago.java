@@ -37,5 +37,5 @@ public class Pago {
     @ManyToOne
     @JoinColumn(name = "idMetodoPago", foreignKey = @ForeignKey(name = "fkPagosMetodos"), nullable = false)
     @NotNull(message = "Debes introducir un método de pago")
-    private MetodosPago metodoPago;
+    private MetodoPago metodoPago;
 }
