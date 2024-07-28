@@ -2,8 +2,10 @@ package com.eoi.grupo5.servicios;
 
 import com.eoi.grupo5.modelos.Actividad;
 import com.eoi.grupo5.modelos.Hotel;
+import com.eoi.grupo5.modelos.Vuelo;
 import com.eoi.grupo5.paginacion.PaginaRespuestaActividades;
 import com.eoi.grupo5.paginacion.PaginaRespuestaHoteles;
+import com.eoi.grupo5.paginacion.PaginaRespuestaVuelos;
 import com.eoi.grupo5.repos.RepoHotel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -43,6 +46,8 @@ public class ServicioHotel extends AbstractBusinessServiceSoloEnt<Hotel, Integer
                 .limit(2)
                 .toList();
     }
+
+
 
 
 }
