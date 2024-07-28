@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -32,9 +33,12 @@ public class ReservaController {
     @GetMapping("/habitacion/reservar/{id}")
     public String mostrarPaginaCrear(Model modelo, @PathVariable Integer id) {
         Optional<Habitacion> optionalHabitacion = servicioHabitacion.encuentraPorId(id);
-        if(optionalHabitacion.isPresent()) {
+        if (optionalHabitacion.isPresent()) {
             Habitacion habitacion = optionalHabitacion.get();
             modelo.addAttribute("habitacion", habitacion);
+        } else {
+            modelo.addAttribute("error", "La habitación no se encuentra.");
+            return "error"; // O la vista que maneja errores
         }
         return "reservaHabitacion";
     }
@@ -71,6 +75,30 @@ public class ReservaController {
             return "redirect:/login";
         }
     }
+
+    @GetMapping("/{idHabitacion}/disponibilidad")
+    public String obtenerRangosDisponibles(
+            @PathVariable Integer idHabitacion,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaInicio,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaFin,
+            Model modelo) {
+
+        Optional<Habitacion> optionalHabitacion = servicioHabitacion.encuentraPorId(idHabitacion);
+
+        Habitacion habitacion = null;
+        if (optionalHabitacion.isPresent()) {
+            habitacion = optionalHabitacion.get();
+        }
+
+        List<ServicioHabitacion.Interval> rangosDisponibles = servicioHabitacion.obtenerRangosDisponibles(idHabitacion, fechaInicio, fechaFin);
+        modelo.addAttribute("rangosDisponibles", rangosDisponibles);
+        modelo.addAttribute("habitacion", habitacion);
+        modelo.addAttribute("fechaInicio", fechaInicio);
+        modelo.addAttribute("fechaFin", fechaFin);
+
+        return "disponibilidadHabitacion";
+    }
+
 
 
 }

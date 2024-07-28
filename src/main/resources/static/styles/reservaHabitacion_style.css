@@ -132,6 +132,7 @@ body {
     font-weight: 400;
     background: #ffffff;
     color: #a5a5a5;
+    min-height: 100vh;
 }
 div {
     display: block;
