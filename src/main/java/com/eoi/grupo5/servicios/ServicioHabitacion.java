@@ -112,11 +112,11 @@ public class ServicioHabitacion extends AbstractBusinessServiceSoloEnt<Habitacio
      * Obtiene los rangos de fechas disponibles para una habitación en un rango de fechas específico.
      *
      * @param idHabitacion el ID de la habitación.
-     * @param fechaInicio la fecha de inicio del rango a verificar.
-     * @param fechaFin la fecha de fin del rango a verificar.
+     * @param fechaEntrada la fecha de inicio del rango a verificar.
+     * @param fechaSalida la fecha de fin del rango a verificar.
      * @return una lista de intervalos disponibles.
      */
-    public List<Interval> obtenerRangosDisponibles(Integer idHabitacion, LocalDateTime fechaInicio, LocalDateTime fechaFin) {
+    public List<Interval> obtenerRangosDisponibles(Integer idHabitacion, LocalDateTime fechaEntrada, LocalDateTime fechaSalida) {
         // Obtenemos las reservas de la habitación en concreto
         List<Reserva> reservas = repoReserva.findByHabitacionesReservadasId(idHabitacion);
 
@@ -124,7 +124,7 @@ public class ServicioHabitacion extends AbstractBusinessServiceSoloEnt<Habitacio
         reservas.sort(Comparator.comparing(Reserva::getFechaInicio));
 
         List<Interval> rangosDisponibles = new ArrayList<>();
-        LocalDateTime currentStart = fechaInicio;
+        LocalDateTime fechaInicio = fechaEntrada;
 
         // Verificar que la habitación existe
         Optional<Habitacion> habitacionOpt = getRepo().findById(idHabitacion);
@@ -136,23 +136,23 @@ public class ServicioHabitacion extends AbstractBusinessServiceSoloEnt<Habitacio
         // Iterar sobre las reservas de la habitación
         for (Reserva reserva : reservas) {
             // Si hay un intervalo disponible entre la fecha inicio y el inicio de la reserva
-            if (reserva.getFechaInicio().isAfter(currentStart)) {
+            if (reserva.getFechaInicio().isAfter(fechaInicio)) {
                 // Calcular el precio total para este intervalo disponible
-                Double precioTotal = calcularPrecioTotal(habitacion, currentStart, reserva.getFechaInicio());
+                Double precioTotal = calcularPrecioTotal(habitacion, fechaInicio, reserva.getFechaInicio());
                 // Añadir el intervalo disponible a la lista de intervalos disponibles
-                rangosDisponibles.add(new Interval(currentStart, reserva.getFechaInicio(), precioTotal));
+                rangosDisponibles.add(new Interval(fechaInicio, reserva.getFechaInicio(), precioTotal));
             }
             // Fecha inicio será la fecha del fin de la reserva,
             // si el fin es posterior a la fecha inicio
-            if (reserva.getFechaFin().isAfter(currentStart)) {
-                currentStart = reserva.getFechaFin();
+            if (reserva.getFechaFin().isAfter(fechaInicio)) {
+                fechaInicio = reserva.getFechaFin();
             }
         }
 
         // Si queda un intervalo disponible después de la última reserva hasta la fecha de fin
-        if (currentStart.isBefore(fechaFin)) {
-            Double precioTotal = calcularPrecioTotal(habitacion, currentStart, fechaFin);
-            rangosDisponibles.add(new Interval(currentStart, fechaFin, precioTotal));
+        if (fechaInicio.isBefore(fechaSalida)) {
+            Double precioTotal = calcularPrecioTotal(habitacion, fechaInicio, fechaSalida);
+            rangosDisponibles.add(new Interval(fechaInicio, fechaSalida, precioTotal));
         }
 
         return rangosDisponibles;

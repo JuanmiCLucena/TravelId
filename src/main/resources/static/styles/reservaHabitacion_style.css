@@ -658,7 +658,6 @@ section {
 }
 .home_content {
     position: absolute;
-    z-index: 20;
     bottom: 106px;
     left: 50%;
     -webkit-transform: translateX(-50%);
@@ -669,10 +668,10 @@ section {
 }
 .home_title {
     font-size: 72px;
-    font-weight: 300;
-    color: #f0e6bd;
-    font-family: "Times New Roman", Times, serif;
+    font-weight: 800;
+    color: #ffffff;
     text-transform: uppercase;
+    white-space: nowrap;
 }
 
 /*********************************

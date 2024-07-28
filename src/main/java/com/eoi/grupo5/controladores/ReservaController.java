@@ -40,7 +40,7 @@ public class ReservaController {
             modelo.addAttribute("error", "La habitación no se encuentra.");
             return "error"; // O la vista que maneja errores
         }
-        return "reservaHabitacion";
+        return "disponibilidadHabitacion";
     }
 
     @PostMapping("/crear")
@@ -96,7 +96,7 @@ public class ReservaController {
         modelo.addAttribute("fechaInicio", fechaInicio);
         modelo.addAttribute("fechaFin", fechaFin);
 
-        return "disponibilidadHabitacion";
+        return "reservarHabitacion";
     }
 
 
