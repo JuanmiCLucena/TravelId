@@ -70,6 +70,7 @@
         <th>Fecha Inicio</th>
         <th>Fecha Fin</th>
         <th>Cancelado</th>
+        <th>Usuario</th>
         <th></th>
         </thead>
         <tbody>
@@ -78,6 +79,8 @@
             <td th:text="${reserva.fechaInicio}"></td>
             <td th:text="${reserva.fechaFin}"></td>
             <td th:text="${reserva.cancelado}"></td>
+            <td th:if="${reserva.usu != null}" th:text="${reserva.usu.id}"></td>
+            <td th:if="${reserva.usu == null}"></td>
             <td class="d-flex gap-2">
                 <form th:action="@{'/admin/reservas/' + ${reserva.id}}" th:method="get">
                     <button type="submit" class="btn btn-outline-info">Actualizar</button>

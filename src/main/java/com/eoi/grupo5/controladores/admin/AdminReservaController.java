@@ -1,6 +1,8 @@
 package com.eoi.grupo5.controladores.admin;
 
 import com.eoi.grupo5.modelos.*;
+import com.eoi.grupo5.paginacion.PaginaRespuestaPagos;
+import com.eoi.grupo5.paginacion.PaginaRespuestaReservas;
 import com.eoi.grupo5.servicios.*;
 import com.eoi.grupo5.servicios.archivos.FileSystemStorageService;
 import jakarta.validation.Valid;
@@ -28,9 +30,15 @@ public class AdminReservaController {
     }
 
     @GetMapping
-    public String listar(Model modelo) {
+    public String listar(
+            Model modelo,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        PaginaRespuestaReservas<Reserva> reservasPage = servicioReserva.buscarEntidadesPaginadas(page, size);
         List<Reserva> reservas = servicioReserva.buscarEntidades();
         modelo.addAttribute("reservas",reservas);
+        modelo.addAttribute("page", reservasPage);
         return "admin/adminReservas";
     }
 

@@ -43,6 +43,38 @@ public class ReservaController {
         return "reservaHabitacion";
     }
 
+    @PostMapping("/crear")
+    public String crearReserva(@RequestParam String fechaInicio,
+                               @RequestParam String fechaFin,
+                               Principal principal,
+                               Model model) {
+        try {
+            // Obtener el usuario autenticado a partir del Principal
+            String username = principal.getName();
+            Optional<Usuario> optionalUsuario = repoUsuario.findByNombreUsuario(username); // Implementa este método para obtener el usuario desde el repositorio
+
+            if(optionalUsuario.isPresent()) {
+
+                Usuario usuario = optionalUsuario.get();
+
+                // Parsear las fechas
+                LocalDateTime inicio = LocalDateTime.parse(fechaInicio);
+                LocalDateTime fin = LocalDateTime.parse(fechaFin);
+
+                // Crear la reserva
+                Reserva reserva = servicioReserva.crearReserva(usuario, inicio, fin);
+
+                // Agregar el ID de la reserva al modelo
+                model.addAttribute("reservaId", reserva.getId());
+            }
+            // Redirigir al usuario a la página para modificar la reserva
+            return "redirect:/reservas";
+
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "redirect:/login";
+        }
+    }
 
     @GetMapping("/{idHabitacion}/disponibilidad")
     public String obtenerRangosDisponibles(
