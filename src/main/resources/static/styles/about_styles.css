@@ -856,6 +856,7 @@ section {
   width: 100%;
   background: linear-gradient(to right, #1bebfa2c, #210a874a);
   padding-bottom: 60px;
+  padding-top: 50px;
 }
 .add_background {
   position: absolute;
@@ -1388,6 +1389,7 @@ section {
 --------------------------------------------------------------*/
 .contact {
   background: linear-gradient(to right, #1bebfa2c, #210a874a);
+  padding-bottom: 40px;
 }
 .contact .info {
   padding: 30px;
