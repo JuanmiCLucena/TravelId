@@ -54,12 +54,12 @@
     </div>
   </div>
 
-  <h1 class="text-center pt-3">Disponibilidad de Habitación</h1>
   <div class="d-flex flex-column align-items-center py-3">
-  <h2>Hotel: <span th:text="${habitacion.hotel.nombre}"></span>, Habitación: <span th:text="${habitacion.numero}"></span></h2>
-  <h3>Rango de Fechas Consultado:</h3>
-  <p class="my-0">Desde: <span th:text="${fechaInicio}"></span></p>
-  <p class="my-0">Hasta: <span th:text="${fechaFin}"></span></p>
+    <h1 class="text-center pt-3">Disponibilidad de Habitación</h1>
+    <h2>Hotel: <span th:text="${habitacion.hotel.nombre}"></span>, Habitación: <span th:text="${habitacion.numero}"></span></h2>
+    <h3>Rango de Fechas Consultado:</h3>
+    <p class="my-0">Desde: <span th:text="${fechaInicio}"></span></p>
+    <p class="my-0">Hasta: <span th:text="${fechaFin}"></span></p>
   </div>
 
   <div class="container">
@@ -94,6 +94,12 @@
   <a th:href="@{/reservas/habitacion/reservar/{id}(id=${habitacion.id})}" class="btn btn-secondary">Volver a Buscar Disponibilidad</a>
   </div>
 </div>
+
+<!-- Footer -->
+<footer th:replace="~{fragments/plantilla :: footer}"></footer>
+
+<!-- Copyright -->
+<div th:replace="~{fragments/plantilla :: copyright}"></div>
 
 <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
 <script th:src="@{/plugins/Isotope/isotope.pkgd.min.js}"></script>
