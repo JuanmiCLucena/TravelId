@@ -72,5 +72,10 @@ public class Actividad {
     @OneToMany(mappedBy = "actividad")
     private Set<Precio> precio = new HashSet<>();
 
-
+    public String getPrimeraImagenUrl() {
+        return imagenes.stream()
+                .findFirst()                      // Obtener la primera imagen del Set
+                .map(Imagen::getUrl)              // Obtener la URL de la primera imagen
+                .orElse(null);                    // Devolver null si el Set está vacío
+    }
 }

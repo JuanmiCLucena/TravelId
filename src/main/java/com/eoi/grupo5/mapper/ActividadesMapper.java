@@ -26,6 +26,7 @@ public interface ActividadesMapper {
 
     @Mapping(source = "tipo", target = "tipo")
     @Mapping(source = "precio", target = "precio")
+    @Mapping(source= "imagenes", target = "imagenes")
     ActividadDto actividadDto(Actividad actividad);
 
     List<ActividadDto> actividadesDto(List<Actividad> actividades);

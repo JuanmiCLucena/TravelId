@@ -121,7 +121,7 @@
                             <a th:href="@{'/actividad/' + ${actividad.id}}" class="w-100 w-auto-sm">
                             <div class="single-package-item">
                                 <img
-                                        src="/images/Hoteles/Radisson_Blu_Hotel_Berlin.jpg"
+                                        th:src="'/imagenes/' + ${actividad.primeraImagenUrl}"
                                         alt="Radisson Blu Hotel"
                                 />
                                 <div class="single-package-item-txt">
