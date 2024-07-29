@@ -143,6 +143,17 @@
                                     <div class="packages-para">
                                         <p>
                                           <span>
+                                              <i class="fa fa-angle-right"
+                                                 th:text="${#temporals.format(actividad.fechaInicio, 'dd-MMMM-yyyy, HH:mm', #locale)}">
+                                              </i>
+                                              -
+                                              <i
+                                                 th:text="${#temporals.format(actividad.fechaFin, 'dd-MMMM-yyyy, HH:mm', #locale)}">
+                                              </i>
+                                          </span>
+                                        </p>
+                                        <p>
+                                          <span>
                                             <i class="fa fa-angle-right" th:text="${actividad.tipo.nombre}"></i>
                                           </span>
                                         </p>

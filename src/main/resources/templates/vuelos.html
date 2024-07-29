@@ -23,7 +23,7 @@
           type="text/css"
   />
   <link
-          href="plugins/colorbox/colorbox.css"
+          th:href="@{/plugins/colorbox/colorbox.css}"
           rel="stylesheet"
           type="text/css"
   />
@@ -186,6 +186,17 @@
                         <h3 th:text="${vuelo.nombre}">Vuelo Nombre</h3>
                       </div>
                       <div class="packages-para">
+                        <p>
+                          <span>
+                            <i class="fa fa-angle-right"
+                               th:text="${#temporals.format(vuelo.fechaSalida, 'dd-MMMM-yyyy, HH:mm', #locale)}">
+                            </i>
+                            -
+                            <i
+                              th:text="${#temporals.format(vuelo.fechaLlegada, 'dd-MMMM-yyyy, HH:mm', #locale)}">
+                            </i>
+                          </span>
+                        </p>
                         <p>
                         <span class="d-inline-block">
                             <i class="fa fa-angle-right"></i>
