@@ -111,9 +111,6 @@
                                         <a th:href="@{'/reservas/habitacion/reservar/' + ${habitacion.id}}"
                                         >Reservar</a>
                                     </div>
-                                    <div class="hotel_map_link_container">
-                                        <div class="hotel_map_link">See Location on Map</div>
-                                    </div>
                                 </div>
                             </div>
 
@@ -260,7 +257,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-3 text-lg-right">
+                                        <div class="col-lg-3 text-lg-right d-flex align-items-center">
                                             <div class="room_button">
                                                 <div class="button book_button trans_200">
                                                     <a th:href="@{'/hotel/' + ${hotelRecomendado.id}}">Ver</a>
