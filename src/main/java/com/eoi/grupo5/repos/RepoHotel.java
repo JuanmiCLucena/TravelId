@@ -19,6 +19,18 @@ import java.util.List;
 public interface RepoHotel extends JpaRepository<Hotel, Integer> {
     Page<Hotel> findAll(@Nullable Specification<Hotel> spec, @Nonnull Pageable pageable);
 
+    /**
+     * Find hoteles disponibles list.
+     *
+     * @param fechaInicio the fecha inicio
+     * @param fechaFin    the fecha fin
+     * @return the list
+     *
+     *
+     * Encuentra todos los hoteles que tienen al menos
+     * una habitación libre en el rango de fechas especificado
+     * (fechaInicio a fechaFin).
+     */
     @Query(
             "SELECT h FROM Hotel h " +
                     "WHERE EXISTS (" +
@@ -31,5 +43,7 @@ public interface RepoHotel extends JpaRepository<Hotel, Integer> {
                     ")"
     )
     List<Hotel> findHotelesDisponibles(@Param("fechaInicio") LocalDateTime fechaInicio, @Param("fechaFin") LocalDateTime fechaFin);
+
+
 
 }
