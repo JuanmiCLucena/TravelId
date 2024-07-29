@@ -76,7 +76,7 @@ public class ReservaController {
         }
     }
 
-    @GetMapping("/{idHabitacion}/disponibilidad")
+    @GetMapping("/habitacion/{idHabitacion}/disponibilidad")
     public String obtenerRangosDisponibles(
             @PathVariable Integer idHabitacion,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaInicio,
