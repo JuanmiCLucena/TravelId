@@ -58,8 +58,8 @@
     <h1 class="text-center pt-3">Disponibilidad de Habitación</h1>
     <h2>Hotel: <span th:text="${habitacion.hotel.nombre}"></span>, Habitación: <span th:text="${habitacion.numero}"></span></h2>
     <h3>Rango de Fechas Consultado:</h3>
-    <p class="my-0">Desde: <span th:text="${fechaInicio}"></span></p>
-    <p class="my-0">Hasta: <span th:text="${fechaFin}"></span></p>
+    <p class="my-0">Desde: <span th:text="${#temporals.format(fechaInicio, 'dd MMMM yyyy HH:mm', #locale)}"></span></p>
+    <p class="my-0">Hasta: <span th:text="${#temporals.format(fechaFin, 'dd MMMM yyyy HH:mm', #locale)}"></span></p>
   </div>
 
   <div class="container">
@@ -74,8 +74,8 @@
       </thead>
       <tbody>
       <tr th:each="intervalo : ${rangosDisponibles}">
-        <td th:text="${intervalo.start}"></td>
-        <td th:text="${intervalo.end}"></td>
+        <td th:text="${#temporals.format(intervalo.start, 'dd MMMM yyyy HH:mm', #locale)}"></td>
+        <td th:text="${#temporals.format(intervalo.end, 'dd MMMM yyyy HH:mm', #locale)}"></td>
         <td class="d-flex gap-3 align-items-center">
           <span th:text="${intervalo.intervalPrice} + ' €'"></span>
           <form action="" method="post" class="d-inline-block">

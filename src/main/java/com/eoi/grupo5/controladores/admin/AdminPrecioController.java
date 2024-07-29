@@ -74,42 +74,54 @@ public class AdminPrecioController {
             @RequestParam(name = "asiento.id", required = false) Integer asientoId,
             @RequestParam(name = "actividad.id", required = false) Integer actividadId
     ) {
-
         try {
-            boolean assigned = false;
-
+            // Manejo opcional para la Habitación
             if (habitacionId != null) {
                 Habitacion habitacion = servicioHabitacion.encuentraPorId(habitacionId)
                         .orElseThrow(() -> new IllegalArgumentException("Habitación no encontrada"));
                 precio.setHabitacion(habitacion);
-                assigned = true;
+            } else {
+                precio.setHabitacion(null); // Elimina la referencia si no se proporciona un ID
             }
 
+            // Manejo opcional para el Asiento
             if (asientoId != null) {
                 Asiento asiento = servicioAsiento.encuentraPorId(asientoId)
                         .orElseThrow(() -> new IllegalArgumentException("Asiento no encontrado"));
                 precio.setAsiento(asiento);
-                assigned = true;
+            } else {
+                precio.setAsiento(null); // Elimina la referencia si no se proporciona un ID
             }
 
+            // Manejo opcional para la Actividad
             if (actividadId != null) {
                 Actividad actividad = servicioActividad.encuentraPorId(actividadId)
                         .orElseThrow(() -> new IllegalArgumentException("Actividad no encontrada"));
                 precio.setActividad(actividad);
-                assigned = true;
+            } else {
+                precio.setActividad(null); // Elimina la referencia si no se proporciona un ID
             }
 
-            if (!assigned) {
+            // Verifica que al menos una entidad esté asignada
+            if (precio.getHabitacion() == null && precio.getAsiento() == null && precio.getActividad() == null) {
                 throw new IllegalArgumentException("Debe proporcionar al menos uno de los IDs: habitacion.id, asiento.id, actividad.id");
             }
 
+            // Guarda el objeto Precio
             servicioPrecio.guardar(precio);
+
+        } catch (IllegalArgumentException e) {
+            // Maneja excepciones específicas
+            return "redirect:/admin/precios?error=" + e.getMessage();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            // Manejo general de errores
+            return "redirect:/admin/precios?error=Ocurrió un error inesperado";
         }
 
+        // Redirige a la página de lista de precios después de guardar
         return "redirect:/admin/precios";
     }
+
 
     @DeleteMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Integer id) {

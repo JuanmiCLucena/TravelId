@@ -8,6 +8,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -54,8 +55,12 @@ public class SecurityConfig {
                 .requestMatchers("/").permitAll()
                 .requestMatchers("/register").permitAll()
                 .requestMatchers("/vuelos/**").permitAll()
+                .requestMatchers("/vuelo/**").permitAll()
                 .requestMatchers("/hoteles/**").permitAll()
+                .requestMatchers("/hotel/**").permitAll()
+                .requestMatchers("/habitacion/**").permitAll()
                 .requestMatchers("/actividades/**").permitAll()
+                .requestMatchers("/actividad/**").permitAll()
                 .requestMatchers("/filtrar-actividades").permitAll()
                 .requestMatchers("/conocenos/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/login/").permitAll()
@@ -74,5 +79,10 @@ public class SecurityConfig {
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(bCryptPasswordEncoder);
         return authProvider;
+    }
+
+    @Bean
+    static GrantedAuthorityDefaults grantedAuthorityDefaults() {
+        return new GrantedAuthorityDefaults("ROLE_");
     }
 }
