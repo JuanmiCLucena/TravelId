@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -35,9 +36,11 @@ public class HotelController {
     }
 
     @GetMapping("/hoteles/lista")
-    public String listaHoteles(Model modelo) {
-        int page = 0;
-        int size = 6;
+    public String listaHoteles(
+            Model modelo,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "6") int size
+    ) {
 
         PaginaRespuestaHoteles<Hotel> hotelesPage = servicioHotel.buscarEntidadesPaginadas(page, size);
         List<Hotel> hoteles = hotelesPage.getContent();
