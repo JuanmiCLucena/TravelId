@@ -59,12 +59,15 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
         detalles.setUsu(usuario);
         detalles2.setUsu(usuario2);
 
+        if(!repoUsuario.findByNombreUsuario("user").isPresent() && !repoUsuario.findByNombreUsuario("admin").isPresent()) {
         repoRole.save(rol);
         repoRole.save(rol2);
 
         repoDetallesUsuario.save(detalles);
         repoDetallesUsuario.save(detalles2);
+
         repoUsuario.save(usuario);
         repoUsuario.save(usuario2);
+        }
     }
 }

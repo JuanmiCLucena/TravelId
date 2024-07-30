@@ -14,22 +14,22 @@ import java.util.Optional;
 @Controller
 public class HabitacionController {
 
-    private final ServicioHabitacion servicio;
+    private final ServicioHabitacion servicioHabitacion;
 
     public HabitacionController(ServicioHabitacion servicioHabitacion) {
-        this.servicio = servicioHabitacion;
+        this.servicioHabitacion = servicioHabitacion;
     }
 
     @GetMapping("/habitacion/{id}")
     public String detallesHabitacion(@PathVariable Integer id, Model modelo) {
-        Optional<Habitacion> habitacion = servicio.encuentraPorId(id);
+        Optional<Habitacion> habitacion = servicioHabitacion.encuentraPorId(id);
         // Si no encontramos el hotel no hemos encontrado el hotel
         if (habitacion.isPresent()) {
 
             modelo.addAttribute("habitacion", habitacion.get());
 
             if(!habitacion.get().getPrecio().isEmpty()) {
-            Precio precioActual = servicio.getPrecioActual(habitacion.get(), LocalDateTime.now());
+            Precio precioActual = servicioHabitacion.getPrecioActual(habitacion.get(), LocalDateTime.now());
             modelo.addAttribute("precioActual", precioActual.getValor());
             }
 
@@ -37,6 +37,8 @@ public class HabitacionController {
                 String habitacionImagen = habitacion.get().getImagenesHabitacion().stream().findFirst().get().getUrl();
                 modelo.addAttribute("imagenHabitacion", habitacionImagen);
             }
+
+            modelo.addAttribute("recomendados", servicioHabitacion.obtenerHotelesEnTuZona(habitacion.get()));
 
             return "detallesHabitacion";
         } else {

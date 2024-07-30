@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Detalles Hotel</title>
+    <title>usuarioes</title>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="description" content="Travelix Project" />
@@ -53,50 +53,44 @@
             th:href="@{/styles/admin_responsive.css}"
     />
 </head>
-
 <body>
 
 <header th:replace="~{admin/fragments/fragmentos :: adminHeader}"></header>
 
-
 <div class="container main">
-    <form class="d-flex gap-3 flex-column" action="/admin/asientos/crear" method="post" enctype="multipart/form-data" th:object="${asiento}">
-        <input type="hidden" name="id" id="id" th:value="${asiento.id}" th:field="*{id}">
 
-        <div class="form-group">
-            <label for="numeroAsiento">Número de Asiento:</label>
-            <input type="text" class="form-control" id="numeroAsiento" th:value="${asiento.numero}" th:field="*{numero}">
-        </div>
+    <button type="button" class="btn btn-outline-info mb-3">
+        <a class="text-decoration-none text-dark" th:href="@{'/admin/usuarioes/crear'}">Crear usuario</a>
+    </button>
 
-        <div class="form-group">
-            <label for="categoria">Categoria:</label>
-            <select class="form-control" id="categoria" th:field="*{categoria.id}">
-                <option th:each="categoria : ${categoriasAsiento}" th:value="${categoria.id}" th:text="${categoria.nombre}" th:selected="${asiento.categoria != null and asiento.categoria.id == categoria.id}"></option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="vueloNombre">Vuelo:</label>
-            <select class="form-control" id="vueloNombre" th:field="*{vuelo.id}">
-                <option th:each="vuelo : ${vuelos}" th:value="${vuelo.id}" th:text="${vuelo.nombre}" th:selected="${asiento.vuelo != null and asiento.vuelo.id == vuelo.id}"></option>
-            </select>
-        </div>
-
-        <!--          <div class="form-group">-->
-        <!--            <label for="precio">Precio Actual Habitación:</label>-->
-        <!--            <input type="text" class="form-control" name="precio" id="precio" th:value="${precioActual.precio}" th:field="*{precio}">-->
-        <!--          </div>-->
-
-        <button type="submit" class="btn btn-primary mt-3">Guardar</button>
-    </form>
+    <table class="table table-striped">
+        <thead>
+        <th>Id</th>
+        <th>Nombre</th>
+        <th></th>
+        </thead>
+        <tbody>
+        <tr th:each="usuario : ${usuarioes}">
+            <td th:text="${usuario.id}"></td>
+            <td th:text="${usuario.nombre}"></td>
+            <td class="d-flex gap-2">
+                <form th:action="@{'/admin/usuarioes/' + ${usuario.id}}" th:method="get">
+                    <button type="submit" class="btn btn-outline-info">Actualizar</button>
+                </form>
+                <form th:action="@{'/admin/usuarioes/eliminar/' + ${usuario.id}}" th:method="delete">
+                    <button type="submit" class="btn btn-outline-danger">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
-
-
 
 <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
 <script th:src="@{/plugins/easing/easing.js}"></script>
 <script th:src="@{/plugins/parallax-js-master/parallax.min.js}"></script>
 <script th:src="@{/plugins/colorbox/jquery.colorbox-min.js}"></script>
 <script th:src="@{/plugins/OwlCarousel2-2.2.1/owl.carousel.js}"></script>
+
 </body>
 </html>

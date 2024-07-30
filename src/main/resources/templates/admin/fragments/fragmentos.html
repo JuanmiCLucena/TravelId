@@ -17,10 +17,10 @@
     <!-- Main Navigation -->
 
     <nav class="main_nav nav">
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
                 <div
-                        class="col main_nav_col d-flex flex-row align-items-center justify-content-between"
+                        class="col main_nav_col d-flex flex-row align-items-center justify-content-center gap-5"
                 >
                     <div class="logo_container">
                         <div class="logo">
@@ -54,6 +54,15 @@
                             <li class="main_nav_item">
                                 <a th:href="@{/admin/localizaciones}">Localizaciones</a>
                             </li>
+                            <li class="main_nav_item">
+                                <a th:href="@{/admin/pagos}">Pagos</a>
+                            </li>
+                            <li class="main_nav_item">
+                                <a th:href="@{/admin/reservas}">Reservas</a>
+                            </li>
+                            <li class="main_nav_item">
+                                <a th:href="@{/admin/usuarios}">Usuarios</a>
+                            </li>
 
                             <li class="main_nav_item" sec:authorize="isAuthenticated()">
                                 <a href="javascript: document.logoutForm.submit()" role="menuitem"> Logout</a>
@@ -64,48 +73,11 @@
 
                         </ul>
                     </div>
-                    <div class="d-flex align-items-center">
-                        <div class="hamburger ms-0">
-                            <i class="fa fa-bars trans_200"></i>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     </nav>
 </header>
-
-<div th:fragment="adminNavMobile" class="menu trans_500">
-    <div
-            class="menu_content d-flex flex-column align-items-center justify-content-center text-center"
-    >
-        <div class="menu_close_container"><div class="menu_close"></div></div>
-        <div class="logo menu_logo">
-            <a th:href="@{/}"
-            ><img src="/images/Logo_minimalista_2.png" alt="Logo de Travelid"
-            /></a>
-        </div>
-        <ul>
-            <li class="menu_item"><a th:href="@{/admin/vuelos}">Vuelos</a></li>
-            <li class="menu_item"><a th:href="@{/admin/asientos}">Asientos</a></li>
-            <li class="menu_item"><a th:href="@{/admin/hoteles}">Hoteles</a></li>
-            <li class="menu_item"><a th:href="@{/admin/habitaciones}">Habitaciones</a></li>
-            <li class="menu_item"><a th:href="@{/admin/actividades}">Actividades</a></li>
-            <li class="menu_item"><a th:href="@{/admin/precios}">Precios</a></li>
-            <li class="menu_item"><a th:href="@{/admin/localizaciones}">Localizaciones</a></li>
-            <li class="menu_item" sec:authorize="!isAuthenticated()">
-                <a th:href="@{/login}">Login</a>
-            </li>
-
-            <li class="menu_item" sec:authorize="isAuthenticated()">
-                <a href="javascript: document.logoutMobileForm.submit()" role="menuitem"> Logout</a>
-                <form name="logoutMobileForm" th:action="@{/logout}" method="post" th:hidden="true">
-                    <input hidden type="submit" value="Cerrar Sesión"/>
-                </form>
-            </li>
-        </ul>
-    </div>
-</div>
 
 <!-- Optional JavaScript -->
 <script src="cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"

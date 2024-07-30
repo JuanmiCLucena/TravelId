@@ -1,6 +1,6 @@
 <section id="formularioBaseReserva" class="packages" th:fragment="mensajeIdeal">
     <div class="container formulario">
-        <form class="form-group" action="#" method="get" th:action="@{/reservas/{idHabitacion}/disponibilidad(idHabitacion=${habitacion.id})}">
+        <form class="form-group" action="#" method="get" th:action="@{/reservas/habitacion/{idHabitacion}/disponibilidad(idHabitacion=${habitacion.id})}">
             <h3><strong>Indica las fechas de entrada y salida</strong></h3>
 
             <div class="mb-3">
@@ -12,8 +12,6 @@
                 <label for="fechaFin" class="form-label">Fecha de Salida</label>
                 <input type="datetime-local" name="fechaFin" id="fechaFin" class="form-control" required/>
             </div>
-
-            <input type="hidden" name="idHabitacion" id="idHabitacion" th:value="${habitacion.id}"/>
 
             <button type="submit" class="btn btn-primary">Comprobar Disponibilidad</button>
         </form>
