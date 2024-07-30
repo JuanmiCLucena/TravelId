@@ -1,7 +1,9 @@
 package com.eoi.grupo5.controladores;
 
+import com.eoi.grupo5.modelos.Actividad;
 import com.eoi.grupo5.modelos.Hotel;
 import com.eoi.grupo5.modelos.Vuelo;
+import com.eoi.grupo5.paginacion.PaginaRespuestaActividades;
 import com.eoi.grupo5.paginacion.PaginaRespuestaVuelos;
 import com.eoi.grupo5.servicios.ServicioAsiento;
 import com.eoi.grupo5.servicios.ServicioVuelo;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,18 +30,18 @@ public class VueloController {
     }
 
     @GetMapping("vuelos/lista")
-    public String listaVuelos(Model modelo) {
-
-        int page = 0;
-        int size = 6;
+    public String listaVuelos(
+            Model modelo,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "6") int size
+    ) {
 
         LocalDateTime fechaActual = LocalDateTime.now();
 
-        // Obtener los vuelos disponibles paginados
-        PaginaRespuestaVuelos<Vuelo> vuelosPaginados = servicioVuelo.obtenerVuelosDisponiblesPaginados(page, size, fechaActual);
-        modelo.addAttribute("vuelos", vuelosPaginados.getContent());
-        modelo.addAttribute("totalPages", vuelosPaginados.getTotalPages());
-        modelo.addAttribute("currentPage", vuelosPaginados.getPage());
+        PaginaRespuestaVuelos<Vuelo> vuelosPage = servicioVuelo.obtenerVuelosDisponiblesPaginados(page, size,fechaActual);
+        List<Vuelo> vuelos = vuelosPage.getContent();
+        modelo.addAttribute("lista", vuelos);
+        modelo.addAttribute("page", vuelosPage);
         return "vuelos";
     }
 

@@ -172,11 +172,11 @@
           <!--/.gallery-header-->
           <div class="packages-content">
             <div class="row">
-              <div class="col-12 col-lg-4 col-sm-6 d-flex" th:each="vuelo : ${vuelos}">
+              <div class="col-12 col-lg-4 col-sm-6 d-flex" th:each="vuelo : ${lista}">
                 <a th:href="@{'/vuelo/' + ${vuelo.id}}" class="w-100 w-auto-sm">
                   <div class="single-package-item">
                     <!-- Mostrar la primera imagen del hotel o una imagen por defecto si no tiene imágenes -->
-                    <img th:src="@{${vuelo.imagen == null} ? '/images/Hoteles/Nobu_Hotel.jpg' : '/imagenes/' + ${vuelo.imagen.url}}" alt="Imagen del Vuelo"/>
+                    <img th:src="@{'/imagenes/' + ${vuelo.imagen.url}}" alt="Imagen del Vuelo"/>
 
                     <div class="single-package-item-txt">
                       <h3 class="d-block d-sm-none d-xl-block">
@@ -229,6 +229,37 @@
       </section>
       <!--/.packages-->
       <!--packages end-->
+
+      <!-- Paginación -->
+      <div class="d-flex justify-content-center pb-5">
+        <ul class="pagination d-flex gap-3" th:if="${page != null && !page.getContent().isEmpty()}">
+          <!-- Página anterior -->
+          <li th:if="${page.hasPrevious()}" class="page-item">
+            <a class="page-link"
+               th:href="@{/vuelos/lista(page=${page.page - 1}, size=${page.size})}"
+               aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+
+          <!-- Páginas numeradas -->
+          <li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+              th:classappend="${i == page.page} ? 'page-item active' : 'page-item'">
+            <a class="page-link"
+               th:href="@{/vuelos/lista(page=${i}, size=${page.size})}"
+               th:text="${i + 1}"></a>
+          </li>
+
+          <!-- Página siguiente -->
+          <li th:if="${page.hasNext()}" class="page-item">
+            <a class="page-link"
+               th:href="@{/vuelos/lista(page=${page.page + 1}, size=${page.size})}"
+               aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </div>
 
       <!-- Footer -->
 
