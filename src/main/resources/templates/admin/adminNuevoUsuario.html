@@ -59,7 +59,7 @@
 <header th:replace="~{admin/fragments/fragmentos :: adminHeader}"></header>
 
 <div class="container w-50 d-flex justify-content-center main">
-    <form class="d-flex gap-3 flex-column" action="/admin/actividades/crear" method="post" enctype="multipart/form-data" th:object="${actividad}">
+    <form class="d-flex gap-3 flex-column" action="/admin/usuarios/crear" method="post" enctype="multipart/form-data" th:object="${usuario}">
         <div class="form-group">
             <label for="nombreUsuario">Nombre de la Usuario:</label>
             <input type="text" class="form-control" id="nombreUsuario"  th:field="*{nombreUsuario}">
