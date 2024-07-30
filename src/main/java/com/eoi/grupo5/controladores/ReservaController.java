@@ -1,6 +1,7 @@
 package com.eoi.grupo5.controladores;
 
 import com.eoi.grupo5.modelos.Habitacion;
+import com.eoi.grupo5.modelos.Precio;
 import com.eoi.grupo5.modelos.Reserva;
 import com.eoi.grupo5.modelos.Usuario;
 import com.eoi.grupo5.repos.RepoUsuario;
@@ -36,6 +37,17 @@ public class ReservaController {
         if (optionalHabitacion.isPresent()) {
             Habitacion habitacion = optionalHabitacion.get();
             modelo.addAttribute("habitacion", habitacion);
+
+            if(!habitacion.getPrecio().isEmpty()) {
+                Precio precioActual = servicioHabitacion.getPrecioActual(habitacion, LocalDateTime.now());
+                modelo.addAttribute("precioActual", precioActual.getValor());
+            }
+
+            if(!habitacion.getImagenesHabitacion().isEmpty()) {
+                String habitacionImagen = habitacion.getImagenesHabitacion().stream().findFirst().get().getUrl();
+                modelo.addAttribute("imagenHabitacion", habitacionImagen);
+            }
+
         } else {
             modelo.addAttribute("error", "La habitación no se encuentra.");
             return "error"; // O la vista que maneja errores

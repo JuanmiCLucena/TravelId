@@ -59,11 +59,13 @@
       <!-- Blog -->
       <div th:replace="~{fragments/formularioBaseReserva :: #formularioBaseReserva}"></div>
 
-      <!-- DetallesHabitacionReserva -->
-      <div th:replace="~{fragments/detallesHabitacionReserva :: #detalleHabitacionReservada}"></div>
+      <div class="container d-flex flex-column align-items-center">
+        <!-- DetallesHabitacionReserva -->
+        <div th:replace="~{fragments/detallesHabitacionReserva :: #detalleHabitacionReservada}"></div>
 
-      <!-- imagenesHabitacion -->
-      <div th:replace="~{fragments/imagenHabitacion :: #imagenHabitacion}"></div>
+        <!-- imagenesHabitacion -->
+        <div th:replace="~{fragments/imagenHabitacion :: #imagenHabitacion}"></div>
+      </div>
 
       <!-- Footer -->
       <footer th:replace="~{fragments/plantilla :: footer}"></footer>

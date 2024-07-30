@@ -915,11 +915,9 @@ h3 span {
     font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 .packages {
-    padding: 120px 0 90px;
+    padding: 20px 0 50px;
 }
-.packages-content {
-    margin-top: 65px;
-}
+
 /*single-package-item */
 .single-package-item {
     margin-bottom: 30px;
@@ -999,4 +997,16 @@ h3 span {
 }
 .single-package-item:hover {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+#imagenHabitacion {
+    max-width: 600px;
+}
+
+#imagenHabitacion .hotel_image {
+    max-width: 100%;
+}
+
+#imagenHabitacion .hotel_image img {
+    width: 100%;
 }
