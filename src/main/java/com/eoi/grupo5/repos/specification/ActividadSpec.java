@@ -39,7 +39,8 @@ public class ActividadSpec {
         return Specification
                 .where(esTipo(filtroActividades.tipoId()))
                 .and(tieneFechaMayorQueInicio(filtroActividades.fechaInicio()))
-                .and(tieneFechaMenorQueFin(filtroActividades.fechaFin()));
+                .and(tieneFechaMenorQueFin(filtroActividades.fechaFin()))
+                .and(tieneMenosAsistentesConfirmadosQueMaximos());
     }
 
     /**
@@ -78,6 +79,16 @@ public class ActividadSpec {
         return (root, query, cb) -> fechaFin == null
                 ? cb.conjunction()
                 : cb.lessThanOrEqualTo(root.get("fechaFin"), fechaFin);
+    }
+
+    /**
+     * Crea una especificación que filtra las actividades cuyas asistentes confirmados
+     * sean menores a los máximos asistentes.
+     *
+     * @return Una especificación que filtra las actividades por asistentes confirmados.
+     */
+    private static Specification<Actividad> tieneMenosAsistentesConfirmadosQueMaximos() {
+        return (root, query, cb) -> cb.lessThan(root.get("asistentesConfirmados"), root.get("maximosAsistentes"));
     }
 
 }

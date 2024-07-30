@@ -1,6 +1,8 @@
 package com.eoi.grupo5.controladores;
 
+import com.eoi.grupo5.modelos.Actividad;
 import com.eoi.grupo5.modelos.Vuelo;
+import com.eoi.grupo5.paginacion.PaginaRespuestaActividades;
 import com.eoi.grupo5.paginacion.PaginaRespuestaVuelos;
 import com.eoi.grupo5.servicios.ServicioActividad;
 import com.eoi.grupo5.servicios.ServicioHotel;
@@ -36,8 +38,13 @@ public class InicioController {
         // Obtener los vuelos disponibles paginados
         PaginaRespuestaVuelos<Vuelo> vuelosPaginados = servicioVuelo.obtenerVuelosDisponiblesPaginados(page, size, fechaActual);
         modelo.addAttribute("vuelos", vuelosPaginados.getContent());
-        modelo.addAttribute("totalPages", vuelosPaginados.getTotalPages());
-        modelo.addAttribute("currentPage", vuelosPaginados.getPage());
+
+
+        // Obtener las actividades disponibles paginados
+        PaginaRespuestaActividades<Actividad> actividadesPaginados = servicioActividad.obtenerActividadesDisponiblesPaginadas(page, size, fechaActual);
+        modelo.addAttribute("actividades", actividadesPaginados.getContent());
+
+
         return "index";
     }
 
