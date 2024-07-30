@@ -4,7 +4,9 @@ import com.eoi.grupo5.modelos.Actividad;
 
 import com.eoi.grupo5.modelos.Precio;
 import com.eoi.grupo5.dtos.ActividadDto;
+import com.eoi.grupo5.modelos.Vuelo;
 import com.eoi.grupo5.paginacion.PaginaRespuestaActividades;
+import com.eoi.grupo5.paginacion.PaginaRespuestaVuelos;
 import com.eoi.grupo5.repos.RepoActividad;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +26,27 @@ public class ServicioActividad extends AbstractBusinessServiceSoloEnt<Actividad,
 
     protected ServicioActividad(RepoActividad repoActividad) {
         super(repoActividad);
+    }
+
+    public PaginaRespuestaActividades<Actividad> obtenerActividadesDisponiblesPaginadas(int page, int size, LocalDateTime fechaActual) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        // Obtener todos los vuelos disponibles
+        List<Actividad> actividadesDisponibles = getRepo().findActividadesDisponibles(fechaActual);
+
+        // Calcular el inicio y fin de la sublista para la página actual
+        int start = Math.min((int) pageable.getOffset(), actividadesDisponibles.size());
+        int end = Math.min((start + pageable.getPageSize()), actividadesDisponibles.size());
+
+        // Crear la página usando PaginaRespuestaVuelos
+        PaginaRespuestaActividades<Actividad> actividadesPage = new PaginaRespuestaActividades<>();
+        actividadesPage.setContent(actividadesDisponibles.subList(start, end));
+        actividadesPage.setSize(pageable.getPageSize());
+        actividadesPage.setTotalSize(actividadesDisponibles.size());
+        actividadesPage.setPage(pageable.getPageNumber());
+        actividadesPage.setTotalPages((int) Math.ceil((double) actividadesDisponibles.size() / pageable.getPageSize()));
+
+        return actividadesPage;
     }
 
     public PaginaRespuestaActividades<Actividad> buscarEntidadesPaginadas(int page, int size) {
