@@ -30,7 +30,7 @@ public interface RepoActividad extends JpaRepository<Actividad, Integer>, JpaSpe
                     "WHERE a.maximosAsistentes IS NOT NULL AND a.asistentesConfirmados IS NOT NULL " +
                     "AND a.maximosAsistentes > a.asistentesConfirmados " +
                     "AND a.fechaFin > :fechaActual " +
-                    "AND a.fechaInicio <= :fechaActual " +
+                    "AND a.fechaInicio > :fechaActual " +
                     "ORDER BY a.fechaInicio ASC")
     List<Actividad> findActividadesDisponibles(LocalDateTime fechaActual);
 
