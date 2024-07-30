@@ -175,7 +175,7 @@
 
           <div class="packages-content">
             <div class="row">
-              <div class="col-12 col-lg-4 col-sm-6 d-flex" th:each="hotel : ${hoteles}">
+              <div class="col-12 col-lg-4 col-sm-6 d-flex" th:each="hotel : ${lista}">
                 <a th:href="@{'/hotel/' + ${hotel.id}}" class="w-100 w-auto-sm">
                   <div class="single-package-item">
                   <!-- Mostrar la primera imagen del hotel o una imagen por defecto si no tiene imágenes -->

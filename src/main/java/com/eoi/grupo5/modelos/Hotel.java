@@ -54,4 +54,11 @@ public class Hotel {
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Imagen> imagenesHotel = new HashSet<>();
 
+    public String getPrimeraImagenUrl() {
+        return imagenesHotel.stream()
+                .findFirst()                      // Obtener la primera imagen del Set
+                .map(Imagen::getUrl)              // Obtener la URL de la primera imagen
+                .orElse(null);                    // Devolver null si el Set está vacío
+    }
+
 }
