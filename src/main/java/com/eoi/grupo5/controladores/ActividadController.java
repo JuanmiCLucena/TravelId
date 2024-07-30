@@ -6,7 +6,9 @@ import com.eoi.grupo5.modelos.Actividad;
 import com.eoi.grupo5.modelos.Imagen;
 
 import com.eoi.grupo5.dtos.ActividadDto;
+import com.eoi.grupo5.modelos.Vuelo;
 import com.eoi.grupo5.paginacion.PaginaRespuestaActividades;
+import com.eoi.grupo5.paginacion.PaginaRespuestaVuelos;
 import com.eoi.grupo5.servicios.ServicioActividad;
 import com.eoi.grupo5.servicios.ServicioTipoActividad;
 import com.eoi.grupo5.servicios.filtros.ServicioFiltroActividades;
@@ -42,7 +44,9 @@ public class ActividadController {
         int page = 0;
         int size = 6;
 
-        PaginaRespuestaActividades<Actividad> actividadesPage = servicioActividad.buscarEntidadesPaginadas(page, size);
+        LocalDateTime fechaActual = LocalDateTime.now();
+
+        PaginaRespuestaActividades<Actividad> actividadesPage = servicioActividad.obtenerActividadesDisponiblesPaginadas(page, size,fechaActual);
         List<Actividad> actividades = actividadesPage.getContent();
         modelo.addAttribute("lista", actividades);
         modelo.addAttribute("preciosActuales", servicioActividad.obtenerPreciosActualesActividades(actividades));

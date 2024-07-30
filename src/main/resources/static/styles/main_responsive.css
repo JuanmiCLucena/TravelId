@@ -208,6 +208,9 @@
   .footer_nav_item {
     display: block;
   }
+  .col-lg-6 {
+    height: auto;
+  }
 }
 
 /************
