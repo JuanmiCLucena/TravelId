@@ -57,7 +57,7 @@
   <body>
 
       <header th:replace="~{admin/fragments/fragmentos :: adminHeader}"></header>
-      <div th:replace="~{admin/fragments/fragmentos :: adminNavMobile}"></div>
+
 
       <div class="container main">
         <form class="d-flex gap-3 flex-column" action="/admin/localizaciones/crear" method="post" enctype="multipart/form-data" th:object="${localizacion}">
@@ -76,7 +76,7 @@
           <div class="form-group">
             <label for="pais">País:</label>
             <select class="form-control" name="pais" id="pais" th:field="*{pais.id}">
-              <option  th:each="localizacion : ${localizaciones}" th:value="${localizacion.id}" th:text="${localizacion.nombre}" th:selected="${localizacion.id != null and localizacion.pais.id == localizacion.id}"></option>
+              <option  th:each="pais : ${paises}" th:value="${localizacion.id}" th:text="${pais.nombre}" th:selected="${pais.id != null and localizacion.pais.id == pais.id}"></option>
             </select>
           </div>
 
@@ -91,7 +91,5 @@
     <script th:src="@{/plugins/parallax-js-master/parallax.min.js}"></script>
     <script th:src="@{/plugins/colorbox/jquery.colorbox-min.js}"></script>
     <script th:src="@{/plugins/OwlCarousel2-2.2.1/owl.carousel.js}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCIwF204lFZg1y4kPSIhKaHEXMLYxxuMhA"></script>
-    <script th:src="@{/js/single_listing_custom.js}"></script>
   </body>
 </html>

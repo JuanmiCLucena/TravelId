@@ -19,6 +19,7 @@ import java.util.*;
 public class ServicioHabitacion extends AbstractBusinessServiceSoloEnt<Habitacion, Integer, RepoHabitacion> {
 
     private final RepoReserva repoReserva;
+    private final ServicioHotel servicioHotel;
 
     /**
      * Constructor del servicio de habitaciones.
@@ -26,9 +27,10 @@ public class ServicioHabitacion extends AbstractBusinessServiceSoloEnt<Habitacio
      * @param repoHabitacion el repositorio de habitaciones.
      * @param repoReserva el repositorio de reservas.
      */
-    protected ServicioHabitacion(RepoHabitacion repoHabitacion, RepoReserva repoReserva) {
+    protected ServicioHabitacion(RepoHabitacion repoHabitacion, RepoReserva repoReserva, ServicioHotel servicioHotel) {
         super(repoHabitacion);
         this.repoReserva = repoReserva;
+        this.servicioHotel = servicioHotel;
     }
 
     /**
@@ -191,4 +193,14 @@ public class ServicioHabitacion extends AbstractBusinessServiceSoloEnt<Habitacio
             return intervalPrice;
         }
     }
+
+    public List<Hotel> obtenerHotelesEnTuZona(Habitacion habitacion) {
+        Hotel hotel = habitacion.getHotel();
+        return servicioHotel.buscarEntidades()
+                .stream()
+                .filter(h -> h.getLocalizacion().getId().equals(hotel.getLocalizacion().getId()) && !Objects.equals(h.getId(), hotel.getId()))
+                .limit(2)
+                .toList();
+    }
+
 }

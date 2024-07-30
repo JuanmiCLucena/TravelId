@@ -57,7 +57,6 @@
   <body>
 
       <header th:replace="~{admin/fragments/fragmentos :: adminHeader}"></header>
-      <div th:replace="~{admin/fragments/fragmentos :: adminNavMobile}"></div>
 
         <div class="container w-50 d-flex justify-content-center main">
           <form class="d-flex gap-3 flex-column" action="/admin/habitaciones/crear" method="post" enctype="multipart/form-data" th:object="${habitacion}">
@@ -109,7 +108,5 @@
     <script th:src="@{/plugins/parallax-js-master/parallax.min.js}"></script>
     <script th:src="@{/plugins/colorbox/jquery.colorbox-min.js}"></script>
     <script th:src="@{/plugins/OwlCarousel2-2.2.1/owl.carousel.js}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCIwF204lFZg1y4kPSIhKaHEXMLYxxuMhA"></script>
-    <script th:src="@{/js/single_listing_custom.js}"></script>
   </body>
 </html>
