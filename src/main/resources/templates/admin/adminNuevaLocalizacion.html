@@ -73,7 +73,7 @@
             <div class="form-group">
               <label for="pais">País:</label>
               <select class="form-control" name="pais" id="pais" th:field="*{pais.id}">
-                <option  th:each="localizacion : ${localizaciones}" th:value="${localizacion.id}" th:text="${localizacion.nombre}" th:selected="${localizacion.id != null and localizacion.pais.id == localizacion.id}"></option>
+                <option  th:each="pais : ${paises}" th:value="${localizacion.id}" th:text="${pais.nombre}" th:selected="${pais.id != null and localizacion.pais.id == pais.id}"></option>
               </select>
             </div>
 
