@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Precios</title>
+    <title>Imagenes</title>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="description" content="Travelix Project" />
@@ -17,6 +17,7 @@
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"
     ></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link
             th:href="@{/plugins/font-awesome-4.7.0/css/font-awesome.min.css}"
             rel="stylesheet"
@@ -58,34 +59,29 @@
 <header th:replace="~{admin/fragments/fragmentos :: adminHeader}"></header>
 
 <div class="container main">
+    <!-- Mensaje de error -->
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
     <button type="button" class="btn btn-success mb-3">
-        <a class="text-decoration-none text-white" th:href="@{'/admin/reservas/crear'}">Crear Reserva</a>
+        <a class="text-decoration-none text-white" th:href="@{'/admin/imagenes/crear'}">Crear Imagen</a>
     </button>
 
     <table class="table table-striped">
         <thead>
         <th>Id</th>
-        <th>Fecha Inicio</th>
-        <th>Fecha Fin</th>
-        <th>Cancelado</th>
-        <th>Usuario</th>
+        <th>Nombre</th>
         <th></th>
         </thead>
         <tbody>
-        <tr th:each="reserva : ${reservas}">
-            <td th:text="${reserva.id}"></td>
-            <td th:text="${reserva.fechaInicio}"></td>
-            <td th:text="${reserva.fechaFin}"></td>
-            <td th:text="${reserva.cancelado}"></td>
-            <td th:if="${reserva.usu != null}" th:text="${reserva.usu.id}"></td>
-            <td th:if="${reserva.usu == null}"></td>
-            <td class="d-flex gap-2">
-                <form th:action="@{'/admin/reservas/' + ${reserva.id}}" th:method="get">
-                    <button type="submit" class="btn btn-outline-info">Actualizar</button>
+        <tr th:each="imagen : ${imagenes}">
+            <td th:text="${imagen.id}"></td>
+            <td th:text="${imagen.nombre}"></td>
+            <td class="d-flex gap-2 justify-content-end">
+                <form th:action="@{'/admin/imagenes/' + ${imagen.id}}" th:method="get">
+                    <button type="submit" class="btn btn-info"><i class="bi bi-pencil text-white"></i></button>
                 </form>
-                <form th:action="@{'/admin/reservas/eliminar/' + ${reserva.id}}" th:method="delete">
-                    <button type="submit" class="btn btn-outline-danger">Eliminar</button>
+                <form th:action="@{'/admin/imagenes/eliminar/' + ${imagen.id}}" th:method="delete">
+                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
                 </form>
             </td>
         </tr>
@@ -98,7 +94,7 @@
             <!-- Página anterior -->
             <li th:if="${page.hasPrevious()}" class="page-item">
                 <a class="page-link"
-                   th:href="@{/admin/precios(page=${page.page - 1}, size=${page.size})}"
+                   th:href="@{/admin/imagenes(page=${page.page - 1}, size=${page.size})}"
                    aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
@@ -108,14 +104,14 @@
             <li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
                 th:classappend="${i == page.page} ? 'page-item active' : 'page-item'">
                 <a class="page-link"
-                   th:href="@{/admin/precios(page=${i}, size=${page.size})}"
+                   th:href="@{/admin/imagenes(page=${i}, size=${page.size})}"
                    th:text="${i + 1}"></a>
             </li>
 
             <!-- Página siguiente -->
             <li th:if="${page.hasNext()}" class="page-item">
                 <a class="page-link"
-                   th:href="@{/admin/precios(page=${page.page + 1}, size=${page.size})}"
+                   th:href="@{/admin/imagenes(page=${page.page + 1}, size=${page.size})}"
                    aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
