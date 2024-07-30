@@ -69,12 +69,14 @@
             <thead>
                 <th>Id</th>
                 <th>Numero</th>
+                <th>Categoria</th>
                 <th></th>
             </thead>
             <tbody>
                 <tr th:each="asiento : ${asientos}">
                     <td th:text="${asiento.id}"></td>
                     <td th:text="${asiento.numero}"></td>
+                    <td th:text="${asiento.categoria.nombre}"></td>
                     <td class="d-flex gap-2 justify-content-end">
                         <form th:action="@{'/admin/asientos/' + ${asiento.id}}" th:method="get">
                             <button type="submit" class="btn btn-info"><i class="bi bi-pencil text-white"></i></button>

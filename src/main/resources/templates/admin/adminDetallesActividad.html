@@ -98,6 +98,16 @@
           </div>
 
           <div class="form-group">
+            <label for="maximo">Máximos Asistentes:</label>
+            <input type="number" class="form-control" id="maximo" th:value="${actividad.maximosAsistentes}" th:field="*{maximosAsistentes}">
+          </div>
+
+          <div class="form-group">
+            <label for="confirmados">Asistentes confirmados:</label>
+            <input type="number" class="form-control" id="confirmados" th:value="${actividad.asistentesConfirmados}" th:field="*{asistentesConfirmados}">
+          </div>
+
+          <div class="form-group">
             <label for="imagen">Imagen</label>
             <input type="file" class="form-control-file" id="imagen" name="imagen">
           </div>
