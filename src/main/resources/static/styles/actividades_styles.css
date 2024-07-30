@@ -574,13 +574,13 @@ section {
   position: fixed;
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(to right, #311bfa, #4fb9ff);
+  background: rgb(12, 58, 95);
   z-index: 100;
   opacity: 0;
   visibility: hidden;
 }
 .menu.active {
-  opacity: 0.95;
+  opacity: 0.98;
   visibility: visible;
 }
 .menu_content {
@@ -603,7 +603,7 @@ section {
 .menu_item a {
   display: inline-block;
   position: relative;
-  font-family: "Beyond";
+  font-family: "Times New Roman", Times, serif;
   font-size: 36px;
   color: #ffffff;
   font-weight: 400;
@@ -708,6 +708,7 @@ section {
   color: #ffffff;
   text-transform: uppercase;
   white-space: nowrap;
+  font-family: "Times New Roman", Times, serif;
 }
 
 /*--------------------------------------------------------------
