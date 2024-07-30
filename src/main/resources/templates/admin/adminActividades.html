@@ -69,12 +69,16 @@
             <thead>
                 <th>Id</th>
                 <th>Nombre</th>
+                <th>Localización</th>
+                <th>Tipo</th>
                 <th></th>
             </thead>
             <tbody>
                 <tr th:each="actividad : ${actividades}">
                     <td th:text="${actividad.id}"></td>
                     <td th:text="${actividad.nombre}"></td>
+                    <td th:text="${actividad.localizacion.nombre}"></td>
+                    <td th:text="${actividad.tipo.nombre}"></td>
                     <td class="d-flex gap-2 justify-content-end">
                         <form th:action="@{'/admin/actividades/' + ${actividad.id}}" th:method="get">
                             <button type="submit" class="btn btn-info"><i class="bi bi-pencil text-white"></i></button>

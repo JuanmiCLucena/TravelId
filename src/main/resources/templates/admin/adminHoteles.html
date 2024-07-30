@@ -70,12 +70,16 @@
             <thead>
                 <th>Id</th>
                 <th>Nombre</th>
+                <th>Categoria</th>
+                <th>Localización</th>
                 <th></th>
             </thead>
             <tbody>
                 <tr th:each="hotel : ${hoteles}">
                     <td th:text="${hotel.id}"></td>
                     <td th:text="${hotel.nombre}"></td>
+                    <td th:text="${hotel.categoria}"></td>
+                    <td th:text="${hotel.localizacion.nombre}"></td>
                     <td class="d-flex gap-2 justify-content-end">
                         <form th:action="@{'/admin/hoteles/' + ${hotel.id}}" th:method="get">
                             <button type="submit" class="btn btn-info"><i class="bi bi-pencil text-white"></i></button>
