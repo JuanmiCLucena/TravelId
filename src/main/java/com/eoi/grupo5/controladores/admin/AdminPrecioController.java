@@ -1,15 +1,11 @@
 package com.eoi.grupo5.controladores.admin;
 
 import com.eoi.grupo5.modelos.*;
-import com.eoi.grupo5.paginacion.PaginaRespuestaHabitaciones;
 import com.eoi.grupo5.paginacion.PaginaRespuestaPrecios;
 import com.eoi.grupo5.servicios.*;
-import com.eoi.grupo5.servicios.archivos.FileSystemStorageService;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +37,7 @@ public class AdminPrecioController {
         List<Precio> precios = preciosPage.getContent();
         modelo.addAttribute("precios",precios);
         modelo.addAttribute("page", preciosPage);
-        return "admin/adminPrecios";
+        return "admin/precios/adminPrecios";
     }
 
     @GetMapping("/{id}")
@@ -49,7 +45,7 @@ public class AdminPrecioController {
         Optional<Precio> precio = servicioPrecio.encuentraPorId(id);
         if(precio.isPresent()) {
             modelo.addAttribute("precio",precio.get());
-            return "admin/adminDetallesPrecio";
+            return "admin/precios/adminDetallesPrecio";
         } else {
             // Hotel no encontrado - htlm
             return "hotelNoEncontrado";
@@ -64,7 +60,7 @@ public class AdminPrecioController {
         modelo.addAttribute("habitaciones", servicioHabitacion.buscarEntidades());
         modelo.addAttribute("asientos", servicioAsiento.buscarEntidades());
         modelo.addAttribute("actividades", servicioActividad.buscarEntidades());
-        return "admin/adminNuevoPrecio";
+        return "admin/precios/adminNuevoPrecio";
     }
 
     @PostMapping("/crear")

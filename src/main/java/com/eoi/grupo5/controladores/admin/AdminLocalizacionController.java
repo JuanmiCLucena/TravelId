@@ -1,20 +1,13 @@
 package com.eoi.grupo5.controladores.admin;
 
-import com.eoi.grupo5.modelos.Habitacion;
-import com.eoi.grupo5.modelos.Imagen;
 import com.eoi.grupo5.modelos.Localizacion;
-import com.eoi.grupo5.modelos.Vuelo;
-import com.eoi.grupo5.paginacion.PaginaRespuestaHabitaciones;
 import com.eoi.grupo5.paginacion.PaginaRespuestaLocalizaciones;
 import com.eoi.grupo5.servicios.*;
-import com.eoi.grupo5.servicios.archivos.FileSystemStorageService;
 import jakarta.validation.Valid;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +41,7 @@ public class AdminLocalizacionController {
         List<Localizacion> localizaciones = localizacionesPage.getContent();
         modelo.addAttribute("localizaciones",localizaciones);
         modelo.addAttribute("page", localizacionesPage);
-        return "admin/adminLocalizaciones";
+        return "admin/localizaciones/adminLocalizaciones";
     }
 
     @GetMapping("/{id}")
@@ -61,7 +54,7 @@ public class AdminLocalizacionController {
             modelo.addAttribute("actividades", servicioActividad.buscarEntidades());
             modelo.addAttribute("paises", servicioPais.buscarEntidades());
 
-            return "admin/adminDetallesLocalizacion";
+            return "admin/localizaciones/adminDetallesLocalizacion";
         } else {
             // Hotel no encontrado - htlm
             return "localizacionNoEncontrada";
@@ -75,7 +68,7 @@ public class AdminLocalizacionController {
         modelo.addAttribute("localizacion", localizacion);
         modelo.addAttribute("paises", servicioPais.buscarEntidades());
 
-        return "admin/adminNuevaLocalizacion";
+        return "admin/localizaciones/adminNuevaLocalizacion";
     }
 
     @PostMapping("/crear")
@@ -84,7 +77,7 @@ public class AdminLocalizacionController {
             modelo.addAttribute("vuelos", servicioVuelo.buscarEntidades());
             modelo.addAttribute("hoteles", servicioHotel.buscarEntidades());
             modelo.addAttribute("actividades", servicioActividad.buscarEntidades());
-            return "admin/adminNuevaLocalizacion";
+            return "admin/localizaciones/adminNuevaLocalizacion";
         }
         try {
             servicioLocalizacion.guardar(localizacion);
@@ -93,7 +86,7 @@ public class AdminLocalizacionController {
             modelo.addAttribute("vuelos", servicioVuelo.buscarEntidades());
             modelo.addAttribute("hoteles", servicioHotel.buscarEntidades());
             modelo.addAttribute("actividades", servicioActividad.buscarEntidades());
-            return "admin/adminNuevaLocalizacion";
+            return "admin/localizaciones/adminNuevaLocalizacion";
         }
         return "redirect:/admin/localizaciones";
     }

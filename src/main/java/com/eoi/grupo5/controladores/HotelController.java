@@ -1,11 +1,8 @@
 package com.eoi.grupo5.controladores;
 
-import com.eoi.grupo5.modelos.Actividad;
 import com.eoi.grupo5.modelos.Hotel;
 
 import com.eoi.grupo5.modelos.Imagen;
-import com.eoi.grupo5.modelos.Precio;
-import com.eoi.grupo5.paginacion.PaginaRespuestaActividades;
 import com.eoi.grupo5.paginacion.PaginaRespuestaHoteles;
 import com.eoi.grupo5.servicios.ServicioHabitacion;
 import com.eoi.grupo5.servicios.ServicioHotel;
@@ -13,12 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -35,15 +29,17 @@ public class HotelController {
     }
 
     @GetMapping("/hoteles/lista")
-    public String listaHoteles(Model modelo) {
-        int page = 0;
-        int size = 6;
+    public String listaHoteles(
+            Model modelo,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "6") int size
+    ) {
 
         PaginaRespuestaHoteles<Hotel> hotelesPage = servicioHotel.buscarEntidadesPaginadas(page, size);
         List<Hotel> hoteles = hotelesPage.getContent();
         modelo.addAttribute("lista", hoteles);
         modelo.addAttribute("page", hotelesPage);
-        return "hoteles";
+        return "hoteles/listaHoteles";
     }
 
     @GetMapping("/hotel/{id}")
@@ -61,7 +57,7 @@ public class HotelController {
             modelo.addAttribute("preciosActuales",
                     servicioHabitacion.obtenerPreciosActualesHabitacionesHotel(hotel.get()));
 
-        return "detallesHotel";
+        return "hoteles/detallesHotel";
         } else {
             // Hotel no encontrado - htlm
             return "hotelNoEncontrado";

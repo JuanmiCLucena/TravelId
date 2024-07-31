@@ -2,14 +2,11 @@ package com.eoi.grupo5.controladores.admin;
 
 import com.eoi.grupo5.modelos.*;
 import com.eoi.grupo5.paginacion.PaginaRespuestaAsientos;
-import com.eoi.grupo5.paginacion.PaginaRespuestaHabitaciones;
 import com.eoi.grupo5.servicios.*;
 import com.eoi.grupo5.servicios.archivos.FileSystemStorageService;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -42,7 +39,7 @@ public class AdminAsientoController {
         List<Asiento> asientos = asientosPage.getContent();
         modelo.addAttribute("asientos",asientos);
         modelo.addAttribute("page", asientosPage);
-        return "admin/adminAsientos";
+        return "admin/asientos/adminAsientos";
     }
 
     @GetMapping("/{id}")
@@ -55,7 +52,7 @@ public class AdminAsientoController {
             modelo.addAttribute("vuelos", servicioVuelo.buscarEntidades());
             modelo.addAttribute("categoriasAsiento", servicioCategoriaAsiento.buscarEntidades());
 
-        return "admin/adminDetallesAsiento";
+        return "admin/asientos/adminDetallesAsiento";
         } else {
             // Habitacion no encontrado - htlm
             return "asientoNoEncontrado";
@@ -69,7 +66,7 @@ public class AdminAsientoController {
         modelo.addAttribute("asiento", asiento);
         modelo.addAttribute("vuelos", servicioVuelo.buscarEntidades());
         modelo.addAttribute("categoriasAsiento", servicioCategoriaAsiento.buscarEntidades());
-        return "admin/adminNuevoAsiento";
+        return "admin/asientos/adminNuevoAsiento";
     }
 
     @PostMapping("/crear")

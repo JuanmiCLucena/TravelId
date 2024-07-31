@@ -40,7 +40,7 @@ public class HabitacionController {
 
             modelo.addAttribute("recomendados", servicioHabitacion.obtenerHotelesEnTuZona(habitacion.get()));
 
-            return "detallesHabitacion";
+            return "habitaciones/detallesHabitacion";
         } else {
             // Hotel no encontrado - htlm
             return "habitacionNoEncontrado";
