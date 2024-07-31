@@ -1,19 +1,14 @@
 package com.eoi.grupo5.controladores.admin;
 
 import com.eoi.grupo5.modelos.*;
-import com.eoi.grupo5.paginacion.PaginaRespuestaPagos;
 import com.eoi.grupo5.paginacion.PaginaRespuestaReservas;
 import com.eoi.grupo5.servicios.*;
-import com.eoi.grupo5.servicios.archivos.FileSystemStorageService;
 import jakarta.validation.Valid;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,7 +34,7 @@ public class AdminReservaController {
         List<Reserva> reservas = servicioReserva.buscarEntidades();
         modelo.addAttribute("reservas",reservas);
         modelo.addAttribute("page", reservasPage);
-        return "admin/adminReservas";
+        return "admin/reservas/adminReservas";
     }
 
     @GetMapping("/{id}")
@@ -49,7 +44,7 @@ public class AdminReservaController {
             modelo.addAttribute("reserva",reserva.get());
             modelo.addAttribute("usuarios", servicioUsuario.buscarEntidades());
 
-            return "admin/adminDetallesReserva";
+            return "admin/reservas/adminDetallesReserva";
         } else {
             // Habitacion no encontrado - htlm
             return "reservaNoEncontrada";
@@ -62,14 +57,14 @@ public class AdminReservaController {
         Reserva reserva = new Reserva();
         modelo.addAttribute("reserva", reserva);
         modelo.addAttribute("usuarios", servicioUsuario.buscarEntidades());
-        return "admin/adminNuevaReserva";
+        return "admin/reservas/adminNuevaReserva";
     }
 
     @PostMapping("/crear")
     public String crear(@Valid @ModelAttribute("reserva") Reserva reserva, BindingResult result, Model modelo) {
         if (result.hasErrors()) {
             modelo.addAttribute("usuarios", servicioUsuario.buscarEntidades());
-            return "admin/adminNuevaReserva";
+            return "admin/reservas/adminNuevaReserva";
         }
         try {
             servicioReserva.guardar(reserva);

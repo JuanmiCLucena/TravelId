@@ -47,7 +47,7 @@ public class AdminVueloController {
         List<Vuelo> vuelos = vuelosPage.getContent();
         modelo.addAttribute("vuelos",vuelos);
         modelo.addAttribute("page", vuelosPage);
-        return "admin/adminVuelos";
+        return "admin/vuelos/adminVuelos";
     }
 
     @GetMapping("/{id}")
@@ -58,10 +58,10 @@ public class AdminVueloController {
             modelo.addAttribute("preciosActuales", servicioAsiento.obtenerPreciosActualesAsientosVuelo(vuelo.get()));
             modelo.addAttribute("localizaciones", servicioLocalizacion.buscarEntidades());
             modelo.addAttribute("companias", servicioCompaniaVuelo.buscarEntidades());
-            return "admin/adminDetallesVuelo";
+            return "admin/vuelos/adminDetallesVuelo";
         } else {
             modelo.addAttribute("error", "Vuelo no encontrado");
-            return "admin/adminVuelos";
+            return "admin/vuelos/adminVuelos";
         }
     }
 
@@ -71,7 +71,7 @@ public class AdminVueloController {
         modelo.addAttribute("vuelo", vuelo);
         modelo.addAttribute("localizaciones", servicioLocalizacion.buscarEntidades());
         modelo.addAttribute("companias", servicioCompaniaVuelo.buscarEntidades());
-        return "admin/adminNuevoVuelo";
+        return "admin/vuelos/adminNuevoVuelo";
     }
 
     @PostMapping("/crear")
