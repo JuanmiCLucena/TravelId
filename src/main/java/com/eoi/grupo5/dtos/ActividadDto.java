@@ -1,9 +1,6 @@
 package com.eoi.grupo5.dtos;
 
-import com.eoi.grupo5.modelos.Imagen;
-import com.eoi.grupo5.modelos.Localizacion;
-import com.eoi.grupo5.modelos.Precio;
-import com.eoi.grupo5.modelos.TipoActividad;
+import com.eoi.grupo5.modelos.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
