@@ -107,11 +107,8 @@
       <div th:replace="~{fragments/plantilla :: copyright}"></div>
     </div>
 
-    <script src="js/jquery-3.2.1.min.js"></script>
-    <script src="styles/bootstrap4/popper.js"></script>
-    <script src="styles/bootstrap4/bootstrap.min.js"></script>
-    <script src="plugins/parallax-js-master/parallax.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCIwF204lFZg1y4kPSIhKaHEXMLYxxuMhA"></script>
-    <script src="js/contact_custom.js"></script>
+    <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+    <script th:src="@{/plugins/parallax-js-master/parallax.min.js}"></script>
+    <script th:src="@{/js/contact_custom.js}"></script>
   </body>
 </html>
