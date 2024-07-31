@@ -1,8 +1,7 @@
-package com.eoi.grupo5.repos.specification;
+package com.eoi.grupo5.filtros.specification;
 
 import com.eoi.grupo5.modelos.Actividad;
-import com.eoi.grupo5.repos.filtros.FiltroActividades;
-import jakarta.persistence.criteria.JoinType;
+import com.eoi.grupo5.filtros.FiltroActividades;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDateTime;

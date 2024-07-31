@@ -1,14 +1,12 @@
 package com.eoi.grupo5.controladores;
 
-import com.eoi.grupo5.controladores.criteria.BusquedaCriteriaActividades;
+import com.eoi.grupo5.filtros.criteria.BusquedaCriteriaActividades;
 import com.eoi.grupo5.mapper.ActividadesMapper;
 import com.eoi.grupo5.modelos.Actividad;
 import com.eoi.grupo5.modelos.Imagen;
 
 import com.eoi.grupo5.dtos.ActividadDto;
-import com.eoi.grupo5.modelos.Vuelo;
 import com.eoi.grupo5.paginacion.PaginaRespuestaActividades;
-import com.eoi.grupo5.paginacion.PaginaRespuestaVuelos;
 import com.eoi.grupo5.servicios.ServicioActividad;
 import com.eoi.grupo5.servicios.ServicioTipoActividad;
 import com.eoi.grupo5.servicios.filtros.ServicioFiltroActividades;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 public class ActividadController {
