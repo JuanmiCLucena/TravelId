@@ -53,7 +53,7 @@
                             </li>
 
                             <li class="main_nav_item" sec:authorize="isAuthenticated()">
-                                <a th:href="@{/reservas}">Tus Reservas</a>
+                                <a th:href="@{/reservas/tus-reservas}">Tus Reservas</a>
                             </li>
 
                             <li class="main_nav_item" sec:authorize="hasAuthority('ADMIN')">
@@ -102,7 +102,7 @@
             </li>
 
             <li class="menu_item" sec:authorize="isAuthenticated()">
-                <a th:href="@{/reservas}">Tus Reservas</a>
+                <a th:href="@{/reservas/tus-reservas}">Tus Reservas</a>
             </li>
 
             <li class="menu_item" sec:authorize="isAuthenticated()">

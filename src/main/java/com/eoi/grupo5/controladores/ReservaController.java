@@ -11,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
@@ -29,6 +30,24 @@ public class ReservaController {
         this.servicioReserva = servicioReserva;
         this.servicioHabitacion = servicioHabitacion;
         this.repoUsuario = repoUsuario;
+    }
+
+    @GetMapping("/tus-reservas")
+    public String verTusReservas(Principal principal, Model model) {
+        // Obtener el usuario autenticado
+        Optional<Usuario> optionalUsuario = repoUsuario.findByNombreUsuario(principal.getName());
+        if (optionalUsuario.isPresent()) {
+            Usuario usuario = optionalUsuario.get();
+
+            // Obtener las reservas del usuario
+            List<Reserva> reservas = servicioReserva.obtenerReservasPorUsuario(usuario);
+            model.addAttribute("reservas", reservas);
+
+            return "reservas/tusReservas";
+        } else {
+            model.addAttribute("error", "Usuario no encontrado");
+            return "error/paginaError";
+        }
     }
 
     @GetMapping("/habitacion/reservar/{id}")
@@ -63,7 +82,7 @@ public class ReservaController {
         try {
             // Obtener el usuario autenticado a partir del Principal
             String username = principal.getName();
-            Optional<Usuario> optionalUsuario = repoUsuario.findByNombreUsuario(username); // Implementa este método para obtener el usuario desde el repositorio
+            Optional<Usuario> optionalUsuario = repoUsuario.findByNombreUsuario(username);
 
             if(optionalUsuario.isPresent()) {
 
@@ -109,6 +128,38 @@ public class ReservaController {
         modelo.addAttribute("fechaFin", fechaFin);
 
         return "reservas/habitacion/reservarHabitacion";
+    }
+
+    @PostMapping("/habitacion/{idHabitacion}/reservar")
+    public String reservarHabitacion(
+            @PathVariable("idHabitacion") Integer idHabitacion,
+            @RequestParam("fechaInicio") LocalDateTime fechaInicio,
+            @RequestParam("fechaFin") LocalDateTime fechaFin,
+            @RequestParam("precioTotal") Double precioTotal,
+           @RequestParam("metodoPagoId") Integer metodoPagoId,
+            Principal principal,
+            Model modelo) {
+
+        // Obtener el usuario autenticado
+        Optional<Usuario> optionalUsuario = repoUsuario.findByNombreUsuario(principal.getName());
+        if (optionalUsuario.isPresent()) {
+            Usuario usuario = optionalUsuario.get();
+            // Crear la reserva
+            try {
+                Reserva reserva = servicioReserva.crearReserva(usuario, fechaInicio, fechaFin);
+                servicioReserva.addHabitacion(reserva.getId(), idHabitacion, fechaInicio, fechaFin);
+
+                servicioReserva.generarPago(reserva.getId(), precioTotal, metodoPagoId);
+
+                return "redirect:/reservas/tus-reservas";
+            } catch (Exception e) {
+                modelo.addAttribute("error", e.getMessage());
+                return "error/paginaError";
+            }
+        } else {
+            modelo.addAttribute("error", "Usuario no encontrado");
+            return "error/paginaError";
+        }
     }
 
 

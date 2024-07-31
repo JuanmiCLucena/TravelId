@@ -78,7 +78,10 @@
         <td th:text="${#temporals.format(intervalo.end, 'dd MMMM yyyy HH:mm', #locale)}"></td>
         <td class="d-flex gap-3 align-items-center">
           <span th:text="${intervalo.intervalPrice} + ' €'"></span>
-          <form action="" method="post" class="d-inline-block">
+          <form th:action="@{/reservas/habitacion/{idHabitacion}/reservar(idHabitacion=${habitacion.id})}" method="post" class="d-inline-block">
+            <input type="hidden" name="fechaInicio" th:value="${intervalo.start}" />
+            <input type="hidden" name="fechaFin" th:value="${intervalo.end}" />
+            <input type="hidden" name="precioTotal" th:value="${intervalo.intervalPrice}" />
             <button type="submit" class="btn btn-info">Reservar</button>
           </form>
         </td>

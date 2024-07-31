@@ -1,7 +1,6 @@
 package com.eoi.grupo5.servicios;
 
 import com.eoi.grupo5.modelos.*;
-import com.eoi.grupo5.paginacion.PaginaRespuestaPrecios;
 import com.eoi.grupo5.paginacion.PaginaRespuestaReservas;
 import com.eoi.grupo5.repos.*;
 import org.springframework.data.domain.Page;
@@ -10,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,13 +19,17 @@ public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Int
     private final RepoHabitacion repoHabitacion;
     private final RepoAsiento repoAsiento;
     private final RepoActividad repoActividad;
+    private final RepoPago repoPago;
+    private final RepoMetodoPago repoMetodoPago;
 
-    protected ServicioReserva(RepoReserva repoReserva, RepoHabitacion repoHabitacion, RepoAsiento repoAsiento, RepoActividad repoActividad) {
+    protected ServicioReserva(RepoReserva repoReserva, RepoHabitacion repoHabitacion, RepoAsiento repoAsiento, RepoActividad repoActividad, RepoPago repoPago, RepoMetodoPago repoMetodoPago) {
         super(repoReserva);
         this.repoReserva = repoReserva;
         this.repoHabitacion = repoHabitacion;
         this.repoAsiento = repoAsiento;
         this.repoActividad = repoActividad;
+        this.repoPago = repoPago;
+        this.repoMetodoPago = repoMetodoPago;
     }
 
     public Reserva crearReserva(Usuario usuario, LocalDateTime fechaInicio, LocalDateTime fechaFin) {
@@ -36,7 +40,7 @@ public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Int
         return repoReserva.save(reserva);
     }
 
-    public void añadirHabitacion(Integer reservaId, Integer idHabitacion, LocalDateTime fechaInicio, LocalDateTime fechaFin) {
+    public void addHabitacion(Integer reservaId, Integer idHabitacion, LocalDateTime fechaInicio, LocalDateTime fechaFin) {
         Optional<Reserva> optionalReserva = repoReserva.findById(reservaId);
         if (optionalReserva.isPresent()) {
             Reserva reserva = optionalReserva.get();
@@ -47,6 +51,7 @@ public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Int
                 reserva.setFechaInicio(fechaInicio);
                 reserva.setFechaFin(fechaFin);
                 repoReserva.save(reserva);
+
             } else {
                 throw new RuntimeException("No se encontró la habitación.");
             }
@@ -121,6 +126,33 @@ public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Int
         }
     }
 
+    public void generarPago(Integer reservaId, Double precioTotal, Integer metodoPagoId) {
+        Optional<Reserva> optionalReserva = repoReserva.findById(reservaId);
+        if (optionalReserva.isPresent()) {
+            Reserva reserva = optionalReserva.get();
+            Optional<MetodoPago> optionalMetodoPago = repoMetodoPago.findById(metodoPagoId);
+            if (optionalMetodoPago.isPresent()) {
+                MetodoPago metodoPago = optionalMetodoPago.get();
+                Pago pago = new Pago();
+                pago.setImporte(precioTotal);
+                pago.setFechaPago(LocalDateTime.now());
+                pago.setMetodoPago(metodoPago);
+                pago.setReserva(reserva);
+
+                // Asociar el pago a la reserva
+                reserva.setPago(pago);
+
+                // Guardar el pago
+                repoPago.save(pago);
+
+                // Guardar la reserva actualizada
+                repoReserva.save(reserva);
+            } else {
+                throw new RuntimeException("No se encontró el método de pago.");
+            }
+        }
+    }
+
     public PaginaRespuestaReservas<Reserva> buscarEntidadesPaginadas(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Reserva> reservaPage = getRepo().findAll(pageable);
@@ -134,4 +166,9 @@ public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Int
 
         return respuesta;
     }
+
+    public List<Reserva> obtenerReservasPorUsuario(Usuario usuario) {
+        return repoReserva.findByUsu(usuario);
+    }
+
 }
