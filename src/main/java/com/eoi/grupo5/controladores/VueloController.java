@@ -1,9 +1,6 @@
 package com.eoi.grupo5.controladores;
 
-import com.eoi.grupo5.modelos.Actividad;
-import com.eoi.grupo5.modelos.Hotel;
 import com.eoi.grupo5.modelos.Vuelo;
-import com.eoi.grupo5.paginacion.PaginaRespuestaActividades;
 import com.eoi.grupo5.paginacion.PaginaRespuestaVuelos;
 import com.eoi.grupo5.servicios.ServicioAsiento;
 import com.eoi.grupo5.servicios.ServicioVuelo;
@@ -42,7 +39,7 @@ public class VueloController {
         List<Vuelo> vuelos = vuelosPage.getContent();
         modelo.addAttribute("lista", vuelos);
         modelo.addAttribute("page", vuelosPage);
-        return "vuelos";
+        return "vuelos/listaVuelos";
     }
 
     @GetMapping("/vuelo/{id}")
@@ -59,7 +56,7 @@ public class VueloController {
             modelo.addAttribute("preciosActuales",
                     servicioAsiento.obtenerPreciosActualesAsientosVuelo(vuelo.get()));
 
-            return "detallesVuelo";
+            return "vuelos/detallesVuelo";
         } else {
             // Vuelo no encontrado - htlm
             return "vueloNoEncontrado";

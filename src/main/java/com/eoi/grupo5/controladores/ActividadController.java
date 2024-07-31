@@ -49,7 +49,7 @@ public class ActividadController {
         modelo.addAttribute("preciosActuales", servicioActividad.obtenerPreciosActualesActividades(actividades));
         modelo.addAttribute("tiposActividad", servicioTipoActividad.buscarEntidades());
         modelo.addAttribute("page", actividadesPage);
-        return "actividades";
+        return "actividades/listaActividades";
     }
 
     @GetMapping("/actividad/{id}")
@@ -67,7 +67,7 @@ public class ActividadController {
             modelo.addAttribute("precioActual",
                     servicioActividad.getPrecioActual(actividad.get(), LocalDateTime.now()));
 
-            return "detallesActividad";
+            return "actividades/detallesActividad";
         } else {
             // Hotel no encontrado - htlm
             return "hotelNoEncontrado";
@@ -95,7 +95,7 @@ public class ActividadController {
                 modelo.addAttribute("preciosActuales", servicioActividad
                         .obtenerPreciosActualesActividades(actividades));
                 modelo.addAttribute("tiposActividad", servicioTipoActividad.buscarEntidades());
-                return "actividades";
+                return "actividades/listaActividades";
             } else {
 
                 modelo.addAttribute("tipoId", criteria.getTipoId());
@@ -113,7 +113,7 @@ public class ActividadController {
         }
 
         modelo.addAttribute("tiposActividad", servicioTipoActividad.buscarEntidades());
-        return "actividades";
+        return "actividades/listaActividades";
     }
 
 }
