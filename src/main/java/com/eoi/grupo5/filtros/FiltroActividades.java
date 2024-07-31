@@ -1,4 +1,4 @@
-package com.eoi.grupo5.repos.filtros;
+package com.eoi.grupo5.filtros;
 
 import java.time.LocalDateTime;
 

@@ -1,4 +1,4 @@
-package com.eoi.grupo5.controladores.criteria;
+package com.eoi.grupo5.filtros.criteria;
 
 import com.eoi.grupo5.modelos.TipoActividad;
 import lombok.AllArgsConstructor;
