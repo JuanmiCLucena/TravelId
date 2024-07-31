@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Localizaciones</title>
+    <title>Hoteles</title>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="description" content="Travelix Project" />
@@ -59,29 +59,32 @@
     <header th:replace="~{admin/fragments/fragmentos :: adminHeader}"></header>
 
     <div class="container main">
+        <!-- Mensaje de error -->
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
         <button type="button" class="btn btn-success mb-3">
-            <a class="text-decoration-none text-white" th:href="@{'/admin/localizaciones/crear'}">Crear Localizacion</a>
+            <a class="text-decoration-none text-white" th:href="@{'/admin/hoteles/crear'}">Crear Hotel</a>
         </button>
 
         <table class="table table-striped">
             <thead>
                 <th>Id</th>
                 <th>Nombre</th>
-                <th>País</th>
+                <th>Categoria</th>
+                <th>Localización</th>
+                <th></th>
             </thead>
             <tbody>
-                <tr th:each="localizacion : ${localizaciones}">
-                    <td th:text="${localizacion.id}"></td>
-                    <td th:text="${localizacion.nombre}"></td>
-                    <td th:text="${localizacion.pais.nombre}"></td>
-
+                <tr th:each="hotel : ${hoteles}">
+                    <td th:text="${hotel.id}"></td>
+                    <td th:text="${hotel.nombre}"></td>
+                    <td th:text="${hotel.categoria}"></td>
+                    <td th:text="${hotel.localizacion.nombre}"></td>
                     <td class="d-flex gap-2 justify-content-end">
-                      
-                        <form th:action="@{'/admin/localizaciones/' + ${localizacion.id}}" th:method="get">
+                        <form th:action="@{'/admin/hoteles/' + ${hotel.id}}" th:method="get">
                             <button type="submit" class="btn btn-info"><i class="bi bi-pencil text-white"></i></button>
                         </form>
-                        <form th:action="@{'/admin/localizaciones/eliminar/' + ${localizacion.id}}" th:method="delete">
+                        <form th:action="@{'/admin/hoteles/eliminar/' + ${hotel.id}}" th:method="delete">
                             <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
                         </form>
                     </td>
@@ -95,7 +98,7 @@
                 <!-- Página anterior -->
                 <li th:if="${page.hasPrevious()}" class="page-item">
                     <a class="page-link"
-                       th:href="@{/admin/localizaciones(page=${page.page - 1}, size=${page.size})}"
+                       th:href="@{/templates/admin/hoteles(page=${page.page - 1}, size=${page.size})}"
                        aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
@@ -105,14 +108,14 @@
                 <li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
                     th:classappend="${i == page.page} ? 'page-item active' : 'page-item'">
                     <a class="page-link"
-                       th:href="@{/admin/localizaciones(page=${i}, size=${page.size})}"
+                       th:href="@{/templates/admin/hoteles(page=${i}, size=${page.size})}"
                        th:text="${i + 1}"></a>
                 </li>
 
                 <!-- Página siguiente -->
                 <li th:if="${page.hasNext()}" class="page-item">
                     <a class="page-link"
-                       th:href="@{/admin/localizaciones(page=${page.page + 1}, size=${page.size})}"
+                       th:href="@{/templates/admin/hoteles(page=${page.page + 1}, size=${page.size})}"
                        aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>

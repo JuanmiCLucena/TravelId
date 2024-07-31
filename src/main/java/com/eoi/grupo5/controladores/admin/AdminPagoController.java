@@ -38,7 +38,7 @@ public class AdminPagoController {
         List<Pago> pagos = servicioPago.buscarEntidades();
         modelo.addAttribute("pagos",pagos);
         modelo.addAttribute("page", pagosPage);
-        return "admin/adminPagos";
+        return "admin/pagos/adminPagos";
     }
 
     @GetMapping("/{id}")
@@ -49,7 +49,7 @@ public class AdminPagoController {
             modelo.addAttribute("reservas", servicioReserva.buscarEntidades());
             modelo.addAttribute("metodosPago", servicioMetodoPago.buscarEntidades());
 
-            return "admin/adminDetallesPago";
+            return "admin/pagos/adminDetallesPago";
         } else {
             // Pago no encontrado - htlm
             return "PagoNoEncontrada";
@@ -63,7 +63,7 @@ public class AdminPagoController {
         modelo.addAttribute("pago", pago);
         modelo.addAttribute("reservas", servicioReserva.buscarEntidades());
         modelo.addAttribute("metodosPago", servicioMetodoPago.buscarEntidades());
-        return "admin/adminNuevoPago";
+        return "admin/pagos/adminNuevoPago";
     }
 
     @PostMapping("/crear")

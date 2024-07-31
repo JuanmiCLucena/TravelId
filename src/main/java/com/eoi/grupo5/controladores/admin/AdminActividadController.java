@@ -46,7 +46,7 @@ public class AdminActividadController {
         List<Actividad> actividades = actividadesPage.getContent();
         modelo.addAttribute("actividades",actividades);
         modelo.addAttribute("page", actividadesPage);
-        return "admin/adminActividades";
+        return "admin/actividades/adminActividades";
     }
 
     @GetMapping("/{id}")
@@ -59,7 +59,7 @@ public class AdminActividadController {
             modelo.addAttribute("localizaciones", servicioLocalizacion.buscarEntidades());
             modelo.addAttribute("tipos", servicioTipoActividad.buscarEntidades());
 
-        return "admin/adminDetallesActividad";
+        return "admin/actividades/adminDetallesActividad";
         } else {
             // Actividad no encontrado - htlm
             return "actividadNoEncontrado";
@@ -73,7 +73,7 @@ public class AdminActividadController {
         modelo.addAttribute("actividad", actividad);
         modelo.addAttribute("localizaciones", servicioLocalizacion.buscarEntidades());
         modelo.addAttribute("tipos", servicioTipoActividad.buscarEntidades());
-        return "admin/adminNuevaActividad";
+        return "admin/actividades/adminNuevaActividad";
     }
 
     @PostMapping("/crear")

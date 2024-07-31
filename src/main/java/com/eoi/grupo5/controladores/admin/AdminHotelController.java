@@ -1,9 +1,7 @@
 package com.eoi.grupo5.controladores.admin;
 
-import com.eoi.grupo5.modelos.Habitacion;
 import com.eoi.grupo5.modelos.Hotel;
 import com.eoi.grupo5.modelos.Imagen;
-import com.eoi.grupo5.paginacion.PaginaRespuestaHabitaciones;
 import com.eoi.grupo5.paginacion.PaginaRespuestaHoteles;
 import com.eoi.grupo5.servicios.ServicioHabitacion;
 import com.eoi.grupo5.servicios.ServicioHotel;
@@ -49,7 +47,7 @@ public class AdminHotelController {
         List<Hotel> hoteles = hotelesPage.getContent();
         modelo.addAttribute("hoteles",hoteles);
         modelo.addAttribute("page", hotelesPage);
-        return "admin/adminHoteles";
+        return "admin/hoteles/adminHoteles";
     }
 
     @GetMapping("/{id}")
@@ -59,7 +57,7 @@ public class AdminHotelController {
             modelo.addAttribute("hotel", hotel.get());
             modelo.addAttribute("preciosActuales", servicioHabitacion.obtenerPreciosActualesHabitacionesHotel(hotel.get()));
             modelo.addAttribute("localizaciones", servicioLocalizacion.buscarEntidades());
-            return "admin/adminDetallesHotel";
+            return "admin/hoteles/adminDetallesHotel";
         } else {
             modelo.addAttribute("error", "Hotel no encontrado");
             return "admin/adminHoteles";
@@ -71,7 +69,7 @@ public class AdminHotelController {
         Hotel hotel = new Hotel();
         modelo.addAttribute("hotel", hotel);
         modelo.addAttribute("localizaciones", servicioLocalizacion.buscarEntidades());
-        return "admin/adminNuevoHotel";
+        return "admin/hoteles/adminNuevoHotel";
     }
 
     @PostMapping("/crear")

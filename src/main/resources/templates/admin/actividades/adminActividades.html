@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Precios</title>
+    <title>Actividades</title>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="description" content="Travelix Project" />
@@ -58,40 +58,32 @@
 
     <header th:replace="~{admin/fragments/fragmentos :: adminHeader}"></header>
 
+
     <div class="container main">
 
         <button type="button" class="btn btn-success mb-3">
-            <a class="text-decoration-none text-white" th:href="@{'/admin/precios/crear'}">Crear Precio</a>
+            <a class="text-decoration-none text-white" th:href="@{'/admin/actividades/crear'}">Crear Actividad</a>
         </button>
 
         <table class="table table-striped">
             <thead>
                 <th>Id</th>
-                <th>Valor</th>
-                <th>Fecha Inicio</th>
-                <th>Fecha Fin</th>
-                <th>Habitacion</th>
-                <th>Asiento</th>
-                <th>Actividad</th>
+                <th>Nombre</th>
+                <th>Localización</th>
+                <th>Tipo</th>
                 <th></th>
             </thead>
             <tbody>
-                <tr th:each="precio : ${precios}">
-                    <td th:text="${precio.id}"></td>
-                    <td th:text="${precio.valor}"></td>
-                    <td th:text="${precio.fechaInicio}"></td>
-                    <td th:text="${precio.fechaFin}"></td>
-                    <td th:if="${precio.habitacion != null}" th:text="${precio.habitacion.id}"></td>
-                    <td th:if="${precio.habitacion == null}"></td>
-                    <td th:if="${precio.asiento != null}" th:text="${precio.asiento.id}"></td>
-                    <td th:if="${precio.asiento == null}"></td>
-                    <td th:if="${precio.actividad != null}" th:text="${precio.actividad.id}"></td>
-                    <td th:if="${precio.actividad == null}"></td>
+                <tr th:each="actividad : ${actividades}">
+                    <td th:text="${actividad.id}"></td>
+                    <td th:text="${actividad.nombre}"></td>
+                    <td th:text="${actividad.localizacion.nombre}"></td>
+                    <td th:text="${actividad.tipo.nombre}"></td>
                     <td class="d-flex gap-2 justify-content-end">
-                        <form th:action="@{'/admin/precios/' + ${precio.id}}" th:method="get">
+                        <form th:action="@{'/admin/actividades/' + ${actividad.id}}" th:method="get">
                             <button type="submit" class="btn btn-info"><i class="bi bi-pencil text-white"></i></button>
                         </form>
-                        <form th:action="@{'/admin/precios/eliminar/' + ${precio.id}}" th:method="delete">
+                        <form th:action="@{'/admin/actividades/eliminar/' + ${actividad.id}}" th:method="delete">
                             <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
                         </form>
                     </td>
@@ -105,7 +97,7 @@
                 <!-- Página anterior -->
                 <li th:if="${page.hasPrevious()}" class="page-item">
                     <a class="page-link"
-                       th:href="@{/admin/precios(page=${page.page - 1}, size=${page.size})}"
+                       th:href="@{/templates/admin/actividades(page=${page.page - 1}, size=${page.size})}"
                        aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
@@ -115,14 +107,14 @@
                 <li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
                     th:classappend="${i == page.page} ? 'page-item active' : 'page-item'">
                     <a class="page-link"
-                       th:href="@{/admin/precios(page=${i}, size=${page.size})}"
+                       th:href="@{/templates/admin/actividades(page=${i}, size=${page.size})}"
                        th:text="${i + 1}"></a>
                 </li>
 
                 <!-- Página siguiente -->
                 <li th:if="${page.hasNext()}" class="page-item">
                     <a class="page-link"
-                       th:href="@{/admin/precios(page=${page.page + 1}, size=${page.size})}"
+                       th:href="@{/templates/admin/actividades(page=${page.page + 1}, size=${page.size})}"
                        aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>

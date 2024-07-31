@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Asientos</title>
+    <title>Actividades</title>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="description" content="Travelix Project" />
@@ -58,30 +58,29 @@
 
     <header th:replace="~{admin/fragments/fragmentos :: adminHeader}"></header>
 
-
     <div class="container main">
 
         <button type="button" class="btn btn-success mb-3">
-            <a class="text-decoration-none text-white" th:href="@{'/admin/asientos/crear'}">Crear Asiento</a>
+            <a class="text-decoration-none text-white" th:href="@{'/admin/pagos/crear'}">Crear Pago</a>
         </button>
 
         <table class="table table-striped">
             <thead>
                 <th>Id</th>
-                <th>Numero</th>
-                <th>Categoria</th>
+                <th>Fecha de Pago</th>
+                <th>id Reserva</th>
                 <th></th>
             </thead>
             <tbody>
-                <tr th:each="asiento : ${asientos}">
-                    <td th:text="${asiento.id}"></td>
-                    <td th:text="${asiento.numero}"></td>
-                    <td th:text="${asiento.categoria.nombre}"></td>
+                <tr th:each="pago : ${pagos}">
+                    <td th:text="${pago.id}"></td>
+                    <td th:text="${pago.fechaPago}"></td>
+                    <td th:text="${pago.reserva.id}"></td>
                     <td class="d-flex gap-2 justify-content-end">
-                        <form th:action="@{'/admin/asientos/' + ${asiento.id}}" th:method="get">
+                        <form th:action="@{'/admin/pagos/' + ${pago.id}}" th:method="get">
                             <button type="submit" class="btn btn-info"><i class="bi bi-pencil text-white"></i></button>
                         </form>
-                        <form th:action="@{'/admin/asientos/eliminar/' + ${asiento.id}}" th:method="delete">
+                        <form th:action="@{'/admin/pagos/eliminar/' + ${pago.id}}" th:method="delete">
                             <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
                         </form>
                     </td>
@@ -95,7 +94,7 @@
                 <!-- Página anterior -->
                 <li th:if="${page.hasPrevious()}" class="page-item">
                     <a class="page-link"
-                       th:href="@{/admin/asientos(page=${page.page - 1}, size=${page.size})}"
+                       th:href="@{/templates/admin/actividades(page=${page.page - 1}, size=${page.size})}"
                        aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
@@ -105,14 +104,14 @@
                 <li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
                     th:classappend="${i == page.page} ? 'page-item active' : 'page-item'">
                     <a class="page-link"
-                       th:href="@{/admin/asientos(page=${i}, size=${page.size})}"
+                       th:href="@{/templates/admin/actividades(page=${i}, size=${page.size})}"
                        th:text="${i + 1}"></a>
                 </li>
 
                 <!-- Página siguiente -->
                 <li th:if="${page.hasNext()}" class="page-item">
                     <a class="page-link"
-                       th:href="@{/admin/asientos(page=${page.page + 1}, size=${page.size})}"
+                       th:href="@{/templates/admin/actividades(page=${page.page + 1}, size=${page.size})}"
                        aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
