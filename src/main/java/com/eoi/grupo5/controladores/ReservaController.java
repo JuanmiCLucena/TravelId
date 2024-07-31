@@ -1,11 +1,9 @@
 package com.eoi.grupo5.controladores;
 
-import com.eoi.grupo5.modelos.Habitacion;
-import com.eoi.grupo5.modelos.Precio;
-import com.eoi.grupo5.modelos.Reserva;
-import com.eoi.grupo5.modelos.Usuario;
+import com.eoi.grupo5.modelos.*;
 import com.eoi.grupo5.repos.RepoUsuario;
 import com.eoi.grupo5.servicios.ServicioHabitacion;
+import com.eoi.grupo5.servicios.ServicioMetodoPago;
 import com.eoi.grupo5.servicios.ServicioReserva;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -25,11 +23,13 @@ public class ReservaController {
     private final ServicioReserva servicioReserva;
     private final ServicioHabitacion servicioHabitacion;
     private final RepoUsuario repoUsuario;
+    private final ServicioMetodoPago servicioMetodoPago;
 
-    public ReservaController(ServicioReserva servicioReserva, ServicioHabitacion servicioHabitacion, RepoUsuario repoUsuario) {
+    public ReservaController(ServicioReserva servicioReserva, ServicioHabitacion servicioHabitacion, RepoUsuario repoUsuario, ServicioMetodoPago servicioMetodoPago) {
         this.servicioReserva = servicioReserva;
         this.servicioHabitacion = servicioHabitacion;
         this.repoUsuario = repoUsuario;
+        this.servicioMetodoPago = servicioMetodoPago;
     }
 
     @GetMapping("/tus-reservas")
@@ -126,6 +126,9 @@ public class ReservaController {
         modelo.addAttribute("habitacion", habitacion);
         modelo.addAttribute("fechaInicio", fechaInicio);
         modelo.addAttribute("fechaFin", fechaFin);
+
+        List<MetodoPago> metodosPago = servicioMetodoPago.buscarEntidades();
+        modelo.addAttribute("metodosPago", metodosPago);
 
         return "reservas/habitacion/reservarHabitacion";
     }

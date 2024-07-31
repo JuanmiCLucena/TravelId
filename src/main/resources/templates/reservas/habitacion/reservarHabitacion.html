@@ -78,12 +78,54 @@
         <td th:text="${#temporals.format(intervalo.end, 'dd MMMM yyyy HH:mm', #locale)}"></td>
         <td class="d-flex gap-3 align-items-center">
           <span th:text="${intervalo.intervalPrice} + ' €'"></span>
-          <form th:action="@{/reservas/habitacion/{idHabitacion}/reservar(idHabitacion=${habitacion.id})}" method="post" class="d-inline-block">
-            <input type="hidden" name="fechaInicio" th:value="${intervalo.start}" />
-            <input type="hidden" name="fechaFin" th:value="${intervalo.end}" />
-            <input type="hidden" name="precioTotal" th:value="${intervalo.intervalPrice}" />
-            <button type="submit" class="btn btn-info">Reservar</button>
-          </form>
+
+          <!-- Botón modal -->
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalReserva">
+            Reservar
+          </button>
+
+          <!-- Modal -->
+          <div class="modal fade" id="modalReserva" tabindex="-1" aria-labelledby="labelModalReserva" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="labelModalReserva">Reservar Habitación</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form id="modalReservaForm" th:action="@{/reservas/habitacion/{idHabitacion}/reservar(idHabitacion=${habitacion.id})}" method="post" class="d-inline-block">
+                    <div class="form-group mb-3">
+                      <label for="fechaInicio" class="form-label">Fecha Inicio:</label>
+                      <input readonly type="datetime-local" name="fechaInicio" id="fechaInicio" class="form-control" th:value="${intervalo.start}" />
+                    </div>
+                    <div class="form-group mb-3">
+                      <label for="fechaFin" class="form-label">Fecha Fin:</label>
+                      <input readonly type="datetime-local" name="fechaFin" id="fechaFin" class="form-control" th:value="${intervalo.end}" />
+                    </div>
+                    <div class="form-group mb-3">
+                      <label for="precioTotal" class="form-label">Precio Total:</label>
+                      <div class="input-group">
+                        <span class="input-group-text">€</span>
+                        <input readonly type="number" name="precioTotal" id="precioTotal" class="form-control" th:value="${intervalo.intervalPrice}"/>
+                      </div>
+                    </div>
+                    <div class="form-group mb-3">
+                      <label for="metodoPagoId">Método Pago:</label>
+                      <select class="form-control" name="metodoPagoId" id="metodoPagoId">
+                        <option th:each="metodoPago : ${metodosPago}" th:value="${metodoPago.id}" th:text="${metodoPago.metodo}"></option>
+                      </select>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" form="modalReservaForm" class="btn btn-primary">Confirmar Reserva</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
         </td>
       </tr>
       <tr th:if="${rangosDisponibles.isEmpty()}">

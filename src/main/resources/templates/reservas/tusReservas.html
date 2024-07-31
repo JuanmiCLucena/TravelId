@@ -43,7 +43,7 @@
         </div>
 
         <div th:if="${reservas != null && !reservas.isEmpty()}">
-            <div th:each="reserva : ${reservas}">
+            <div th:each="reserva : ${reservas}" class="my-5">
                 <h3 th:text="'Reserva: ' + ${reserva.id}"></h3>
 
                 <!-- Información de Habitaciones -->
