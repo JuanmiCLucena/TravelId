@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -112,7 +113,24 @@ public class ReservaController {
             @PathVariable Integer idHabitacion,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaInicio,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaFin,
-            Model modelo) {
+            Model modelo,
+            RedirectAttributes redirectAttributes) {
+
+        // Truncamos la fecha para que tenga formato HH:mm y así nos aseguramos que no haya problemas
+        // en la validación siguiente
+        LocalDateTime fechaActual = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+
+        // Validar que las fechas no sean anteriores a la fecha actual
+        if (fechaInicio.isBefore(fechaActual) || fechaFin.isBefore(fechaActual)) {
+            redirectAttributes.addFlashAttribute("error", "Las fechas no pueden ser anteriores a la fecha actual.");
+            return "redirect:/reservas/habitacion/reservar/" + idHabitacion;
+        }
+
+        // Validar que la fecha de inicio no sea posterior a la fecha de fin
+        if (fechaInicio.isAfter(fechaFin)) {
+            redirectAttributes.addFlashAttribute("error", "La fecha de entrada no puede ser posterior a la fecha de llegada.");
+            return "redirect:/reservas/habitacion/reservar/" + idHabitacion;
+        }
 
         Optional<Habitacion> optionalHabitacion = servicioHabitacion.encuentraPorId(idHabitacion);
 

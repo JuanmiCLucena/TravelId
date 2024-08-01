@@ -17,13 +17,17 @@
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+            integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"></script>
     <link
       th:href="@{/plugins/font-awesome-4.7.0/css/font-awesome.min.css}"
       rel="stylesheet"
       type="text/css"
     />
     <link
-      href="plugins/colorbox/colorbox.css"
+      th:href="@{/plugins/colorbox/colorbox.css}"
       rel="stylesheet"
       type="text/css"
     />
@@ -73,15 +77,23 @@
       <!-- Copyright -->
       <div th:replace="~{fragments/plantilla :: copyright}"></div>
     </div>
-
+    <script>
+      // Espera hasta que el DOM esté completamente cargado
+      document.addEventListener("DOMContentLoaded", () => {
+        // Selecciona el alert por su id
+        let alertElement = document.querySelector('.alert-danger');
+        // Verifica si el alert está presente
+        if (alertElement) {
+          // Establece un temporizador para ocultar el alert después de 3 segundos (3000 milisegundos)
+          setTimeout(() => {
+            alertElement.style.display = 'none';
+          }, 3000);
+        }
+      });
+    </script>
     <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
     <script th:src="@{/plugins/colorbox/jquery.colorbox-min.js}"></script>
     <script th:src="@{/plugins/parallax-js-master/parallax.min.js}"></script>
     <script th:src="@{/js/blog_custom.js}"></script>
-    <script th:src="@{/js/moment.min.js}"></script>
-    <script th:src="@{/js/daterangepicker.js}"></script>
-    <script th:src="@{/js/Hoteles_dropdown.js}"></script>
-    <script th:src="@{/js/jquery.waypoints.min.js}"></script>
-    <script th:src="@{/js/owl.carousel.min.js}"></script>
   </body>
 </html>
