@@ -70,11 +70,11 @@
         <th></th>
         </thead>
         <tbody>
-        <tr th:each="usuario : ${usuarioes}">
+        <tr th:each="usuario : ${usuarios}">
             <td th:text="${usuario.id}"></td>
-            <td th:text="${usuario.nombre}"></td>
+            <td th:text="${usuario.nombreUsuario}"></td>
             <td class="d-flex gap-2">
-                <form th:action="@{'/admin/usuarioes/' + ${usuario.id}}" th:method="get">
+                <form th:action="@{'/admin/usuarios/' + ${usuario.id}}" th:method="get">
                     <button type="submit" class="btn btn-outline-info">Actualizar</button>
                 </form>
                 <form th:action="@{'/admin/usuarioes/eliminar/' + ${usuario.id}}" th:method="delete">
