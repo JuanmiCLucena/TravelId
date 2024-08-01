@@ -157,7 +157,7 @@ public class ReservaController {
             @RequestParam("fechaInicio") LocalDateTime fechaInicio,
             @RequestParam("fechaFin") LocalDateTime fechaFin,
             @RequestParam("precioTotal") Double precioTotal,
-           @RequestParam("metodoPagoId") Integer metodoPagoId,
+            @RequestParam("metodoPagoId") Integer metodoPagoId,
             Principal principal,
             Model modelo) {
 
@@ -169,6 +169,38 @@ public class ReservaController {
             try {
                 Reserva reserva = servicioReserva.crearReserva(usuario, fechaInicio, fechaFin);
                 servicioReserva.addHabitacion(reserva.getId(), idHabitacion, fechaInicio, fechaFin);
+
+                servicioReserva.generarPago(reserva.getId(), precioTotal, metodoPagoId);
+
+                return "redirect:/reservas/tus-reservas";
+            } catch (Exception e) {
+                modelo.addAttribute("error", e.getMessage());
+                return "error/paginaError";
+            }
+        } else {
+            modelo.addAttribute("error", "Usuario no encontrado");
+            return "error/paginaError";
+        }
+    }
+
+    @PostMapping("/actividad/{idActividad}/reservar")
+    public String reservarActividad(
+            @PathVariable("idActividad") Integer idActividad,
+            @RequestParam("fechaInicio") LocalDateTime fechaInicio,
+            @RequestParam("fechaFin") LocalDateTime fechaFin,
+            @RequestParam("precioTotal") Double precioTotal,
+            @RequestParam("metodoPagoId") Integer metodoPagoId,
+            Principal principal,
+            Model modelo) {
+
+        // Obtener el usuario autenticado
+        Optional<Usuario> optionalUsuario = repoUsuario.findByNombreUsuario(principal.getName());
+        if (optionalUsuario.isPresent()) {
+            Usuario usuario = optionalUsuario.get();
+            // Crear la reserva
+            try {
+                Reserva reserva = servicioReserva.crearReserva(usuario, fechaInicio, fechaFin);
+                servicioReserva.addActividad(reserva.getId(), idActividad, fechaInicio, fechaFin);
 
                 servicioReserva.generarPago(reserva.getId(), precioTotal, metodoPagoId);
 

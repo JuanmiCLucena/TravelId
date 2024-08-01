@@ -60,7 +60,7 @@ public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Int
         }
     }
 
-    public void añadirActividad(Integer reservaId, Integer idActividad, LocalDateTime fechaInicio, LocalDateTime fechaFin) {
+    public void addActividad(Integer reservaId, Integer idActividad, LocalDateTime fechaInicio, LocalDateTime fechaFin) {
         Optional<Reserva> optionalReserva = repoReserva.findById(reservaId);
         if (optionalReserva.isPresent()) {
             Reserva reserva = optionalReserva.get();
