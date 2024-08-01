@@ -1054,4 +1054,5 @@ h3 span {
 
 .main {
   padding-top: 200px;
+  min-height: 100vh;
 }
