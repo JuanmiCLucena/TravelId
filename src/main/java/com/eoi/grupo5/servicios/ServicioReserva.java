@@ -9,8 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Integer, RepoReserva>{
@@ -40,30 +39,22 @@ public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Int
         return repoReserva.save(reserva);
     }
 
-    public void addHabitacion(Integer reservaId, Integer idHabitacion, LocalDateTime fechaInicio, LocalDateTime fechaFin) {
-        Optional<Reserva> optionalReserva = repoReserva.findById(reservaId);
-        if (optionalReserva.isPresent()) {
-            Reserva reserva = optionalReserva.get();
-            Optional<Habitacion> optionalHabitacion = repoHabitacion.findById(idHabitacion);
-            if (optionalHabitacion.isPresent()) {
-                Habitacion habitacion = optionalHabitacion.get();
-                reserva.getHabitacionesReservadas().add(habitacion);
-                reserva.setFechaInicio(fechaInicio);
-                reserva.setFechaFin(fechaFin);
-                repoReserva.save(reserva);
+    public void addHabitacion(Reserva reserva, Integer idHabitacion, LocalDateTime fechaInicio, LocalDateTime fechaFin) {
+        Optional<Habitacion> optionalHabitacion = repoHabitacion.findById(idHabitacion);
+        if (optionalHabitacion.isPresent()) {
+            Habitacion habitacion = optionalHabitacion.get();
+            reserva.getHabitacionesReservadas().add(habitacion);
+            reserva.setFechaInicio(fechaInicio);
+            reserva.setFechaFin(fechaFin);
+            repoReserva.save(reserva);
 
             } else {
                 throw new RuntimeException("No se encontró la habitación.");
             }
-        } else {
-            throw new RuntimeException("No se encontró la reserva.");
-        }
+
     }
 
-    public void añadirActividad(Integer reservaId, Integer idActividad, LocalDateTime fechaInicio, LocalDateTime fechaFin) {
-        Optional<Reserva> optionalReserva = repoReserva.findById(reservaId);
-        if (optionalReserva.isPresent()) {
-            Reserva reserva = optionalReserva.get();
+    public void addActividad(Reserva reserva, Integer idActividad, LocalDateTime fechaInicio, LocalDateTime fechaFin) {
             Optional<Actividad> optionalActividad = repoActividad.findById(idActividad);
             if (optionalActividad.isPresent()) {
                 Actividad actividad = optionalActividad.get();
@@ -82,9 +73,6 @@ public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Int
             } else {
                 throw new RuntimeException("No se encontró la actividad.");
             }
-        } else {
-            throw new RuntimeException("No se encontró la reserva.");
-        }
     }
 
     public void añadirAsiento(Integer reservaId, Integer idAsiento) {
@@ -126,32 +114,40 @@ public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Int
         }
     }
 
-    public void generarPago(Integer reservaId, Double precioTotal, Integer metodoPagoId) {
-        Optional<Reserva> optionalReserva = repoReserva.findById(reservaId);
-        if (optionalReserva.isPresent()) {
-            Reserva reserva = optionalReserva.get();
-            Optional<MetodoPago> optionalMetodoPago = repoMetodoPago.findById(metodoPagoId);
-            if (optionalMetodoPago.isPresent()) {
-                MetodoPago metodoPago = optionalMetodoPago.get();
-                Pago pago = new Pago();
-                pago.setImporte(precioTotal);
-                pago.setFechaPago(LocalDateTime.now());
-                pago.setMetodoPago(metodoPago);
-                pago.setReserva(reserva);
+    public void generarPago(Reserva reserva, Double precioTotal, Integer metodoPagoId) {
+        Optional<MetodoPago> optionalMetodoPago = repoMetodoPago.findById(metodoPagoId);
+        if (optionalMetodoPago.isPresent()) {
+            MetodoPago metodoPago = optionalMetodoPago.get();
+            Pago pago = new Pago();
+            pago.setImporte(precioTotal);
+            pago.setFechaPago(LocalDateTime.now());
+            pago.setMetodoPago(metodoPago);
+            pago.setReserva(reserva);
 
-                // Asociar el pago a la reserva
-                reserva.setPago(pago);
+            // Asociar el pago a la reserva
+            reserva.setPago(pago);
 
-                // Guardar el pago
-                repoPago.save(pago);
+            // Guardar el pago
+            repoPago.save(pago);
 
-                // Guardar la reserva actualizada
-                repoReserva.save(reserva);
-            } else {
-                throw new RuntimeException("No se encontró el método de pago.");
-            }
+            // Guardar la reserva actualizada
+            repoReserva.save(reserva);
+        } else {
+            throw new RuntimeException("No se encontró el método de pago.");
         }
     }
+
+    public Map<Integer, UUID> generarIdentificadorUnicoReservas(List<Reserva> reservas) {
+
+        Map<Integer, UUID> reservasIdentificadas = new HashMap<>();
+
+        for(Reserva reserva : reservas) {
+            reservasIdentificadas.put(reserva.getId(), UUID.randomUUID());
+        }
+
+        return reservasIdentificadas;
+    }
+
 
     public PaginaRespuestaReservas<Reserva> buscarEntidadesPaginadas(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);

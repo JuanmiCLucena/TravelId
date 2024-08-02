@@ -1,109 +1,3 @@
-/* Formulario */
-/* Container styles */
-.formulario {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 20px;
-    background: #9c02e32b;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    font-family: "Arial", sans-serif;
-    border: 3px groove #46126c6b;
-}
-
-/* Form heading styles */
-.formulario h3 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-    font-size: 24px;
-}
-
-/* Form label styles */
-.formulario .form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #555;
-}
-/* Form input styles */
-.formulario .form-group input[type="email"] {
-    width: calc(100% - 20px);
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
-}
-.formulario .form-group input[type="tel"] {
-    width: calc(100% - 20px);
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
-}
-.formulario .form-group input[type="text"] {
-    width: calc(100% - 20px);
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
-}
-/* Form input styles */
-.formulario .form-group input[type="date"] {
-    width: calc(100% - 20px);
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
-}
-
-/* Hidden input field */
-.formulario .form-group input[type="hidden"] {
-    display: none;
-}
-
-/* Submit button styles */
-.formulario .form-group input[type="submit"] {
-    width: 100%;
-    padding: 15px;
-    background-color: #7300ff;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.formulario .form-group input[type="submit"]:hover {
-    background-color: #5700b37d;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-    .container {
-        padding: 15px;
-    }
-
-    .container h3 {
-        font-size: 20px;
-    }
-
-    .container .form-group input[type="date"] {
-        width: calc(100% - 16px);
-        padding: 8px;
-    }
-
-    .container .form-group input[type="submit"] {
-        padding: 12px;
-        font-size: 16px;
-    }
-}
-
 /***********
 1. Fonts
 ***********/
@@ -1009,4 +903,89 @@ h3 span {
 
 #imagenHabitacion .hotel_image img {
     width: 100%;
+}
+
+/* Formulario */
+/* Container styles */
+.formulario {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #9c02e32b;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    font-family: "Arial", sans-serif;
+    border: 3px groove #46126c6b;
+}
+
+/* Form heading styles */
+.formulario h3 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+/* Form label styles */
+.formulario .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+}
+/* Form input styles */
+.formulario .form-group input[type="email"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+.formulario .form-group input[type="tel"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+.formulario .form-group input[type="text"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+/* Form input styles */
+.formulario .form-group input[type="date"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Hidden input field */
+.formulario .form-group input[type="hidden"] {
+    display: none;
+}
+
+/* Submit button styles */
+.formulario .form-group input[type="submit"] {
+    width: 100%;
+    padding: 15px;
+    background-color: #7300ff;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.formulario .form-group input[type="submit"]:hover {
+    background-color: #5700b37d;
 }

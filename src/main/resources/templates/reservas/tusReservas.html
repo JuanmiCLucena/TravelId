@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Contact</title>
+    <title>Tus Reservas</title>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="description" content="Travelix Project" />
@@ -44,7 +44,7 @@
 
         <div th:if="${reservas != null && !reservas.isEmpty()}">
             <div th:each="reserva : ${reservas}" class="my-5">
-                <h3 th:text="'Reserva: ' + ${reserva.id}"></h3>
+                <h3 th:text="'Reserva: ' + ${reservasIdentificadas[reserva.id]}"></h3>
 
                 <!-- Información de Habitaciones -->
                 <table class="table table-striped" th:if="${!reserva.habitacionesReservadas.isEmpty()}">
