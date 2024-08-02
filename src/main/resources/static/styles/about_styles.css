@@ -666,6 +666,8 @@ section {
 .menu_close::after {
   display: block;
   position: absolute;
+  border: 2px solid #0c3a5f;
+  padding: 2px;
   top: -9px;
   left: 9px;
   content: "";
