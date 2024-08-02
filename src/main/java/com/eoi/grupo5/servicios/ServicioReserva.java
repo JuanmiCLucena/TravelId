@@ -9,8 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Integer, RepoReserva>{
@@ -136,6 +135,17 @@ public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Int
         } else {
             throw new RuntimeException("No se encontró el método de pago.");
         }
+    }
+
+    public Map<Integer, UUID> generarIdentificadorUnicoReservas(List<Reserva> reservas) {
+
+        Map<Integer, UUID> reservasIdentificadas = new HashMap<>();
+
+        for(Reserva reserva : reservas) {
+            reservasIdentificadas.put(reserva.getId(), UUID.randomUUID());
+        }
+
+        return reservasIdentificadas;
     }
 
 

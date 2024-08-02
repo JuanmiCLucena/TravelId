@@ -15,7 +15,9 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/reservas")
@@ -34,7 +36,7 @@ public class ReservaController {
     }
 
     @GetMapping("/tus-reservas")
-    public String verTusReservas(Principal principal, Model model) {
+    public String verTusReservas(Principal principal, Model modelo) {
         // Obtener el usuario autenticado
         Optional<Usuario> optionalUsuario = repoUsuario.findByNombreUsuario(principal.getName());
         if (optionalUsuario.isPresent()) {
@@ -42,11 +44,15 @@ public class ReservaController {
 
             // Obtener las reservas del usuario
             List<Reserva> reservas = servicioReserva.obtenerReservasPorUsuario(usuario);
-            model.addAttribute("reservas", reservas);
+            modelo.addAttribute("reservas", reservas);
+
+            // Generamos identificadores únicos para cada una de las reservas
+            Map<Integer, UUID> reservasIdentificadas = servicioReserva.generarIdentificadorUnicoReservas(reservas);
+            modelo.addAttribute("reservasIdentificadas", reservasIdentificadas);
 
             return "reservas/tusReservas";
         } else {
-            model.addAttribute("error", "Usuario no encontrado");
+            modelo.addAttribute("error", "Usuario no encontrado");
             return "error/paginaError";
         }
     }

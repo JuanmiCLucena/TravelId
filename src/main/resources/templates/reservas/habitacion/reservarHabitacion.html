@@ -22,18 +22,12 @@
           rel="stylesheet"
           type="text/css"
   />
-  <link
-          href="plugins/colorbox/colorbox.css"
-          rel="stylesheet"
-          type="text/css"
-  />
   <link rel="stylesheet" type="text/css" th:href="@{/styles/reservaHabitacion_style.css}" />
   <link
           rel="stylesheet"
           type="text/css"
           th:href="@{/styles/reservaHabitacion_responsive.css}"
   />
-  <link rel="stylesheet" type="text/css" th:href="@{/styles/daterangepicker.css}" />
 </head>
 
 <body>
@@ -63,7 +57,7 @@
   </div>
 
   <div class="container">
-    <h3>Intervalos Disponibles:</h3>
+    <h3>Fechas Disponibles:</h3>
     <table class="table table-striped table-bordered">
       <thead class="thead-dark">
       <tr th:if="${!rangosDisponibles.isEmpty()}">
@@ -117,9 +111,9 @@
                     </div>
                   </form>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer justify-content-start">
                   <button type="submit" form="modalReservaForm" class="btn btn-primary">Confirmar Reserva</button>
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
                 </div>
               </div>
             </div>
@@ -129,7 +123,7 @@
         </td>
       </tr>
       <tr th:if="${rangosDisponibles.isEmpty()}">
-        <td colspan="3" class="text-center">No hay intervalos disponibles.</td>
+        <td colspan="3" class="text-center text-danger">No disponible!</td>
       </tr>
       </tbody>
     </table>
@@ -147,10 +141,7 @@
 <div th:replace="~{fragments/plantilla :: copyright}"></div>
 
 <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
-<script th:src="@{/plugins/Isotope/isotope.pkgd.min.js}"></script>
-<script th:src="@{/plugins/easing/easing.js}"></script>
 <script th:src="@{/plugins/parallax-js-master/parallax.min.js}"></script>
 <script th:src="@{/js/offers_custom.js}"></script>
-<script th:src="@{/plugins/colorbox/jquery.colorbox-min.js}"></script>
 </body>
 </html>
