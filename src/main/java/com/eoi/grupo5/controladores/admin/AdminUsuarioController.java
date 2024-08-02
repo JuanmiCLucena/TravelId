@@ -51,7 +51,7 @@ public class AdminUsuarioController {
 
     @GetMapping("/crear")
     public String mostrarPaginaCrear(Model modelo) {
-        Usuario usuario = new Usuario();
+        UsuarioRegistro usuario = new UsuarioRegistro();
         modelo.addAttribute("usuario", usuario);
         modelo.addAttribute("detalles", servicioDetallesUsuario.buscarEntidades());
         return "admin/usuarios/adminNuevoUsuario";
@@ -59,14 +59,21 @@ public class AdminUsuarioController {
 
     @PostMapping("/crear")
     public String crear(
-            @ModelAttribute("usuario") Usuario usuario,
-            @RequestParam("detalles.id") Integer detallesUsuarioId
+            @ModelAttribute("usuario") UsuarioRegistro usuarioRegistro
     ) {
 
         try {
 
-            DetallesUsuario detallesUsuario = servicioDetallesUsuario.encuentraPorId(detallesUsuarioId)
-                    .orElseThrow(() -> new IllegalArgumentException("Detalles de Usuario no encontrados"));
+            Usuario usuario = new Usuario();
+            usuario.setPassword(usuarioRegistro.getPassword());
+            usuario.setNombreUsuario(usuarioRegistro.getNombreUsuario());
+
+            DetallesUsuario detallesUsuario = new DetallesUsuario();
+            detallesUsuario.setEmail(usuarioRegistro.getEmail());
+
+            servicioUsuario.guardar(usuario);
+            servicioDetallesUsuario.guardar(detallesUsuario);
+
             usuario.setDetalles(detallesUsuario);
 
             servicioUsuario.guardar(usuario);
