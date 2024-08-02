@@ -72,4 +72,22 @@ public class Usuario implements UserDetails, Serializable {
         this.password = password;
         this.detalles = detalles;
     }
+
+    // Helpers
+    public static Usuario from(UsuarioRegistro usuarioRegistro) {
+        Usuario usuario = new Usuario();
+        usuario.setId(usuarioRegistro.getId());
+        usuario.setNombreUsuario(usuarioRegistro.getNombreUsuario());
+        usuario.setPassword(usuarioRegistro.getPassword());
+        DetallesUsuario detallesUsuario = new DetallesUsuario();
+        usuario.setDetalles(detallesUsuario);
+        usuario.getDetalles().setEmail(usuarioRegistro.getEmail());
+        usuario.getDetalles().setNombre(usuarioRegistro.getNombre());
+        usuario.getDetalles().setApellidos(usuarioRegistro.getApellidos());
+        usuario.getDetalles().setTelefono(usuarioRegistro.getTelefono());
+        usuario.getDetalles().setEdad(usuarioRegistro.getEdad());
+        usuario.getDetalles().setDni(usuarioRegistro.getDni());
+        return usuario;
+    }
+
 }

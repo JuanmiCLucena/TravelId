@@ -65,19 +65,11 @@ public class AdminUsuarioController {
 
         try {
 
-            Usuario usuario = new Usuario();
-            usuario.setPassword(usuarioRegistro.getPassword());
-            usuario.setNombreUsuario(usuarioRegistro.getNombreUsuario());
-
-            DetallesUsuario detallesUsuario = new DetallesUsuario();
-            detallesUsuario.setEmail(usuarioRegistro.getEmail());
-
-            servicioUsuario.guardar(usuario);
-
-            detallesUsuario.setUsu(usuario);
-            usuario.setDetalles(detallesUsuario);
-
-            servicioDetallesUsuario.guardar(detallesUsuario);
+            Usuario usuario = Usuario.from(usuarioRegistro);
+            usuario.getDetalles().setUsu(usuario);
+            if(usuario.getId() != null) {
+                servicioUsuario.eliminarPorId(usuario.getId());
+            }
 
             servicioUsuario.guardar(usuario);
 
