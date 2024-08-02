@@ -25,8 +25,6 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 
         request.getSession().setAttribute("errorMessage", errorMessage);
 
-        // Redirige al formulario de login con un parámetro de error
-
         response.sendRedirect("/login");
     }
 }
