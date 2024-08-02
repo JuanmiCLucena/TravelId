@@ -547,6 +547,7 @@ section {
   -o-transform: translateY(-3px);
   transform: translateY(-3px);
   cursor: pointer;
+  margin-left: 20px;
 }
 .header.scrolled .hamburger {
   -webkit-transform: none;
@@ -566,13 +567,13 @@ section {
   position: fixed;
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(to right, #311bfa, #4fb9ff);
+  background: rgb(12, 58, 95);
   z-index: 100;
   opacity: 0;
   visibility: hidden;
 }
 .menu.active {
-  opacity: 0.95;
+  opacity: 0.98;
   visibility: visible;
 }
 .menu_content {
@@ -595,9 +596,9 @@ section {
 .menu_item a {
   display: inline-block;
   position: relative;
-  font-family: "Beyond";
+  font-family: "Times New Roman", Times, serif;
   font-size: 36px;
-  color: #f0e6bd;
+  color: #ffffff;
   font-weight: 400;
 }
 .menu_item a::after {
@@ -662,7 +663,7 @@ section {
 }
 .menu_close_container:hover .menu_close,
 .menu_close_container:hover .menu_close::after {
-  background: darkblue;
+  background: #fa9e1c;
 }
 
 /*********************************
