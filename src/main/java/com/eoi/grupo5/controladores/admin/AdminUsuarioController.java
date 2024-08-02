@@ -3,6 +3,7 @@ package com.eoi.grupo5.controladores.admin;
 import com.eoi.grupo5.modelos.*;
 import com.eoi.grupo5.paginacion.PaginaRespuestaUsuarios;
 import com.eoi.grupo5.servicios.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +17,13 @@ public class AdminUsuarioController {
 
     private final ServicioUsuario servicioUsuario;
     private final ServicioDetallesUsuario servicioDetallesUsuario;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
-    public AdminUsuarioController(ServicioUsuario servicioUsuario, ServicioDetallesUsuario servicioDetallesUsuario) {
+    public AdminUsuarioController(ServicioUsuario servicioUsuario, ServicioDetallesUsuario servicioDetallesUsuario, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.servicioUsuario = servicioUsuario;
         this.servicioDetallesUsuario = servicioDetallesUsuario;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @GetMapping
@@ -67,6 +70,7 @@ public class AdminUsuarioController {
 
             Usuario usuario = Usuario.from(usuarioRegistro);
             usuario.getDetalles().setUsu(usuario);
+            usuario.setPassword(bCryptPasswordEncoder.encode(usuario.getPassword()));
             if(usuario.getId() != null) {
                 servicioUsuario.eliminarPorId(usuario.getId());
             }
