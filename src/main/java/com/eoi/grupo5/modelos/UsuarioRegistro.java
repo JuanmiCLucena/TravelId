@@ -67,5 +67,22 @@ public class UsuarioRegistro {
     @Basic(optional = false)
     private boolean active = true;
 
+    //Helpers
+    public static UsuarioRegistro from(Usuario usuario) {
+        UsuarioRegistro usuarioRegistro = new UsuarioRegistro();
+        usuarioRegistro.setId(usuario.getId());
+        usuarioRegistro.setNombreUsuario(usuario.getNombreUsuario());
+        usuarioRegistro.setPassword(usuario.getPassword());
+        usuarioRegistro.setEmail(usuario.getDetalles().getEmail());
+        usuarioRegistro.setDni(usuario.getDetalles().getDni());
+        usuarioRegistro.setEdad(usuario.getDetalles().getEdad());
+        usuarioRegistro.setNombre(usuario.getDetalles().getNombre());
+        usuarioRegistro.setApellidos(usuario.getDetalles().getApellidos());
+        usuarioRegistro.setEmail(usuario.getDetalles().getEmail());
+        usuarioRegistro.setTelefono(usuario.getDetalles().getTelefono());
+
+        return usuarioRegistro;
+    }
+
 
 }

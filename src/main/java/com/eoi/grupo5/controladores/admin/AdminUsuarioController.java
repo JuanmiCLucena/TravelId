@@ -40,7 +40,8 @@ public class AdminUsuarioController {
     public String detalles(Model modelo, @PathVariable Integer id) {
         Optional<Usuario> usuario = servicioUsuario.encuentraPorId(id);
         if (usuario.isPresent()) {
-            modelo.addAttribute("usuario", usuario.get());
+            UsuarioRegistro usuarioRegistro = UsuarioRegistro.from(usuario.get());
+            modelo.addAttribute("usuario", usuarioRegistro);
             modelo.addAttribute("detalles", servicioDetallesUsuario.buscarEntidades());
             return "admin/usuarios/adminDetallesUsuario";
         } else {
