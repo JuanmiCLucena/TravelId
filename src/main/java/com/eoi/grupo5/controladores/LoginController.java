@@ -81,6 +81,18 @@ public class LoginController {
             return "loginForm/register";
         }
 
+        if (repoUsuario.existsBynombreUsuario(usuarioDto.getUsername())) {
+            bindingResult.rejectValue("username", "error.usuarioDto", "El nombre de usuario ya está en uso");
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            return "loginForm/register";
+        }
+
+        if (repoDetallesUsuario.existsByEmail(usuarioDto.getEmail())) {
+            bindingResult.rejectValue("email", "error.usuarioDto", "El correo electrónico ya está en uso");
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            return "loginForm/register";
+        }
+
         DetallesUsuario details = new DetallesUsuario(usuarioDto.getEmail());
         Usuario newUser = new Usuario(usuarioDto.getUsername(), bCryptPasswordEncoder.encode(usuarioDto.getPassword()), details);
         details.setUsu(newUser);
