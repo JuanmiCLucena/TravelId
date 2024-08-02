@@ -28,10 +28,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
      * @param response La respuesta HTTP.
      * @param authentication La información de autenticación del usuario.
      * @throws IOException Si ocurre un error de entrada/salida durante la redirección.
-     * @throws ServletException Si ocurre un error de servlet durante la redirección.
      */
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         // Obtiene los roles del usuario autenticado.
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 

@@ -58,6 +58,10 @@
 
                         <h5 class="fw-normal mb-3 pb-3 d-none d-sm-block" style="letter-spacing: 1px;">Entra en tu cuenta!</h5>
 
+                        <div class="alert alert-danger" th:if="${errorMessage}" role="alert">
+                          <span th:text="${errorMessage}"></span>
+                        </div>
+
                         <div data-mdb-input-init class="form-outline mb-4">
                           <input type="text" name="username" id="username" class="form-control form-control-lg" />
                           <label class="form-label" for="username">Nombre De Usuario</label>
