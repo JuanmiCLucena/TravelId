@@ -72,9 +72,11 @@ public class AdminUsuarioController {
             detallesUsuario.setEmail(usuarioRegistro.getEmail());
 
             servicioUsuario.guardar(usuario);
-            servicioDetallesUsuario.guardar(detallesUsuario);
 
+            detallesUsuario.setUsu(usuario);
             usuario.setDetalles(detallesUsuario);
+
+            servicioDetallesUsuario.guardar(detallesUsuario);
 
             servicioUsuario.guardar(usuario);
 
