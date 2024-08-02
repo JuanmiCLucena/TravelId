@@ -1,5 +1,6 @@
 package com.eoi.grupo5.controladores.admin;
 
+import com.eoi.grupo5.dtos.UsuarioRegistroDto;
 import com.eoi.grupo5.modelos.*;
 import com.eoi.grupo5.paginacion.PaginaRespuestaUsuarios;
 import com.eoi.grupo5.servicios.*;
@@ -43,8 +44,8 @@ public class AdminUsuarioController {
     public String detalles(Model modelo, @PathVariable Integer id) {
         Optional<Usuario> usuario = servicioUsuario.encuentraPorId(id);
         if (usuario.isPresent()) {
-            UsuarioRegistro usuarioRegistro = UsuarioRegistro.from(usuario.get());
-            modelo.addAttribute("usuario", usuarioRegistro);
+            UsuarioRegistroDto usuarioRegistroDto = UsuarioRegistroDto.from(usuario.get());
+            modelo.addAttribute("usuario", usuarioRegistroDto);
             modelo.addAttribute("detalles", servicioDetallesUsuario.buscarEntidades());
             return "admin/usuarios/adminDetallesUsuario";
         } else {
@@ -55,7 +56,7 @@ public class AdminUsuarioController {
 
     @GetMapping("/crear")
     public String mostrarPaginaCrear(Model modelo) {
-        UsuarioRegistro usuario = new UsuarioRegistro();
+        UsuarioRegistroDto usuario = new UsuarioRegistroDto();
         modelo.addAttribute("usuario", usuario);
         modelo.addAttribute("detalles", servicioDetallesUsuario.buscarEntidades());
         return "admin/usuarios/adminNuevoUsuario";
@@ -63,12 +64,20 @@ public class AdminUsuarioController {
 
     @PostMapping("/crear")
     public String crear(
-            @ModelAttribute("usuario") UsuarioRegistro usuarioRegistro
+            @ModelAttribute("usuario") UsuarioRegistroDto usuarioRegistroDto
     ) {
 
         try {
 
-            Usuario usuario = Usuario.from(usuarioRegistro);
+            /*
+                Convertimos todos los campos que vengan vacíos a null para evitar problemas con nuestra validación.
+                Si intentamos actualizar un usuario y dejamos campos que tengan validación como dni o teléfono
+                tendremos problemas que al convertirlos a null se evitarán.
+                Aún así debemos realizar validaciones en los formularios para evitar posibles errores.
+             */
+            usuarioRegistroDto.sanitize();
+
+            Usuario usuario = Usuario.from(usuarioRegistroDto);
             usuario.getDetalles().setUsu(usuario);
             usuario.setPassword(bCryptPasswordEncoder.encode(usuario.getPassword()));
             if(usuario.getId() != null) {
