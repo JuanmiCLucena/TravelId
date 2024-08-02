@@ -46,10 +46,6 @@ public class ReservaController {
             List<Reserva> reservas = servicioReserva.obtenerReservasPorUsuario(usuario);
             modelo.addAttribute("reservas", reservas);
 
-            // Generamos identificadores únicos para cada una de las reservas
-            Map<Integer, UUID> reservasIdentificadas = servicioReserva.generarIdentificadorUnicoReservas(reservas);
-            modelo.addAttribute("reservasIdentificadas", reservasIdentificadas);
-
             return "reservas/tusReservas";
         } else {
             modelo.addAttribute("error", "Usuario no encontrado");

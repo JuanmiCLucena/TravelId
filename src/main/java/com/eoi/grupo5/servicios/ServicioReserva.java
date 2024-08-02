@@ -137,18 +137,6 @@ public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Int
         }
     }
 
-    public Map<Integer, UUID> generarIdentificadorUnicoReservas(List<Reserva> reservas) {
-
-        Map<Integer, UUID> reservasIdentificadas = new HashMap<>();
-
-        for(Reserva reserva : reservas) {
-            reservasIdentificadas.put(reserva.getId(), UUID.randomUUID());
-        }
-
-        return reservasIdentificadas;
-    }
-
-
     public PaginaRespuestaReservas<Reserva> buscarEntidadesPaginadas(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Reserva> reservaPage = getRepo().findAll(pageable);
