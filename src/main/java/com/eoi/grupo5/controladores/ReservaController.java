@@ -15,7 +15,9 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/reservas")
@@ -34,7 +36,7 @@ public class ReservaController {
     }
 
     @GetMapping("/tus-reservas")
-    public String verTusReservas(Principal principal, Model model) {
+    public String verTusReservas(Principal principal, Model modelo) {
         // Obtener el usuario autenticado
         Optional<Usuario> optionalUsuario = repoUsuario.findByNombreUsuario(principal.getName());
         if (optionalUsuario.isPresent()) {
@@ -42,11 +44,11 @@ public class ReservaController {
 
             // Obtener las reservas del usuario
             List<Reserva> reservas = servicioReserva.obtenerReservasPorUsuario(usuario);
-            model.addAttribute("reservas", reservas);
+            modelo.addAttribute("reservas", reservas);
 
             return "reservas/tusReservas";
         } else {
-            model.addAttribute("error", "Usuario no encontrado");
+            modelo.addAttribute("error", "Usuario no encontrado");
             return "error/paginaError";
         }
     }
@@ -157,7 +159,7 @@ public class ReservaController {
             @RequestParam("fechaInicio") LocalDateTime fechaInicio,
             @RequestParam("fechaFin") LocalDateTime fechaFin,
             @RequestParam("precioTotal") Double precioTotal,
-           @RequestParam("metodoPagoId") Integer metodoPagoId,
+            @RequestParam("metodoPagoId") Integer metodoPagoId,
             Principal principal,
             Model modelo) {
 
@@ -168,9 +170,41 @@ public class ReservaController {
             // Crear la reserva
             try {
                 Reserva reserva = servicioReserva.crearReserva(usuario, fechaInicio, fechaFin);
-                servicioReserva.addHabitacion(reserva.getId(), idHabitacion, fechaInicio, fechaFin);
+                servicioReserva.addHabitacion(reserva, idHabitacion, fechaInicio, fechaFin);
 
-                servicioReserva.generarPago(reserva.getId(), precioTotal, metodoPagoId);
+                servicioReserva.generarPago(reserva, precioTotal, metodoPagoId);
+
+                return "redirect:/reservas/tus-reservas";
+            } catch (Exception e) {
+                modelo.addAttribute("error", e.getMessage());
+                return "error/paginaError";
+            }
+        } else {
+            modelo.addAttribute("error", "Usuario no encontrado");
+            return "error/paginaError";
+        }
+    }
+
+    @PostMapping("/actividad/{idActividad}/reservar")
+    public String reservarActividad(
+            @PathVariable("idActividad") Integer idActividad,
+            @RequestParam("fechaInicio") LocalDateTime fechaInicio,
+            @RequestParam("fechaFin") LocalDateTime fechaFin,
+            @RequestParam("precioTotal") Double precioTotal,
+            @RequestParam("metodoPagoId") Integer metodoPagoId,
+            Principal principal,
+            Model modelo) {
+
+        // Obtener el usuario autenticado
+        Optional<Usuario> optionalUsuario = repoUsuario.findByNombreUsuario(principal.getName());
+        if (optionalUsuario.isPresent()) {
+            Usuario usuario = optionalUsuario.get();
+            // Crear la reserva
+            try {
+                Reserva reserva = servicioReserva.crearReserva(usuario, fechaInicio, fechaFin);
+                servicioReserva.addActividad(reserva, idActividad, fechaInicio, fechaFin);
+
+                servicioReserva.generarPago(reserva, precioTotal, metodoPagoId);
 
                 return "redirect:/reservas/tus-reservas";
             } catch (Exception e) {

@@ -317,7 +317,24 @@
 9. 768px
 ************/
 
-@media only screen and (max-width: 768px) {
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+
+  .container h3 {
+    font-size: 20px;
+  }
+
+  .container .form-group input[type="date"] {
+    width: calc(100% - 16px);
+    padding: 8px;
+  }
+
+  .container .form-group input[type="submit"] {
+    padding: 12px;
+    font-size: 16px;
+  }
 }
 
 /************
