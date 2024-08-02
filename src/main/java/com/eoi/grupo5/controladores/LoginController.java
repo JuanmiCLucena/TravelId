@@ -6,6 +6,7 @@ import com.eoi.grupo5.modelos.DetallesUsuario;
 import com.eoi.grupo5.modelos.Usuario;
 import com.eoi.grupo5.repos.RepoDetallesUsuario;
 import com.eoi.grupo5.repos.RepoUsuario;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -32,7 +33,15 @@ public class LoginController {
     }
 
     @GetMapping("/login")
-    String Login(){
+    public String Login(Model model, HttpServletRequest request) {
+        // Recupera el mensaje de error desde la sesión (Es un objeto por eso lo casteamos de nuevo a String)
+        String errorMessage = (String) request.getSession().getAttribute("errorMessage");
+        if (errorMessage != null) {
+            // Añade el mensaje de error al modelo
+            model.addAttribute("errorMessage", errorMessage);
+            // Elimina el mensaje de error de la sesión después de haberlo recuperado
+            request.getSession().removeAttribute("errorMessage");
+        }
         return "loginForm/login";
     }
 
