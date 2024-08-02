@@ -168,9 +168,9 @@ public class ReservaController {
             // Crear la reserva
             try {
                 Reserva reserva = servicioReserva.crearReserva(usuario, fechaInicio, fechaFin);
-                servicioReserva.addHabitacion(reserva.getId(), idHabitacion, fechaInicio, fechaFin);
+                servicioReserva.addHabitacion(reserva, idHabitacion, fechaInicio, fechaFin);
 
-                servicioReserva.generarPago(reserva.getId(), precioTotal, metodoPagoId);
+                servicioReserva.generarPago(reserva, precioTotal, metodoPagoId);
 
                 return "redirect:/reservas/tus-reservas";
             } catch (Exception e) {
@@ -200,9 +200,9 @@ public class ReservaController {
             // Crear la reserva
             try {
                 Reserva reserva = servicioReserva.crearReserva(usuario, fechaInicio, fechaFin);
-                servicioReserva.addActividad(reserva.getId(), idActividad, fechaInicio, fechaFin);
+                servicioReserva.addActividad(reserva, idActividad, fechaInicio, fechaFin);
 
-                servicioReserva.generarPago(reserva.getId(), precioTotal, metodoPagoId);
+                servicioReserva.generarPago(reserva, precioTotal, metodoPagoId);
 
                 return "redirect:/reservas/tus-reservas";
             } catch (Exception e) {
