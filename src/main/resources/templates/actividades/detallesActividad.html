@@ -101,11 +101,60 @@
                       <div th:if="${precioActual == null}">Precio no disponible</div>
                     </div>
                     <div class="hotel_title_button ml-lg-auto text-lg-right">
-                      <div class="button book_button trans_200">
-                        <a href="#">
+
+                        <!-- Botón modal -->
+                        <button type="button" class="button book_button trans_200" data-bs-toggle="modal" data-bs-target="#modalReserva">
                           Reservar
-                        </a>
-                      </div>
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="modalReserva" tabindex="-1" aria-labelledby="labelModalReserva" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="labelModalReserva">Reservar Actividad</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                <form id="modalReservaForm" th:action="@{/reservas/actividad/{idActividad}/reservar(idActividad=${actividad.id})}" method="post" class="d-inline-block">
+                                  <div class="form-group mb-3">
+                                    <label for="fechaInicio" class="form-label">Fecha Inicio:</label>
+                                    <input readonly type="datetime-local" name="fechaInicio" id="fechaInicio" class="form-control" th:value="${actividad.fechaInicio}" />
+                                  </div>
+                                  <div class="form-group mb-3">
+                                    <label for="fechaFin" class="form-label">Fecha Fin:</label>
+                                    <input readonly type="datetime-local" name="fechaFin" id="fechaFin" class="form-control" th:value="${actividad.fechaFin}" />
+                                  </div>
+                                  <div class="form-group mb-3">
+                                    <label for="asistentes" class="form-label">Asistentes:</label>
+                                    <div class="input-group">
+                                      <input type="number" name="asistentes" id="asistentes" class="form-control" value="1" required min="1" th:max="${actividad.maximosAsistentes}"/>
+                                    </div>
+                                    <span th:if="${error}" th:text="${error}" class="text-danger"></span>
+                                    <span> Plazas Disponibles: <span th:if="${plazasDisponibles}" th:text="${plazasDisponibles}"></span></span>
+                                  </div>
+                                  <div class="form-group mb-3">
+                                    <label for="precioTotal" class="form-label">Precio Total:</label>
+                                    <div class="input-group">
+                                      <span class="input-group-text">€</span>
+                                      <input readonly type="number" name="precioTotal" id="precioTotal" class="form-control" th:value="${precioActual.valor}"/>
+                                    </div>
+                                  </div>
+                                  <div class="form-group mb-3">
+                                    <label for="metodoPagoId">Método Pago:</label>
+                                    <select class="form-control" name="metodoPagoId" id="metodoPagoId">
+                                      <option th:each="metodoPago : ${metodosPago}" th:value="${metodoPago.id}" th:text="${metodoPago.metodo}"></option>
+                                    </select>
+                                  </div>
+                                </form>
+                              </div>
+                              <div class="modal-footer justify-content-start">
+                                <button type="submit" form="modalReservaForm" class="btn btn-primary">Confirmar Reserva</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                     </div>
                   </div>
 
@@ -138,7 +187,6 @@
                           version="1.1"
                           id="Layer_6"
                           xmlns="http://www.w3.org/2000/svg"
-                          xmlns:xlink="http://www.w3.org/1999/xlink"
                           x="0px"
                           y="0px"
                           width="28px"
@@ -172,17 +220,16 @@
                       <!-- Actividad Slider Nav - Next -->
                       <div class="hotel_slider_nav hotel_slider_next">
                         <svg
-                          version="1.1"
-                          id="Layer_7"
-                          xmlns="http://www.w3.org/2000/svg"
-                          xmlns:xlink="http://www.w3.org/1999/xlink"
-                          x="0px"
-                          y="0px"
-                          width="28px"
-                          height="33px"
-                          viewBox="0 0 28 33"
-                          enable-background="new 0 0 28 33"
-                          xml:space="preserve"
+                                version="1.1"
+                                id="Layer_7"
+                                xmlns="http://www.w3.org/2000/svg"
+                                x="0px"
+                                y="0px"
+                                width="28px"
+                                height="33px"
+                                viewBox="0 0 28 33"
+                                enable-background="new 0 0 28 33"
+                                xml:space="preserve"
                         >
                           <defs>
                             <linearGradient id="hotel_grad_next">
@@ -267,6 +314,7 @@
       <!-- Copyright -->
       <div th:replace="~{fragments/plantilla :: copyright}"></div>
     </div>
+  </div>
 
     <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
     <script th:src="@{/plugins/easing/easing.js}"></script>
@@ -274,5 +322,6 @@
     <script th:src="@{/plugins/colorbox/jquery.colorbox-min.js}"></script>
     <script th:src="@{/plugins/OwlCarousel2-2.2.1/owl.carousel.js}"></script>
     <script th:src="@{/js/offers_custom.js}"></script>
+    <script th:src="@{/js/actividad.js}"></script>
   </body>
 </html>
