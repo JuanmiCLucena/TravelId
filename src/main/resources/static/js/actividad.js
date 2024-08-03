@@ -18,8 +18,7 @@
  *    - Actualiza el campo `#precioTotal` con el precio total calculado, formateado a dos decimales.
  *
  * 4. **Evento de entrada del campo de asistentes:**
- *    - Añade un oyente de eventos al campo de número de asistentes (`#asistentes`) para que cada vez que el usuario
- *      cambie el valor (evento `input`), se ejecute la función `updatePrecioTotal` y se actualice el precio total.
+ *    - Añade un oyente de eventos al campo de número de asistentes (`#asistentes`) para que cada vez que el usuario cambie el valor (evento `input`), se ejecute la función `updatePrecioTotal` y se actualice el precio total.
  */
     document.addEventListener("DOMContentLoaded", () => {
     // Comprobación de errores y apertura de modal
@@ -34,7 +33,8 @@
     // Obtén los elementos del DOM
     const asistentesInput = document.getElementById("asistentes");
     const precioTotalInput = document.getElementById("precioTotal");
-    const precioActividadPorAsistente = parseFloat(precioTotalInput.value) || 0;
+    const precioActividadPorAsistente =
+    parseFloat(precioTotalInput.value) || 0;
 
     // Función para actualizar el precio total
     function updatePrecioTotal() {

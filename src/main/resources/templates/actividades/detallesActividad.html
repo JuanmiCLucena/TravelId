@@ -1,301 +1,353 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <title>Detalles Actividad</title>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="description" content="Travelix Project" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-      crossorigin="anonymous"
-    />
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"
-    ></script>
-    <link
-      th:href="@{/plugins/font-awesome-4.7.0/css/font-awesome.min.css}"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <link
-      th:href="@{/plugins/colorbox/colorbox.css}"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      th:href="@{/plugins/OwlCarousel2-2.2.1/owl.carousel.css}"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      th:href="@{/plugins/OwlCarousel2-2.2.1/owl.theme.default.css}"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      th:href="@{/plugins/OwlCarousel2-2.2.1/animate.css}"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      th:href="@{/styles/single_listing_styles.css}"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      th:href="@{/styles/single_listing_responsive.css}"
-    />
-  </head>
+<head>
+  <title>Detalles Actividad</title>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="description" content="Travelix Project" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+          crossorigin="anonymous"
+  />
+  <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+          crossorigin="anonymous"
+  ></script>
+  <link
+          th:href="@{/plugins/font-awesome-4.7.0/css/font-awesome.min.css}"
+          rel="stylesheet"
+          type="text/css"
+  />
+  <link
+          th:href="@{/plugins/colorbox/colorbox.css}"
+          rel="stylesheet"
+          type="text/css"
+  />
+  <link
+          rel="stylesheet"
+          type="text/css"
+          th:href="@{/plugins/OwlCarousel2-2.2.1/owl.carousel.css}"
+  />
+  <link
+          rel="stylesheet"
+          type="text/css"
+          th:href="@{/plugins/OwlCarousel2-2.2.1/owl.theme.default.css}"
+  />
+  <link
+          rel="stylesheet"
+          type="text/css"
+          th:href="@{/plugins/OwlCarousel2-2.2.1/animate.css}"
+  />
+  <link
+          rel="stylesheet"
+          type="text/css"
+          th:href="@{/styles/single_listing_styles.css}"
+  />
+  <link
+          rel="stylesheet"
+          type="text/css"
+          th:href="@{/styles/single_listing_responsive.css}"
+  />
+</head>
 
-  <body>
-    <div class="super_container">
-      <!-- Header -->
-      <header th:replace="~{fragments/plantilla :: header}"></header>
-      <div th:replace="~{fragments/plantilla :: navMobile}"></div>
+<body>
+<div class="super_container">
+  <!-- Header -->
+  <header th:replace="~{fragments/plantilla :: header}"></header>
+  <div th:replace="~{fragments/plantilla :: navMobile}"></div>
 
-      <!-- Home -->
-      <div class="home">
-        <div
-          class="home_background parallax-window"
-          data-parallax="scroll"
-          data-image-src="/images/single_background.jpg"
-        ></div>
-        <div class="home_content">
-          <div class="home_title" th:text="${actividad.nombre}">Oferta</div>
-        </div>
-      </div>
+  <!-- Home -->
+  <div class="home">
+    <div
+            class="home_background parallax-window"
+            data-parallax="scroll"
+            data-image-src="/images/single_background.jpg"
+    ></div>
+    <div class="home_content">
+      <div class="home_title" th:text="${actividad.nombre}">Oferta</div>
+    </div>
+  </div>
 
-      <!-- Offers -->
-
-      <div class="listing">
-
-        <!-- Single Listing -->
-
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="single_listing">
-                <!-- Actividad Info -->
-
-                <div class="hotel_info">
-                  <!-- Title -->
+  <!-- Offers -->
+  <div class="listing">
+    <!-- Single Listing -->
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="single_listing">
+            <!-- Actividad Info -->
+            <div class="hotel_info">
+              <!-- Title -->
+              <div class="hotel_title_container d-flex flex-lg-row flex-column gap-lg-5">
+                <div class="hotel_title_content">
+                  <h1 class="hotel_title" th:text="${actividad.getNombre()}">Nombre Actividad</h1>
                   <div
-                    class="hotel_title_container d-flex flex-lg-row flex-column gap-lg-5"
+                          class="hotel_location"
+                          th:text="${actividad.getLocalizacion().getNombre()} + ', ' + ${actividad.getLocalizacion().getPais().getNombre()}"
                   >
-                    <div class="hotel_title_content">
-                      <h1 class="hotel_title" th:text="${actividad.getNombre()}">Nombre Actividad</h1>
+                    Localización del Actividad
+                  </div>
+                  <div th:if="${precioActual != null}" th:text="${precioActual.valor} + ' €'">Precio</div>
+                  <div th:if="${precioActual == null}">Precio no disponible</div>
+                </div>
+                <div class="hotel_title_button ml-lg-auto text-lg-right">
+                  <!-- Botón modal -->
+                  <button
+                          type="button"
+                          class="button book_button trans_200"
+                          data-bs-toggle="modal"
+                          data-bs-target="#modalReserva"
+                  >
+                    Reservar
+                  </button>
 
-                      <div class="hotel_location"
-                           th:text="${actividad.getLocalizacion().getNombre()} + ', '
-                           + ${actividad.getLocalizacion().getPais().getNombre()}">
-                        Localización del Actividad
-                      </div>
-                      <div th:if="${precioActual != null}" th:text="${precioActual.valor} + ' €'">Precio</div>
-                      <div th:if="${precioActual == null}">Precio no disponible</div>
-                    </div>
-                    <div class="hotel_title_button ml-lg-auto text-lg-right">
-
-                        <!-- Botón modal -->
-                        <button type="button" class="button book_button trans_200" data-bs-toggle="modal" data-bs-target="#modalReserva">
-                          Reservar
-                        </button>
-
-                        <!-- Modal -->
-                        <div class="modal fade" id="modalReserva" tabindex="-1" aria-labelledby="labelModalReserva" aria-hidden="true">
-                          <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="labelModalReserva">Reservar Actividad</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  <!-- Modal -->
+                  <div
+                          class="modal fade"
+                          id="modalReserva"
+                          tabindex="-1"
+                          aria-labelledby="labelModalReserva"
+                          aria-hidden="true"
+                  >
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="labelModalReserva">Reservar Actividad</h1>
+                          <button
+                                  type="button"
+                                  class="btn-close"
+                                  data-bs-dismiss="modal"
+                                  aria-label="Close"
+                          ></button>
+                        </div>
+                        <div class="modal-body">
+                          <form
+                                  id="modalReservaForm"
+                                  th:action="@{/reservas/actividad/{idActividad}/reservar(idActividad=${actividad.id})}"
+                                  method="post"
+                                  class="d-inline-block"
+                          >
+                            <div class="form-group mb-3">
+                              <label for="fechaInicio" class="form-label">Fecha Inicio:</label>
+                              <input
+                                      readonly
+                                      type="datetime-local"
+                                      name="fechaInicio"
+                                      id="fechaInicio"
+                                      class="form-control"
+                                      th:value="${actividad.fechaInicio}"
+                              />
+                            </div>
+                            <div class="form-group mb-3">
+                              <label for="fechaFin" class="form-label">Fecha Fin:</label>
+                              <input
+                                      readonly
+                                      type="datetime-local"
+                                      name="fechaFin"
+                                      id="fechaFin"
+                                      class="form-control"
+                                      th:value="${actividad.fechaFin}"
+                              />
+                            </div>
+                            <div class="form-group mb-3">
+                              <label for="asistentes" class="form-label">Asistentes:</label>
+                              <div class="input-group">
+                                <input
+                                        type="number"
+                                        name="asistentes"
+                                        id="asistentes"
+                                        class="form-control"
+                                        value="1"
+                                        required
+                                        min="1"
+                                        th:max="${actividad.maximosAsistentes}"
+                                />
                               </div>
-                              <div class="modal-body">
-                                <form id="modalReservaForm" th:action="@{/reservas/actividad/{idActividad}/reservar(idActividad=${actividad.id})}" method="post" class="d-inline-block">
-                                  <div class="form-group mb-3">
-                                    <label for="fechaInicio" class="form-label">Fecha Inicio:</label>
-                                    <input readonly type="datetime-local" name="fechaInicio" id="fechaInicio" class="form-control" th:value="${actividad.fechaInicio}" />
-                                  </div>
-                                  <div class="form-group mb-3">
-                                    <label for="fechaFin" class="form-label">Fecha Fin:</label>
-                                    <input readonly type="datetime-local" name="fechaFin" id="fechaFin" class="form-control" th:value="${actividad.fechaFin}" />
-                                  </div>
-                                  <div class="form-group mb-3">
-                                    <label for="asistentes" class="form-label">Asistentes:</label>
-                                    <div class="input-group">
-                                      <input type="number" name="asistentes" id="asistentes" class="form-control" value="1" required min="1" th:max="${actividad.maximosAsistentes}"/>
-                                    </div>
-                                    <span th:if="${error}" th:text="${error}" class="text-danger"></span>
-                                    <span> Plazas Disponibles: <span th:if="${plazasDisponibles}" th:text="${plazasDisponibles}"></span></span>
-                                  </div>
-                                  <div class="form-group mb-3">
-                                    <label for="precioTotal" class="form-label">Precio Total:</label>
-                                    <div class="input-group">
-                                      <span class="input-group-text">€</span>
-                                      <input readonly type="number" name="precioTotal" id="precioTotal" class="form-control" th:value="${precioActual.valor}"/>
-                                    </div>
-                                  </div>
-                                  <div class="form-group mb-3">
-                                    <label for="metodoPagoId">Método Pago:</label>
-                                    <select class="form-control" name="metodoPagoId" id="metodoPagoId">
-                                      <option th:each="metodoPago : ${metodosPago}" th:value="${metodoPago.id}" th:text="${metodoPago.metodo}"></option>
-                                    </select>
-                                  </div>
-                                </form>
-                              </div>
-                              <div class="modal-footer justify-content-start">
-                                <button type="submit" form="modalReservaForm" class="btn btn-primary">Confirmar Reserva</button>
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                              <span th:if="${error}" th:text="${error}" class="text-danger"></span>
+                              <span> Plazas Disponibles: <span th:if="${plazasDisponibles}" th:text="${plazasDisponibles}"></span></span>
+                            </div>
+                            <div class="form-group mb-3">
+                              <label for="precioTotal" class="form-label">Precio Total:</label>
+                              <div class="input-group">
+                                <span class="input-group-text">€</span>
+                                <input
+                                        readonly
+                                        type="number"
+                                        name="precioTotal"
+                                        id="precioTotal"
+                                        class="form-control"
+                                        th:value="${precioActual.valor}"
+                                        th:if="${precioActual != null}"
+                                />
                               </div>
                             </div>
-                          </div>
+                            <div class="form-group mb-3">
+                              <label for="metodoPagoId">Método Pago:</label>
+                              <select class="form-control" name="metodoPagoId" id="metodoPagoId">
+                                <option
+                                        th:each="metodoPago : ${metodosPago}"
+                                        th:value="${metodoPago.id}"
+                                        th:text="${metodoPago.metodo}"
+                                ></option>
+                              </select>
+                            </div>
+                          </form>
                         </div>
+                        <div class="modal-footer justify-content-start">
+                          <button type="submit" form="modalReservaForm" class="btn btn-primary">Confirmar Reserva</button>
+                          <button
+                                  type="button"
+                                  class="btn btn-danger"
+                                  data-bs-dismiss="modal"
+                          >
+                            Cerrar
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Listing Image -->
+              <div class="hotel_image" th:object="${actividad}">
+                <img
+                        th:src="@{'/imagenes/' + ${imagenActividad}}"
+                        alt="Imagen del actividad"
+                />
+              </div>
+
+              <!-- Actividad Gallery -->
+              <div class="hotel_gallery">
+                <div class="hotel_slider_container">
+                  <div class="owl-carousel owl-theme hotel_slider">
+                    <!-- Hotel Gallery Slider Item -->
+                    <div
+                            class="owl-item"
+                            th:each="imagen : ${actividad.imagenes}"
+                    >
+                      <a
+                              class="colorbox cboxElement"
+                              th:href="@{'/imagenes/' + ${imagen.url}}"
+                      >
+                        <img
+                                th:src="'/imagenes/' + ${imagen.url}"
+                                alt="https://unsplash.com/@jbriscoe"
+                        />
+                      </a>
                     </div>
                   </div>
 
-                  <!-- Listing Image -->
-                  <div class="hotel_image" th:object="${actividad}">
-                    <img th:src="@{'/imagenes/' + ${imagenActividad}}" alt="Imagen del actividad" />
-                  </div>
-
-                  <!-- Actividad Gallery -->
-                  <div class="hotel_gallery">
-                    <div class="hotel_slider_container">
-                      <div class="owl-carousel owl-theme hotel_slider">
-                        <!-- Hotel Gallery Slider Item -->
-                        <div class="owl-item" th:each="imagen : ${actividad.imagenes}">
-                          <a
-                                  class="colorbox cboxElement"
-                                  th:href="@{'/imagenes/' + ${imagen.url}}"
-                          >
-                            <img
-                                    th:src="'/imagenes/' + ${imagen.url}"
-                                    alt="https://unsplash.com/@jbriscoe"
-                            />
-                          </a>
-                        </div>
-                      </div>
-
-                      <!-- Actividad Slider Nav - Prev -->
-                      <div class="hotel_slider_nav hotel_slider_prev">
-                        <svg
-                          version="1.1"
-                          id="Layer_6"
-                          xmlns="http://www.w3.org/2000/svg"
-                          x="0px"
-                          y="0px"
-                          width="28px"
-                          height="33px"
-                          viewBox="0 0 28 33"
-                          enable-background="new 0 0 28 33"
-                          xml:space="preserve"
-                        >
+                  <!-- Actividad Slider Nav - Prev -->
+                  <div class="hotel_slider_nav hotel_slider_prev">
+                    <svg
+                            version="1.1"
+                            id="Layer_6"
+                            xmlns="http://www.w3.org/2000/svg"
+                            x="0px"
+                            y="0px"
+                            width="28px"
+                            height="33px"
+                            viewBox="0 0 28 33"
+                            enable-background="new 0 0 28 33"
+                            xml:space="preserve"
+                    >
                           <defs>
                             <linearGradient id="hotel_grad_prev">
                               <stop offset="0%" stop-color="#fa9e1b" />
                               <stop offset="100%" stop-color="#8d4fff" />
                             </linearGradient>
                           </defs>
-                          <path
-                            class="nav_path"
-                            fill="#F3F6F9"
-                            d="M19,0H9C4.029,0,0,4.029,0,9v15c0,4.971,4.029,9,9,9h10c4.97,0,9-4.029,9-9V9C28,4.029,23.97,0,19,0z
-											M26,23.091C26,27.459,22.545,31,18.285,31H9.714C5.454,31,2,27.459,2,23.091V9.909C2,5.541,5.454,2,9.714,2h8.571
-											C22.545,2,26,5.541,26,9.909V23.091z"
-                          />
-                          <polygon
-                            class="nav_arrow"
-                            fill="#F3F6F9"
-                            points="15.044,22.222 16.377,20.888 12.374,16.885 16.377,12.882 15.044,11.55 9.708,16.885 11.04,18.219
-											11.042,18.219 "
-                          />
+                      <path
+                              class="nav_path"
+                              fill="#F3F6F9"
+                              d="M19,0H9C4.029,0,0,4.029,0,9v15c0,4.971,4.029,9,9,9h10c4.97,0,9-4.029,9-9V9C28,4.029,23.97,0,19,0z M26,23.091C26,27.459,22.545,31,18.285,31H9.714C5.454,31,2,27.459,2,23.091V9.909C2,5.541,5.454,2,9.714,2h8.571C22.545,2,26,5.541,26,9.909V23.091z"
+                      />
+                      <polygon
+                              class="nav_arrow"
+                              fill="#F3F6F9"
+                              points="15.044,22.222 16.377,20.888 12.374,16.885 16.377,12.882 15.044,11.55 9.708,16.885 11.04,18.219 11.042,18.219 "
+                      />
                         </svg>
-                      </div>
+                  </div>
 
-                      <!-- Actividad Slider Nav - Next -->
-                      <div class="hotel_slider_nav hotel_slider_next">
-                        <svg
-                                version="1.1"
-                                id="Layer_7"
-                                xmlns="http://www.w3.org/2000/svg"
-                                x="0px"
-                                y="0px"
-                                width="28px"
-                                height="33px"
-                                viewBox="0 0 28 33"
-                                enable-background="new 0 0 28 33"
-                                xml:space="preserve"
-                        >
+                  <!-- Actividad Slider Nav - Next -->
+                  <div class="hotel_slider_nav hotel_slider_next">
+                    <svg
+                            version="1.1"
+                            id="Layer_7"
+                            xmlns="http://www.w3.org/2000/svg"
+                            x="0px"
+                            y="0px"
+                            width="28px"
+                            height="33px"
+                            viewBox="0 0 28 33"
+                            enable-background="new 0 0 28 33"
+                            xml:space="preserve"
+                    >
                           <defs>
                             <linearGradient id="hotel_grad_next">
                               <stop offset="0%" stop-color="#fa9e1b" />
                               <stop offset="100%" stop-color="#8d4fff" />
                             </linearGradient>
                           </defs>
-                          <path
-                            class="nav_path"
-                            fill="#F3F6F9"
-                            d="M19,0H9C4.029,0,0,4.029,0,9v15c0,4.971,4.029,9,9,9h10c4.97,0,9-4.029,9-9V9C28,4.029,23.97,0,19,0z
-										M26,23.091C26,27.459,22.545,31,18.285,31H9.714C5.454,31,2,27.459,2,23.091V9.909C2,5.541,5.454,2,9.714,2h8.571
-										C22.545,2,26,5.541,26,9.909V23.091z"
-                          />
-                          <polygon
-                            class="nav_arrow"
-                            fill="#F3F6F9"
-                            points="13.044,11.551 11.71,12.885 15.714,16.888 11.71,20.891 13.044,22.224 18.379,16.888 17.048,15.554
-										17.046,15.554 "
-                          />
+                      <path
+                              class="nav_path"
+                              fill="#F3F6F9"
+                              d="M19,0H9C4.029,0,0,4.029,0,9v15c0,4.971,4.029,9,9,9h10c4.97,0,9-4.029,9-9V9C28,4.029,23.97,0,19,0z M26,23.091C26,27.459,22.545,31,18.285,31H9.714C5.454,31,2,27.459,2,23.091V9.909C2,5.541,5.454,2,9.714,2h8.571C22.545,2,26,5.541,26,9.909V23.091z"
+                      />
+                      <polygon
+                              class="nav_arrow"
+                              fill="#F3F6F9"
+                              points="13.044,11.551 11.71,12.885 15.714,16.888 11.71,20.891 13.044,22.224 18.379,16.888 17.048,15.554 17.046,15.554 "
+                      />
                         </svg>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Actividad Info Text -->
+              <div class="hotel_info_text">
+                <p th:text="${actividad.descripcion}">Descripción del Actividad</p>
+              </div>
+
+              <!-- Actividades Cercanos -->
+              <h2 class="text-dark mt-5">Actividades en la misma zona</h2>
+              <div class="rooms">
+                <div th:if="${recomendados.isEmpty()}">
+                  <h4>No hay actividades cerca de tu zona</h4>
+                </div>
+                <!-- Room -->
+                <div
+                        class="room"
+                        th:each="actividadRecomendado : ${recomendados}"
+                        th:if="${!recomendados.isEmpty()}"
+                >
+                  <div class="row">
+                    <div class="col-lg-2">
+                      <div class="room_image">
+                        <img
+                                th:src="@{${actividadRecomendado.imagenes.isEmpty()} ? '/images/Hoteles/Nobu_Hotel.jpg' : '/imagenes/' + ${actividadRecomendado.imagenes.stream().findFirst().get().url}}"
+                                alt="https://unsplash.com/@grovemade"
+                        />
                       </div>
                     </div>
-                  </div>
-
-                  <!-- Actividad Info Text -->
-                  <div class="hotel_info_text">
-                    <p th:text="${actividad.descripcion}">
-                      Descripción del Actividad
-                    </p>
-                  </div>
-
-                <!-- Actividades Cercanos -->
-                <h2 class="text-dark mt-5">Actividades en la misma zona</h2>
-
-                <div class="rooms">
-                  <div th:if="${recomendados.isEmpty()}">
-                    <h4>
-                      No hay actividades cerca de tu zona
-                    </h4>
-                  </div>
-                  <!-- Room -->
-                  <div class="room" th:each="actividadRecomendado : ${recomendados}" th:if="${!recomendados.isEmpty()}">
-                    <!-- Room -->
-                    <div class="row">
-                      <div class="col-lg-2">
-                        <div class="room_image">
-                          <img
-                                  th:src="@{${actividadRecomendado.imagenes.isEmpty()} ? '/images/Hoteles/Nobu_Hotel.jpg' : '/imagenes/' + ${actividadRecomendado.imagenes.stream().findFirst().get().url}}"
-                            alt="https://unsplash.com/@grovemade"
-                          />
+                    <div class="col-lg-7">
+                      <div class="room_content">
+                        <div class="room_title" th:text="${actividadRecomendado.nombre}">Nombre Actividad</div>
+                        <div class="room_text" th:text="${actividadRecomendado.descripcion}">
+                          Descripción Actividad
                         </div>
                       </div>
-                      <div class="col-lg-7">
-                        <div class="room_content">
-                          <div class="room_title" th:text="${actividadRecomendado.nombre}">Nombre Actividad</div>
-                          <div class="room_text" th:text="${actividadRecomendado.descripcion}">
-                            Descripción Actividad
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 text-lg-right d-flex align-items-center">
-                        <div class="room_button">
-                          <div class="button book_button trans_200">
-                            <a th:href="@{'/actividad/' + ${actividadRecomendado.id}}">Ver</a>
-                          </div>
+                    </div>
+                    <div class="col-lg-3 text-lg-right d-flex align-items-center">
+                      <div class="room_button">
+                        <div class="button book_button trans_200">
+                          <a th:href="@{'/actividad/' + ${actividadRecomendado.id}}">Ver</a>
                         </div>
                       </div>
                     </div>
@@ -306,22 +358,23 @@
           </div>
         </div>
       </div>
-
-
-      <!-- Footer -->
-      <footer th:replace="~{fragments/plantilla :: footer}"></footer>
-
-      <!-- Copyright -->
-      <div th:replace="~{fragments/plantilla :: copyright}"></div>
     </div>
   </div>
 
-    <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
-    <script th:src="@{/plugins/easing/easing.js}"></script>
-    <script th:src="@{/plugins/parallax-js-master/parallax.min.js}"></script>
-    <script th:src="@{/plugins/colorbox/jquery.colorbox-min.js}"></script>
-    <script th:src="@{/plugins/OwlCarousel2-2.2.1/owl.carousel.js}"></script>
-    <script th:src="@{/js/offers_custom.js}"></script>
-    <script th:src="@{/js/actividad.js}"></script>
-  </body>
+  <!-- Footer -->
+  <footer th:replace="~{fragments/plantilla :: footer}"></footer>
+
+  <!-- Copyright -->
+  <div th:replace="~{fragments/plantilla :: copyright}"></div>
+</div>
+
+<script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/plugins/easing/easing.js}"></script>
+<script th:src="@{/plugins/parallax-js-master/parallax.min.js}"></script>
+<script th:src="@{/plugins/colorbox/jquery.colorbox-min.js}"></script>
+<script th:src="@{/plugins/OwlCarousel2-2.2.1/owl.carousel.js}"></script>
+<script th:src="@{/js/offers_custom.js}"></script>
+<script th:src="@{/js/actividad.js}"></script>
+
+</body>
 </html>
