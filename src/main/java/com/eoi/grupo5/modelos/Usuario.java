@@ -1,7 +1,7 @@
 package com.eoi.grupo5.modelos;
 
+import com.eoi.grupo5.dtos.UsuarioRegistroDto;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -72,4 +72,22 @@ public class Usuario implements UserDetails, Serializable {
         this.password = password;
         this.detalles = detalles;
     }
+
+    // Helpers
+    public static Usuario from(UsuarioRegistroDto usuarioRegistroDto) {
+        Usuario usuario = new Usuario();
+        usuario.setId(usuarioRegistroDto.getId());
+        usuario.setNombreUsuario(usuarioRegistroDto.getNombreUsuario());
+        usuario.setPassword(usuarioRegistroDto.getPassword());
+        DetallesUsuario detallesUsuario = new DetallesUsuario();
+        usuario.setDetalles(detallesUsuario);
+        usuario.getDetalles().setEmail(usuarioRegistroDto.getEmail());
+        usuario.getDetalles().setNombre(usuarioRegistroDto.getNombre());
+        usuario.getDetalles().setApellidos(usuarioRegistroDto.getApellidos());
+        usuario.getDetalles().setTelefono(usuarioRegistroDto.getTelefono());
+        usuario.getDetalles().setEdad(usuarioRegistroDto.getEdad());
+        usuario.getDetalles().setDni(usuarioRegistroDto.getDni());
+        return usuario;
+    }
+
 }

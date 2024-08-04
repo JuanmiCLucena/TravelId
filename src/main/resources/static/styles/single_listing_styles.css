@@ -156,9 +156,6 @@ h4::selection,
 h5::selection,
 h6::selection {
 }
-.form-control {
-  color: #db5246;
-}
 section {
   display: block;
   position: relative;
@@ -1226,11 +1223,10 @@ section {
 }
 .book_button {
   background: #31124b;
+  padding: 0 32px;
+  color: white;
 }
-.book_button a {
-  padding-left: 32px;
-  padding-right: 32px;
-}
+
 .book_button:hover {
   opacity: 0.8;
 }

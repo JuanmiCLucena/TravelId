@@ -76,7 +76,8 @@
                     <tbody>
                     <tr th:each="actividad : ${reserva.actividadesReservadas}">
                         <td th:text="${actividad.nombre}"></td>
-                        <td th:text="${#temporals.format(actividad.fecha, 'dd MMMM yyyy HH:mm', #locale)}"></td>
+                        <td th:text="${#temporals.format(actividad.fechaInicio, 'dd MMMM yyyy HH:mm', #locale)}"></td>
+                        <td th:text="${#temporals.format(actividad.fechaFin, 'dd MMMM yyyy HH:mm', #locale)}"></td>
                     </tr>
                     </tbody>
                 </table>

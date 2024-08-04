@@ -2,10 +2,13 @@ package com.eoi.grupo5.controladores;
 
 import com.eoi.grupo5.modelos.*;
 import com.eoi.grupo5.repos.RepoUsuario;
+import com.eoi.grupo5.servicios.ServicioActividad;
 import com.eoi.grupo5.servicios.ServicioHabitacion;
 import com.eoi.grupo5.servicios.ServicioMetodoPago;
 import com.eoi.grupo5.servicios.ServicioReserva;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,12 +28,14 @@ public class ReservaController {
 
     private final ServicioReserva servicioReserva;
     private final ServicioHabitacion servicioHabitacion;
+    private final ServicioActividad servicioActividad;
     private final RepoUsuario repoUsuario;
     private final ServicioMetodoPago servicioMetodoPago;
 
-    public ReservaController(ServicioReserva servicioReserva, ServicioHabitacion servicioHabitacion, RepoUsuario repoUsuario, ServicioMetodoPago servicioMetodoPago) {
+    public ReservaController(ServicioReserva servicioReserva, ServicioHabitacion servicioHabitacion, ServicioActividad servicioActividad, RepoUsuario repoUsuario, ServicioMetodoPago servicioMetodoPago) {
         this.servicioReserva = servicioReserva;
         this.servicioHabitacion = servicioHabitacion;
+        this.servicioActividad = servicioActividad;
         this.repoUsuario = repoUsuario;
         this.servicioMetodoPago = servicioMetodoPago;
     }
@@ -190,32 +195,44 @@ public class ReservaController {
             @PathVariable("idActividad") Integer idActividad,
             @RequestParam("fechaInicio") LocalDateTime fechaInicio,
             @RequestParam("fechaFin") LocalDateTime fechaFin,
+            @RequestParam("asistentes") Integer asistentes,
             @RequestParam("precioTotal") Double precioTotal,
             @RequestParam("metodoPagoId") Integer metodoPagoId,
             Principal principal,
-            Model modelo) {
+            Model modelo,
+            RedirectAttributes redirectAttributes) {
 
         // Obtener el usuario autenticado
-        Optional<Usuario> optionalUsuario = repoUsuario.findByNombreUsuario(principal.getName());
-        if (optionalUsuario.isPresent()) {
-            Usuario usuario = optionalUsuario.get();
-            // Crear la reserva
-            try {
-                Reserva reserva = servicioReserva.crearReserva(usuario, fechaInicio, fechaFin);
-                servicioReserva.addActividad(reserva, idActividad, fechaInicio, fechaFin);
+        Usuario usuario = repoUsuario.findByNombreUsuario(principal.getName())
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
 
-                servicioReserva.generarPago(reserva, precioTotal, metodoPagoId);
+        try {
+            // Obtener la actividad
+            Actividad actividad = servicioActividad.encuentraPorId(idActividad)
+                    .orElseThrow(() -> new EntityNotFoundException("Actividad no encontrada"));
 
-                return "redirect:/reservas/tus-reservas";
-            } catch (Exception e) {
-                modelo.addAttribute("error", e.getMessage());
-                return "error/paginaError";
+            // Verificar disponibilidad de plazas
+            Integer plazasDisponibles = actividad.getMaximosAsistentes() - actividad.getAsistentesConfirmados();
+            if (actividad.getAsistentesConfirmados() + asistentes > actividad.getMaximosAsistentes()) {
+                redirectAttributes.addFlashAttribute("error", "No hay suficientes plazas!");
+                redirectAttributes.addFlashAttribute("plazasDisponibles", plazasDisponibles);
+                return "redirect:/actividad/" + idActividad;
             }
-        } else {
-            modelo.addAttribute("error", "Usuario no encontrado");
+
+            // Crear la reserva
+            Reserva reserva = servicioReserva.crearReserva(usuario, fechaInicio, fechaFin);
+            servicioReserva.addActividad(reserva, idActividad, fechaInicio, fechaFin, asistentes);
+
+            // Generar el pago
+            servicioReserva.generarPago(reserva, precioTotal, metodoPagoId);
+
+            return "redirect:/reservas/tus-reservas";
+        } catch (Exception e) {
+            modelo.addAttribute("error", e.getMessage());
             return "error/paginaError";
         }
     }
+
 
 
 

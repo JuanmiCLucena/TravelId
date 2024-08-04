@@ -8,6 +8,7 @@ import com.eoi.grupo5.modelos.Imagen;
 import com.eoi.grupo5.dtos.ActividadDto;
 import com.eoi.grupo5.paginacion.PaginaRespuestaActividades;
 import com.eoi.grupo5.servicios.ServicioActividad;
+import com.eoi.grupo5.servicios.ServicioMetodoPago;
 import com.eoi.grupo5.servicios.ServicioTipoActividad;
 import com.eoi.grupo5.servicios.filtros.ServicioFiltroActividades;
 import org.springframework.stereotype.Controller;
@@ -23,14 +24,16 @@ public class ActividadController {
 
     private final ServicioActividad servicioActividad;
     private final ServicioTipoActividad servicioTipoActividad;
+    private final ServicioMetodoPago servicioMetodoPago;
 
     // Filtro
     private final ServicioFiltroActividades servicioFiltroActividades;
     private final ActividadesMapper actividadesMapper;
 
-    public ActividadController(ServicioActividad servicioActividad, ServicioTipoActividad servicioTipoActividad, ServicioFiltroActividades servicioFiltroActividades, ActividadesMapper actividadesMapper) {
+    public ActividadController(ServicioActividad servicioActividad, ServicioTipoActividad servicioTipoActividad, ServicioMetodoPago servicioMetodoPago, ServicioFiltroActividades servicioFiltroActividades, ActividadesMapper actividadesMapper) {
         this.servicioActividad = servicioActividad;
         this.servicioTipoActividad = servicioTipoActividad;
+        this.servicioMetodoPago = servicioMetodoPago;
         this.servicioFiltroActividades = servicioFiltroActividades;
         this.actividadesMapper = actividadesMapper;
     }
@@ -54,23 +57,29 @@ public class ActividadController {
 
     @GetMapping("/actividad/{id}")
     public String detallesActividad(Model modelo, @PathVariable Integer id) {
-        Optional<Actividad> actividad = servicioActividad.encuentraPorId(id);
+        Optional<Actividad> optionalActividad = servicioActividad.encuentraPorId(id);
         // Si no encontramos el hotel no hemos encontrado el hotel
-        if(actividad.isPresent()) {
-            Optional<Imagen> optionalActividadImagen = actividad.get().getImagenes().stream().findFirst();
+        if(optionalActividad.isPresent()) {
+            Actividad actividad = optionalActividad.get();
+            Optional<Imagen> optionalActividadImagen = actividad.getImagenes().stream().findFirst();
             if(optionalActividadImagen.isPresent()) {
                 String actividadImagen = optionalActividadImagen.get().getUrl();
                 modelo.addAttribute("imagenActividad", actividadImagen);
             }
-            modelo.addAttribute("recomendados", servicioActividad.obtenerActividadesEnTuZona(actividad.get()));
-            modelo.addAttribute("actividad",actividad.get());
+            modelo.addAttribute("recomendados", servicioActividad.obtenerActividadesEnTuZona(actividad));
+            modelo.addAttribute("actividad",actividad);
             modelo.addAttribute("precioActual",
-                    servicioActividad.getPrecioActual(actividad.get(), LocalDateTime.now()));
+                    servicioActividad.getPrecioActual(actividad, LocalDateTime.now()));
+            modelo.addAttribute("metodosPago", servicioMetodoPago.buscarEntidades());
+
+            Integer plazasDisponibles = actividad.getMaximosAsistentes() - actividad.getAsistentesConfirmados();
+
+            modelo.addAttribute("plazasDisponibles", plazasDisponibles);
 
             return "actividades/detallesActividad";
         } else {
             // Hotel no encontrado - htlm
-            return "hotelNoEncontrado";
+            return "error/paginaError";
         }
 
     }
