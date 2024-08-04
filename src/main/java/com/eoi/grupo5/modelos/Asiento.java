@@ -1,6 +1,7 @@
 package com.eoi.grupo5.modelos;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -22,7 +23,7 @@ public class Asiento {
     private Integer id;
 
     @Column(name = "numero", length = 5)
-    @NotNull(message = "El asiento debe tener un número asignado")
+    @NotBlank(message = "El asiento debe tener un número asignado")
     @Size(max = 5, message = "El número de asiento no puede tener más de 5 caracteres")
     private String numero;
 

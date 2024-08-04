@@ -48,21 +48,6 @@ public class AdminActividadController {
         return "admin/actividades/adminActividades";
     }
 
-    @GetMapping("/{id}")
-    public String detalles(Model modelo, @PathVariable Integer id) {
-        Optional<Actividad> actividad = servicioActividad.encuentraPorId(id);
-        if (actividad.isPresent()) {
-            modelo.addAttribute("actividad", actividad.get());
-            modelo.addAttribute("preciosActuales", servicioActividad.getPrecioActual(actividad.get(), LocalDateTime.now()));
-            modelo.addAttribute("localizaciones", servicioLocalizacion.buscarEntidades());
-            modelo.addAttribute("tipos", servicioTipoActividad.buscarEntidades());
-            return "admin/actividades/adminDetallesActividad";
-        } else {
-            // Actividad no encontrado - html
-            return "error/paginaError";
-        }
-    }
-
     @GetMapping("/crear")
     public String mostrarPaginaCrear(Model modelo) {
         Actividad actividad = new Actividad();
