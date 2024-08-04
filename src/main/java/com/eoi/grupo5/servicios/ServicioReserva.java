@@ -54,14 +54,14 @@ public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Int
 
     }
 
-    public void addActividad(Reserva reserva, Integer idActividad, LocalDateTime fechaInicio, LocalDateTime fechaFin) {
+    public void addActividad(Reserva reserva, Integer idActividad, LocalDateTime fechaInicio, LocalDateTime fechaFin, Integer asistentes) {
             Optional<Actividad> optionalActividad = repoActividad.findById(idActividad);
             if (optionalActividad.isPresent()) {
                 Actividad actividad = optionalActividad.get();
                 if (actividad.getFechaInicio().isBefore(fechaFin) && actividad.getFechaFin().isAfter(fechaInicio)) {
-                    if (actividad.getAsistentesConfirmados() < actividad.getMaximosAsistentes()) {
+                    if ( (actividad.getAsistentesConfirmados() + asistentes) <= actividad.getMaximosAsistentes()) {
                         reserva.getActividadesReservadas().add(actividad);
-                        actividad.setAsistentesConfirmados(actividad.getAsistentesConfirmados() + 1);
+                        actividad.setAsistentesConfirmados(actividad.getAsistentesConfirmados() + asistentes);
                         repoActividad.save(actividad);
                         repoReserva.save(reserva);
                     } else {
