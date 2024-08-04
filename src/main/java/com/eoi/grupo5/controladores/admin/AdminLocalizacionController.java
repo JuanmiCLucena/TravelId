@@ -22,12 +22,11 @@ public class AdminLocalizacionController {
     private final ServicioActividad servicioActividad;
     private final ServicioPais servicioPais;
 
-
-    public AdminLocalizacionController(ServicioLocalizacion servicioLocalizacion, ServicioVuelo servicioVuelo, ServicioHotel servicioHotel, ServicioActividad servciActividad, ServicioPais servicioPais) {
+    public AdminLocalizacionController(ServicioLocalizacion servicioLocalizacion, ServicioVuelo servicioVuelo, ServicioHotel servicioHotel, ServicioActividad servicioActividad, ServicioPais servicioPais) {
         this.servicioLocalizacion = servicioLocalizacion;
         this.servicioVuelo = servicioVuelo;
         this.servicioHotel = servicioHotel;
-        this.servicioActividad = servciActividad;
+        this.servicioActividad = servicioActividad;
         this.servicioPais = servicioPais;
     }
 
@@ -39,27 +38,9 @@ public class AdminLocalizacionController {
     ) {
         PaginaRespuestaLocalizaciones<Localizacion> localizacionesPage = servicioLocalizacion.buscarEntidadesPaginadas(page, size);
         List<Localizacion> localizaciones = localizacionesPage.getContent();
-        modelo.addAttribute("localizaciones",localizaciones);
+        modelo.addAttribute("localizaciones", localizaciones);
         modelo.addAttribute("page", localizacionesPage);
         return "admin/localizaciones/adminLocalizaciones";
-    }
-
-    @GetMapping("/{id}")
-    public String detalles(Model modelo, @PathVariable Integer id) {
-        Optional<Localizacion> localizacion = servicioLocalizacion.encuentraPorId(id);
-        if(localizacion.isPresent()) {
-            modelo.addAttribute("localizacion",localizacion.get());
-            modelo.addAttribute("vuelos", servicioVuelo.buscarEntidades());
-            modelo.addAttribute("hoteles", servicioHotel.buscarEntidades());
-            modelo.addAttribute("actividades", servicioActividad.buscarEntidades());
-            modelo.addAttribute("paises", servicioPais.buscarEntidades());
-
-            return "admin/localizaciones/adminDetallesLocalizacion";
-        } else {
-            // Hotel no encontrado - htlm
-            return "localizacionNoEncontrada";
-        }
-
     }
 
     @GetMapping("/crear")
@@ -67,13 +48,13 @@ public class AdminLocalizacionController {
         Localizacion localizacion = new Localizacion();
         modelo.addAttribute("localizacion", localizacion);
         modelo.addAttribute("paises", servicioPais.buscarEntidades());
-
         return "admin/localizaciones/adminNuevaLocalizacion";
     }
 
     @PostMapping("/crear")
     public String crear(@Valid @ModelAttribute("localizacion") Localizacion localizacion, BindingResult result, Model modelo) {
         if (result.hasErrors()) {
+            modelo.addAttribute("paises", servicioPais.buscarEntidades());
             modelo.addAttribute("vuelos", servicioVuelo.buscarEntidades());
             modelo.addAttribute("hoteles", servicioHotel.buscarEntidades());
             modelo.addAttribute("actividades", servicioActividad.buscarEntidades());
@@ -83,6 +64,7 @@ public class AdminLocalizacionController {
             servicioLocalizacion.guardar(localizacion);
         } catch (Exception e) {
             modelo.addAttribute("error", "Error al crear la localización: " + e.getMessage());
+            modelo.addAttribute("paises", servicioPais.buscarEntidades());
             modelo.addAttribute("vuelos", servicioVuelo.buscarEntidades());
             modelo.addAttribute("hoteles", servicioHotel.buscarEntidades());
             modelo.addAttribute("actividades", servicioActividad.buscarEntidades());
@@ -91,10 +73,49 @@ public class AdminLocalizacionController {
         return "redirect:/admin/localizaciones";
     }
 
+    @GetMapping("/editar/{id}")
+    public String mostrarPaginaEditar(Model modelo, @PathVariable Integer id) {
+        Optional<Localizacion> localizacion = servicioLocalizacion.encuentraPorId(id);
+        if (localizacion.isPresent()) {
+            modelo.addAttribute("localizacion", localizacion.get());
+            modelo.addAttribute("vuelos", servicioVuelo.buscarEntidades());
+            modelo.addAttribute("hoteles", servicioHotel.buscarEntidades());
+            modelo.addAttribute("actividades", servicioActividad.buscarEntidades());
+            modelo.addAttribute("paises", servicioPais.buscarEntidades());
+            return "admin/localizaciones/adminDetallesLocalizacion";
+        } else {
+            // Localización no encontrada - página de error
+            return "error/paginaError";
+        }
+    }
+
+    @PostMapping("/editar/{id}")
+    public String editar(@PathVariable Integer id, @Valid @ModelAttribute("localizacion") Localizacion localizacion, BindingResult result, Model modelo) {
+        if (result.hasErrors()) {
+            modelo.addAttribute("vuelos", servicioVuelo.buscarEntidades());
+            modelo.addAttribute("hoteles", servicioHotel.buscarEntidades());
+            modelo.addAttribute("actividades", servicioActividad.buscarEntidades());
+            modelo.addAttribute("paises", servicioPais.buscarEntidades());
+            return "admin/localizaciones/adminDetallesLocalizacion";
+        }
+        try {
+            localizacion.setId(id);
+            servicioLocalizacion.guardar(localizacion);
+        } catch (Exception e) {
+            modelo.addAttribute("error", "Error al actualizar la localización: " + e.getMessage());
+            modelo.addAttribute("paises", servicioPais.buscarEntidades());
+            modelo.addAttribute("vuelos", servicioVuelo.buscarEntidades());
+            modelo.addAttribute("hoteles", servicioHotel.buscarEntidades());
+            modelo.addAttribute("actividades", servicioActividad.buscarEntidades());
+            return "admin/localizaciones/adminDetallesLocalizacion";
+        }
+        return "redirect:/admin/localizaciones";
+    }
+
     @DeleteMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Integer id) {
         Optional<Localizacion> optionalLocalizacion = servicioLocalizacion.encuentraPorId(id);
-        if(optionalLocalizacion.isPresent()) {
+        if (optionalLocalizacion.isPresent()) {
             servicioLocalizacion.eliminarPorId(id);
         }
         return "redirect:/admin/localizaciones";

@@ -1,6 +1,8 @@
 package com.eoi.grupo5.controladores.admin;
 
 import com.eoi.grupo5.modelos.Pago;
+import com.eoi.grupo5.modelos.MetodoPago;
+import com.eoi.grupo5.modelos.Reserva;
 import com.eoi.grupo5.paginacion.PaginaRespuestaPagos;
 import com.eoi.grupo5.servicios.ServicioMetodoPago;
 import com.eoi.grupo5.servicios.ServicioPago;
@@ -35,32 +37,14 @@ public class AdminPagoController {
             @RequestParam(defaultValue = "10") int size
     ) {
         PaginaRespuestaPagos<Pago> pagosPage = servicioPago.buscarEntidadesPaginadas(page, size);
-        List<Pago> pagos = servicioPago.buscarEntidades();
-        modelo.addAttribute("pagos",pagos);
+        modelo.addAttribute("pagos", pagosPage.getContent());
         modelo.addAttribute("page", pagosPage);
         return "admin/pagos/adminPagos";
     }
 
-    @GetMapping("/{id}")
-    public String detalles(Model modelo, @PathVariable Integer id) {
-        Optional<Pago> pago = servicioPago.encuentraPorId(id);
-        if(pago.isPresent()) {
-            modelo.addAttribute("pago",pago.get());
-            modelo.addAttribute("reservas", servicioReserva.buscarEntidades());
-            modelo.addAttribute("metodosPago", servicioMetodoPago.buscarEntidades());
-
-            return "admin/pagos/adminDetallesPago";
-        } else {
-            // Pago no encontrado - htlm
-            return "PagoNoEncontrada";
-        }
-
-    }
-
     @GetMapping("/crear")
     public String mostrarPaginaCrear(Model modelo) {
-        Pago pago = new Pago();
-        modelo.addAttribute("pago", pago);
+        modelo.addAttribute("pago", new Pago());
         modelo.addAttribute("reservas", servicioReserva.buscarEntidades());
         modelo.addAttribute("metodosPago", servicioMetodoPago.buscarEntidades());
         return "admin/pagos/adminNuevoPago";
@@ -71,12 +55,71 @@ public class AdminPagoController {
         if (result.hasErrors()) {
             modelo.addAttribute("reservas", servicioReserva.buscarEntidades());
             modelo.addAttribute("metodosPago", servicioMetodoPago.buscarEntidades());
-            return "admin/adminNuevoPago";
+            return "admin/pagos/adminNuevoPago";
         }
         try {
-            servicioPago.guardar(pago);
+            Optional<Reserva> reserva = servicioReserva.encuentraPorId(pago.getReserva().getId());
+            Optional<MetodoPago> metodoPago = servicioMetodoPago.encuentraPorId(pago.getMetodoPago().getId());
+
+            if (reserva.isPresent() && metodoPago.isPresent()) {
+                pago.setReserva(reserva.get());
+                pago.setMetodoPago(metodoPago.get());
+                servicioPago.guardar(pago);
+            } else {
+                modelo.addAttribute("error", "Reserva o método de pago no encontrados.");
+                modelo.addAttribute("reservas", servicioReserva.buscarEntidades());
+                modelo.addAttribute("metodosPago", servicioMetodoPago.buscarEntidades());
+                return "admin/pagos/adminNuevoPago";
+            }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            modelo.addAttribute("error", "Error al crear el pago: " + e.getMessage());
+            modelo.addAttribute("reservas", servicioReserva.buscarEntidades());
+            modelo.addAttribute("metodosPago", servicioMetodoPago.buscarEntidades());
+            return "admin/pagos/adminNuevoPago";
+        }
+        return "redirect:/admin/pagos";
+    }
+
+    @GetMapping("/editar/{id}")
+    public String mostrarPaginaEditar(Model modelo, @PathVariable Integer id) {
+        Optional<Pago> pago = servicioPago.encuentraPorId(id);
+        if (pago.isPresent()) {
+            modelo.addAttribute("pago", pago.get());
+            modelo.addAttribute("reservas", servicioReserva.buscarEntidades());
+            modelo.addAttribute("metodosPago", servicioMetodoPago.buscarEntidades());
+            return "admin/pagos/adminDetallesPago";
+        } else {
+            return "pagoNoEncontrado";
+        }
+    }
+
+    @PostMapping("/editar/{id}")
+    public String editar(@PathVariable Integer id, @Valid @ModelAttribute("pago") Pago pago, BindingResult result, Model modelo) {
+        if (result.hasErrors()) {
+            modelo.addAttribute("reservas", servicioReserva.buscarEntidades());
+            modelo.addAttribute("metodosPago", servicioMetodoPago.buscarEntidades());
+            return "admin/pagos/adminDetallesPago";
+        }
+        try {
+            Optional<Reserva> reserva = servicioReserva.encuentraPorId(pago.getReserva().getId());
+            Optional<MetodoPago> metodoPago = servicioMetodoPago.encuentraPorId(pago.getMetodoPago().getId());
+
+            if (reserva.isPresent() && metodoPago.isPresent()) {
+                pago.setId(id);
+                pago.setReserva(reserva.get());
+                pago.setMetodoPago(metodoPago.get());
+                servicioPago.guardar(pago);
+            } else {
+                modelo.addAttribute("error", "Reserva o método de pago no encontrados.");
+                modelo.addAttribute("reservas", servicioReserva.buscarEntidades());
+                modelo.addAttribute("metodosPago", servicioMetodoPago.buscarEntidades());
+                return "admin/pagos/adminDetallesPago";
+            }
+        } catch (Exception e) {
+            modelo.addAttribute("error", "Error al editar el pago: " + e.getMessage());
+            modelo.addAttribute("reservas", servicioReserva.buscarEntidades());
+            modelo.addAttribute("metodosPago", servicioMetodoPago.buscarEntidades());
+            return "admin/pagos/adminDetallesPago";
         }
         return "redirect:/admin/pagos";
     }
@@ -84,10 +127,9 @@ public class AdminPagoController {
     @DeleteMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Integer id) {
         Optional<Pago> optionalPago = servicioPago.encuentraPorId(id);
-        if(optionalPago.isPresent()) {
+        if (optionalPago.isPresent()) {
             servicioPago.eliminarPorId(id);
         }
         return "redirect:/admin/pagos";
     }
-
 }

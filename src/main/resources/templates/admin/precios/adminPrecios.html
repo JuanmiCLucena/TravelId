@@ -88,7 +88,7 @@
                     <td th:if="${precio.actividad != null}" th:text="${precio.actividad.id}"></td>
                     <td th:if="${precio.actividad == null}"></td>
                     <td class="d-flex gap-2 justify-content-end">
-                        <form th:action="@{'/admin/precios/' + ${precio.id}}" th:method="get">
+                        <form th:action="@{'/admin/precios/editar/' + ${precio.id}}" th:method="get">
                             <button type="submit" class="btn btn-info"><i class="bi bi-pencil text-white"></i></button>
                         </form>
                         <form th:action="@{'/admin/precios/eliminar/' + ${precio.id}}" th:method="delete">

@@ -1,90 +1,107 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <title>Nuevo Hotel</title>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="description" content="Travelix Project" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-      crossorigin="anonymous"
-    />
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"
-    ></script>
-    <link
-      th:href="@{/plugins/font-awesome-4.7.0/css/font-awesome.min.css}"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <link
-      th:href="@{/plugins/colorbox/colorbox.css}"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      th:href="@{/plugins/OwlCarousel2-2.2.1/owl.carousel.css}"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      th:href="@{/plugins/OwlCarousel2-2.2.1/owl.theme.default.css}"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      th:href="@{/plugins/OwlCarousel2-2.2.1/animate.css}"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      th:href="@{/styles/admin_styles.css}"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      th:href="@{/styles/admin_responsive.css}"
-    />
-  </head>
+<head>
+  <title>Nuevo Hotel</title>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="description" content="Travelix Project" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+          crossorigin="anonymous"
+  />
+  <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+          crossorigin="anonymous"
+  ></script>
+  <link
+          th:href="@{/plugins/font-awesome-4.7.0/css/font-awesome.min.css}"
+          rel="stylesheet"
+          type="text/css"
+  />
+  <link
+          th:href="@{/plugins/colorbox/colorbox.css}"
+          rel="stylesheet"
+          type="text/css"
+  />
+  <link
+          rel="stylesheet"
+          type="text/css"
+          th:href="@{/plugins/OwlCarousel2-2.2.1/owl.carousel.css}"
+  />
+  <link
+          rel="stylesheet"
+          type="text/css"
+          th:href="@{/plugins/OwlCarousel2-2.2.1/owl.theme.default.css}"
+  />
+  <link
+          rel="stylesheet"
+          type="text/css"
+          th:href="@{/plugins/OwlCarousel2-2.2.1/animate.css}"
+  />
+  <link
+          rel="stylesheet"
+          type="text/css"
+          th:href="@{/styles/admin_styles.css}"
+  />
+  <link
+          rel="stylesheet"
+          type="text/css"
+          th:href="@{/styles/admin_responsive.css}"
+  />
+</head>
 
-  <body>
+<body>
 
-      <header th:replace="~{admin/fragments/fragmentos :: adminHeader}"></header>
+<header th:replace="~{admin/fragments/fragmentos :: adminHeader}"></header>
 
-        <div class="container w-50 d-flex justify-content-center main">
-          <form class="d-flex gap-3 flex-column" action="/admin/localizaciones/crear" method="post" enctype="multipart/form-data" th:object="${localizacion}">
-            <div class="form-group">
-              <label for="nombre">Nombre de Localización:</label>
-              <input type="text" class="form-control" name="nombre" id="nombre" th:field="*{nombre}">
-            </div>
+<div class="container w-50 d-flex justify-content-center main">
+  <form class="d-flex gap-3 flex-column" action="/admin/localizaciones/crear" method="post" enctype="multipart/form-data" th:object="${localizacion}">
 
-            <div class="form-group">
-              <label for="codigo">Código de Localización:</label>
-              <input type="text" class="form-control" name="codigo" id="codigo" th:field="*{codigo}">
-            </div>
+    <div class="form-group">
+      <label for="nombre">Nombre de Localización:</label>
+      <input type="text" class="form-control" name="nombre" id="nombre" th:field="*{nombre}">
+      <div th:if="${#fields.hasErrors('nombre')}" class="text-danger">
+        <ul>
+          <li th:each="error : ${#fields.errors('nombre')}" th:text="${error}"></li>
+        </ul>
+      </div>
+    </div>
 
-            <div class="form-group">
-              <label for="pais">País:</label>
-              <select class="form-control" name="pais" id="pais" th:field="*{pais.id}">
-                <option  th:each="pais : ${paises}" th:value="${pais.id}" th:text="${pais.nombre}" th:selected="${pais.id != null and localizacion.pais.id == pais.id}"></option>
-              </select>
-            </div>
+    <div class="form-group">
+      <label for="codigo">Código de Localización:</label>
+      <input type="text" class="form-control" name="codigo" id="codigo" th:field="*{codigo}">
+      <div th:if="${#fields.hasErrors('codigo')}" class="text-danger">
+        <ul>
+          <li th:each="error : ${#fields.errors('codigo')}" th:text="${error}"></li>
+        </ul>
+      </div>
+    </div>
 
-            <button type="submit" class="btn btn-primary mt-3">Guardar</button>
-          </form>
-        </div>
+    <div class="form-group">
+      <label for="pais">País:</label>
+      <select class="form-control" name="pais.id" id="pais" th:field="*{pais.id}">
+        <option value="" th:text="'Seleccione un país'" th:selected="${localizacion.pais == null}"></option>
+        <option th:each="pais : ${paises}" th:value="${pais.id}" th:text="${pais.nombre}" th:selected="${pais.id != null and localizacion.pais.id == pais.id}"></option>
+      </select>
+      <div th:if="${#fields.hasErrors('pais.id')}" class="text-danger">
+        <ul>
+          <li th:each="error : ${#fields.errors('pais.id')}" th:text="${error}"></li>
+        </ul>
+      </div>
+    </div>
 
-    <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
-    <script th:src="@{/plugins/easing/easing.js}"></script>
-    <script th:src="@{/plugins/parallax-js-master/parallax.min.js}"></script>
-    <script th:src="@{/plugins/colorbox/jquery.colorbox-min.js}"></script>
-    <script th:src="@{/plugins/OwlCarousel2-2.2.1/owl.carousel.js}"></script>
-  </body>
+    <button type="submit" class="btn btn-primary mt-3">Guardar</button>
+  </form>
+</div>
+
+<script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/plugins/easing/easing.js}"></script>
+<script th:src="@{/plugins/parallax-js-master/parallax.min.js}"></script>
+<script th:src="@{/plugins/colorbox/jquery.colorbox-min.js}"></script>
+<script th:src="@{/plugins/OwlCarousel2-2.2.1/owl.carousel.js}"></script>
+</body>
 </html>

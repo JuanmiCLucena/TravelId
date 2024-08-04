@@ -3,8 +3,10 @@ package com.eoi.grupo5.controladores.admin;
 import com.eoi.grupo5.modelos.*;
 import com.eoi.grupo5.paginacion.PaginaRespuestaPrecios;
 import com.eoi.grupo5.servicios.*;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,19 +42,6 @@ public class AdminPrecioController {
         return "admin/precios/adminPrecios";
     }
 
-    @GetMapping("/{id}")
-    public String detalles(Model modelo, @PathVariable Integer id) {
-        Optional<Precio> precio = servicioPrecio.encuentraPorId(id);
-        if(precio.isPresent()) {
-            modelo.addAttribute("precio",precio.get());
-            return "admin/precios/adminDetallesPrecio";
-        } else {
-            // Hotel no encontrado - htlm
-            return "hotelNoEncontrado";
-        }
-
-    }
-
     @GetMapping("/crear")
     public String mostrarPaginaCrear(Model modelo) {
         Precio precio = new Precio();
@@ -65,56 +54,127 @@ public class AdminPrecioController {
 
     @PostMapping("/crear")
     public String crear(
-            @ModelAttribute("precio") Precio precio,
+            @Valid @ModelAttribute("precio") Precio precio,
+            BindingResult bindingResult,
             @RequestParam(name = "habitacion.id", required = false) Integer habitacionId,
             @RequestParam(name = "asiento.id", required = false) Integer asientoId,
-            @RequestParam(name = "actividad.id", required = false) Integer actividadId
+            @RequestParam(name = "actividad.id", required = false) Integer actividadId,
+            Model modelo
     ) {
+        if (bindingResult.hasErrors()) {
+            modelo.addAttribute("habitaciones", servicioHabitacion.buscarEntidades());
+            modelo.addAttribute("asientos", servicioAsiento.buscarEntidades());
+            modelo.addAttribute("actividades", servicioActividad.buscarEntidades());
+            return "admin/precios/adminNuevoPrecio";
+        }
+
         try {
-            // Manejo opcional para la Habitación
             if (habitacionId != null) {
                 Habitacion habitacion = servicioHabitacion.encuentraPorId(habitacionId)
                         .orElseThrow(() -> new IllegalArgumentException("Habitación no encontrada"));
                 precio.setHabitacion(habitacion);
             } else {
-                precio.setHabitacion(null); // Elimina la referencia si no se proporciona un ID
+                precio.setHabitacion(null);
             }
 
-            // Manejo opcional para el Asiento
             if (asientoId != null) {
                 Asiento asiento = servicioAsiento.encuentraPorId(asientoId)
                         .orElseThrow(() -> new IllegalArgumentException("Asiento no encontrado"));
                 precio.setAsiento(asiento);
             } else {
-                precio.setAsiento(null); // Elimina la referencia si no se proporciona un ID
+                precio.setAsiento(null);
             }
 
-            // Manejo opcional para la Actividad
             if (actividadId != null) {
                 Actividad actividad = servicioActividad.encuentraPorId(actividadId)
                         .orElseThrow(() -> new IllegalArgumentException("Actividad no encontrada"));
                 precio.setActividad(actividad);
             } else {
-                precio.setActividad(null); // Elimina la referencia si no se proporciona un ID
+                precio.setActividad(null);
             }
 
-            // Verifica que al menos una entidad esté asignada
             if (precio.getHabitacion() == null && precio.getAsiento() == null && precio.getActividad() == null) {
                 throw new IllegalArgumentException("Debe proporcionar al menos uno de los IDs: habitacion.id, asiento.id, actividad.id");
             }
 
-            // Guarda el objeto Precio
             servicioPrecio.guardar(precio);
 
         } catch (IllegalArgumentException e) {
-            // Maneja excepciones específicas
             return "redirect:/admin/precios?error=" + e.getMessage();
         } catch (Exception e) {
-            // Manejo general de errores
             return "redirect:/admin/precios?error=Ocurrió un error inesperado";
         }
 
-        // Redirige a la página de lista de precios después de guardar
+        return "redirect:/admin/precios";
+    }
+
+    @GetMapping("/editar/{id}")
+    public String mostrarPaginaEditar(Model modelo, @PathVariable Integer id) {
+        Optional<Precio> precio = servicioPrecio.encuentraPorId(id);
+        if(precio.isPresent()) {
+            modelo.addAttribute("precio",precio.get());
+            return "admin/precios/adminDetallesPrecio";
+        } else {
+            // Hotel no encontrado - htlm
+            return "error/paginaError";
+        }
+
+    }
+
+    @PostMapping("/editar/{id}")
+    public String editar(
+            @PathVariable Integer id,
+            @Valid @ModelAttribute("precio") Precio precio,
+            BindingResult bindingResult,
+            @RequestParam(name = "habitacion.id", required = false) Integer habitacionId,
+            @RequestParam(name = "asiento.id", required = false) Integer asientoId,
+            @RequestParam(name = "actividad.id", required = false) Integer actividadId,
+            Model modelo
+    ) {
+        if (bindingResult.hasErrors()) {
+            modelo.addAttribute("habitaciones", servicioHabitacion.buscarEntidades());
+            modelo.addAttribute("asientos", servicioAsiento.buscarEntidades());
+            modelo.addAttribute("actividades", servicioActividad.buscarEntidades());
+            return "admin/precios/adminDetallesPrecio";
+        }
+
+        try {
+            if (habitacionId != null) {
+                Habitacion habitacion = servicioHabitacion.encuentraPorId(habitacionId)
+                        .orElseThrow(() -> new IllegalArgumentException("Habitación no encontrada"));
+                precio.setHabitacion(habitacion);
+            } else {
+                precio.setHabitacion(null);
+            }
+
+            if (asientoId != null) {
+                Asiento asiento = servicioAsiento.encuentraPorId(asientoId)
+                        .orElseThrow(() -> new IllegalArgumentException("Asiento no encontrado"));
+                precio.setAsiento(asiento);
+            } else {
+                precio.setAsiento(null);
+            }
+
+            if (actividadId != null) {
+                Actividad actividad = servicioActividad.encuentraPorId(actividadId)
+                        .orElseThrow(() -> new IllegalArgumentException("Actividad no encontrada"));
+                precio.setActividad(actividad);
+            } else {
+                precio.setActividad(null);
+            }
+
+            if (precio.getHabitacion() == null && precio.getAsiento() == null && precio.getActividad() == null) {
+                throw new IllegalArgumentException("Debe proporcionar al menos uno de los IDs: habitacion.id, asiento.id, actividad.id");
+            }
+
+            servicioPrecio.guardar(precio);
+
+        } catch (IllegalArgumentException e) {
+            return "redirect:/admin/precios?error=" + e.getMessage();
+        } catch (Exception e) {
+            return "redirect:/admin/precios?error=Ocurrió un error inesperado";
+        }
+
         return "redirect:/admin/precios";
     }
 
