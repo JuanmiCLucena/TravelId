@@ -69,7 +69,7 @@
     <!-- Categoría -->
     <div class="form-group">
       <label for="categoria">Categoría:</label>
-      <select class="form-control" id="categoria" th:field="*{categoria.id}" required>
+      <select class="form-control" id="categoria" name="categoria.id" th:field="*{categoria.id}" required>
         <option value="" th:text="'Seleccione categoría'" th:if="${asiento.categoria == null}" disabled></option>
         <option th:each="categoria : ${categoriasAsiento}" th:value="${categoria.id}" th:text="${categoria.nombre}" th:selected="${asiento.categoria != null and asiento.categoria.id == categoria.id}"></option>
       </select>
@@ -79,7 +79,7 @@
     <!-- Vuelo -->
     <div class="form-group">
       <label for="vueloNombre">Vuelo:</label>
-      <select class="form-control" id="vueloNombre" th:field="*{vuelo.id}" required>
+      <select class="form-control" id="vueloNombre" name="vuelo.id" th:field="*{vuelo.id}" required>
         <option value="" th:text="'Seleccione vuelo'" th:if="${asiento.vuelo == null}" disabled></option>
         <option th:each="vuelo : ${vuelos}" th:value="${vuelo.id}" th:text="${vuelo.nombre}" th:selected="${asiento.vuelo != null and asiento.vuelo.id == vuelo.id}"></option>
       </select>

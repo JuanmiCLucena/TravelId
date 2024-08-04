@@ -105,7 +105,7 @@
 
         <div class="form-group">
             <label for="status">Estado del usuario:</label>
-            <select id="status" name="status" th:value="${usuario.active}" th:field="*{active}">
+            <select id="status" name="active" th:value="${usuario.active}" th:field="*{active}">
                 <option th:value="${usuario.active}" >Activo</option>
                 <option th:value="${!usuario.active}" >Inactivo</option>
             </select>

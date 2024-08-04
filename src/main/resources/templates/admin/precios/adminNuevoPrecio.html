@@ -62,12 +62,12 @@
   <form class="d-flex gap-3 flex-column" action="/admin/precios/crear" method="post" enctype="multipart/form-data" th:object="${precio}">
     <div class="form-group">
       <label for="valor">Valor</label>
-      <input type="number" class="form-control" id="valor" step="0.01"  th:field="*{valor}">
+      <input type="number" class="form-control" id="valor" step="0.01" name="valor"  th:field="*{valor}">
     </div>
 
     <div class="form-group">
       <label for="habitacion">Habitación:</label>
-      <select class="form-control" name="habitacion" id="habitacion" th:field="*{habitacion.id}">
+      <select class="form-control" name="habitacion.id" id="habitacion" th:field="*{habitacion.id}">
         <option value="" th:selected="${precio.habitacion == null}">No asignado</option>
         <option th:each="habitacion : ${habitaciones}" th:value="${habitacion.id}" th:text="${habitacion.numero}" th:selected="${habitacion.id != null and precio.habitacion.id == habitacion.id}"></option>
       </select>
@@ -75,7 +75,7 @@
 
     <div class="form-group">
       <label for="asiento">Asiento:</label>
-      <select class="form-control" name="asiento" id="asiento" th:field="*{asiento.id}">
+      <select class="form-control" name="asiento.id" id="asiento" th:field="*{asiento.id}">
         <option value="" th:selected="${precio.asiento == null}">No asignado</option>
         <option th:each="asiento : ${asientos}" th:value="${asiento.id}" th:text="${asiento.numero}" th:selected="${asiento.id != null and precio.asiento.id == asiento.id}"></option>
       </select>
@@ -83,7 +83,7 @@
 
     <div class="form-group">
       <label for="actividad">Actividad:</label>
-      <select class="form-control" name="actividad" id="actividad" th:field="*{actividad.id}">
+      <select class="form-control" name="actividad.id" id="actividad" th:field="*{actividad.id}">
         <option value="" th:selected="${precio.actividad == null}">No asignado</option>
         <option th:each="actividad : ${actividades}" th:value="${actividad.id}" th:text="${actividad.nombre}" th:selected="${actividad.id != null and precio.actividad.id == actividad.id}"></option>
       </select>

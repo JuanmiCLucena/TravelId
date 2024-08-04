@@ -95,7 +95,7 @@
 
     <div class="form-group">
       <label for="tipoActividad">Tipo:</label>
-      <select class="form-control" id="tipoActividad" th:field="*{tipo.id}">
+      <select class="form-control" id="tipoActividad" name="tipo.id" th:field="*{tipo.id}">
         <option th:each="tipo : ${tipos}" th:value="${tipo.id}" th:text="${tipo.nombre}" th:selected="${tipo.id != null and actividad.tipo.id == tipo.id}"></option>
       </select>
       <div class="text-danger" th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}"></div>
@@ -103,13 +103,13 @@
 
     <div class="form-group">
       <label for="maximo">Máximos Asistentes:</label>
-      <input type="number" class="form-control" id="maximo" th:value="${actividad.maximosAsistentes}" th:field="*{maximosAsistentes}">
+      <input type="number" class="form-control" id="maximo" name="maximosAsistentes" th:value="${actividad.maximosAsistentes}" th:field="*{maximosAsistentes}">
       <div class="text-danger" th:if="${#fields.hasErrors('maximosAsistentes')}" th:errors="*{maximosAsistentes}"></div>
     </div>
 
     <div class="form-group">
       <label for="confirmados">Asistentes Confirmados:</label>
-      <input type="number" class="form-control" id="confirmados" th:value="${actividad.asistentesConfirmados}" th:field="*{asistentesConfirmados}">
+      <input type="number" class="form-control" id="confirmados" name="asistentesConfirmados" th:value="${actividad.asistentesConfirmados}" th:field="*{asistentesConfirmados}">
       <div class="text-danger" th:if="${#fields.hasErrors('asistentesConfirmados')}" th:errors="*{asistentesConfirmados}"></div>
     </div>
 

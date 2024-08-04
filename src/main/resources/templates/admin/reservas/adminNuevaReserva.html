@@ -72,7 +72,7 @@
 
             <div class="form-group">
               <label for="usuario">Usuario:</label>
-              <select class="form-control" id="usuario" th:field="*{usu.id}">
+              <select class="form-control" id="usuario" name="usu.id" th:field="*{usu.id}">
                 <option th:each="usuario : ${usuarios}" th:value="${usuario.id}" th:text="${usuario.nombreUsuario}" th:selected="${usuario.id != null and reserva.usu.id == usuario.id}"></option>
               </select>
             </div>

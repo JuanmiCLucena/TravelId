@@ -64,29 +64,29 @@
 
           <div class="form-group">
             <label for="tipoNombre">Tipo de Habitación:</label>
-            <select class="form-control" id="tipoNombre" th:field="*{tipo.id}">
+            <select class="form-control" id="tipoNombre" name="tipo.id" th:field="*{tipo.id}">
               <option th:each="tipo : ${tiposHabitacion}" th:value="${tipo.id}" th:text="${tipo.nombre}" th:selected="${habitacion.tipo != null and habitacion.tipo.id == tipo.id}"></option>
             </select>
           </div>
 
           <div class="form-group">
             <label for="numero">Número de Habitación:</label>
-            <input type="number" class="form-control" id="numero" th:value="${habitacion.numero}" th:field="*{numero}">
+            <input type="number" class="form-control" id="numero" name="numero" th:value="${habitacion.numero}" th:field="*{numero}">
           </div>
 
           <div class="form-group">
             <label for="capacidad">Capacidad:</label>
-            <input type="text" class="form-control" id="capacidad" th:value="${habitacion.capacidad}" th:field="*{capacidad}">
+            <input type="text" class="form-control" id="capacidad" name="capacidad" th:value="${habitacion.capacidad}" th:field="*{capacidad}">
           </div>
 
           <div class="form-group">
             <label for="numeroCamas">Número de Camas:</label>
-            <input type="text" class="form-control" id="numeroCamas" th:value="${habitacion.numeroCamas}" th:field="*{numeroCamas}">
+            <input type="text" class="form-control" id="numeroCamas" name="numeroCamas" th:value="${habitacion.numeroCamas}" th:field="*{numeroCamas}">
           </div>
 
           <div class="form-group">
             <label for="hotelNombre">Hotel:</label>
-            <select class="form-control" id="hotelNombre" th:field="*{hotel.id}">
+            <select class="form-control" id="hotelNombre" name="hotel.id" th:field="*{hotel.id}">
               <option th:each="hotel : ${hoteles}" th:value="${hotel.id}" th:text="${hotel.nombre}" th:selected="${habitacion.hotel != null and habitacion.hotel.id == hotel.id}"></option>
             </select>
           </div>

@@ -74,7 +74,7 @@
 
           <div class="form-group">
             <label for="cancelado">Cancelado:</label>
-            <select th:field="*{cancelado}" id="cancelado">
+            <select th:field="*{cancelado}" id="cancelado" name="cancelado">
               <option value="true" th:text="${reserva.cancelado}">Cancelado</option>
               <option value="false" th:text="${reserva.cancelado}">No cancelado</option>
             </select>
@@ -82,14 +82,14 @@
 
           <div class="form-group">
             <label for="usuario">Usuario:</label>
-            <select class="form-control" id="usuario" th:field="*{usu.id}">
+            <select class="form-control" id="usuario" name="usu.id" th:field="*{usu.id}">
               <option th:each="usuario : ${usuarios}" th:value="${usuario.id}" th:text="${usuario.nombreUsuario}" th:selected="${usuario.id != null and reserva.usu.id == usuario.id}"></option>
             </select>
           </div>
 
           <div class="form-group">
             <label for="pago">id Pago:</label>
-            <input type="number" class="form-control" readonly id="pago" th:value="${reserva.pago}" th:field="*{id}">
+            <input type="number" class="form-control" readonly id="pago" name="id" th:value="${reserva.pago}" th:field="*{id}">
           </div>
 
           <button type="submit" class="btn btn-primary mt-3">Guardar</button>

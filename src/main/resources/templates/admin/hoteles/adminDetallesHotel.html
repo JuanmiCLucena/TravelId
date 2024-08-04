@@ -65,27 +65,27 @@
 
           <div class="form-group">
             <label for="nombre">Nombre del Hotel</label>
-            <input type="text" class="form-control" id="nombre" th:value="${hotel.nombre}" th:field="*{nombre}">
+            <input type="text" class="form-control" id="nombre" name="nombre" th:value="${hotel.nombre}" th:field="*{nombre}">
           </div>
 
           <div class="form-group">
             <label for="categoria">Categoría</label>
-            <input type="number" class="form-control" id="categoria" th:value="${hotel.categoria}" th:field="*{categoria}">
+            <input type="number" class="form-control" id="categoria" name="categoria" th:value="${hotel.categoria}" th:field="*{categoria}">
           </div>
 
           <div class="form-group">
             <label for="descripcion">Descripción</label>
-            <input type="text" class="form-control" id="descripcion" th:value="${hotel.descripcion}" th:field="*{descripcion}">
+            <input type="text" class="form-control" id="descripcion" name="descripcion" th:value="${hotel.descripcion}" th:field="*{descripcion}">
           </div>
 
           <div class="form-group">
             <label for="contacto">Contacto</label>
-            <input type="text" class="form-control" id="contacto" th:value="${hotel.contacto}" th:field="*{contacto}">
+            <input type="text" class="form-control" id="contacto" name="contacto" th:value="${hotel.contacto}" th:field="*{contacto}">
           </div>
 
           <div class="form-group">
             <label for="localizacion">Hotel:</label>
-            <select class="form-control" id="localizacion" th:field="*{localizacion.id}">
+            <select class="form-control" id="localizacion" name="localizacion.id" th:field="*{localizacion.id}">
               <option th:each="localizacion : ${localizaciones}" th:value="${localizacion.id}" th:text="${localizacion.nombre}" th:selected="${localizacion.id != null and hotel.localizacion.id == localizacion.id}"></option>
             </select>
           </div>

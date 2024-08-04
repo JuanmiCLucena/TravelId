@@ -64,13 +64,13 @@
 
     <div class="form-group">
       <label for="nombre">Nombre de la Actividad</label>
-      <input type="text" class="form-control" id="nombre" th:field="*{nombre}">
+      <input type="text" class="form-control" id="nombre" name="nombre" th:field="*{nombre}">
       <div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Nombre error message</div>
     </div>
 
     <div class="form-group">
       <label for="descripcion">Descripción</label>
-      <input type="text" class="form-control" id="descripcion" th:field="*{descripcion}">
+      <input type="text" class="form-control" id="descripcion" name="descripcion" th:field="*{descripcion}">
       <div class="text-danger" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}">Descripción error message</div>
     </div>
 
@@ -88,7 +88,7 @@
 
     <div class="form-group">
       <label for="localizacion">Localización:</label>
-      <select class="form-control" id="localizacion" th:field="*{localizacion.id}">
+      <select class="form-control" id="localizacion" name="localizacion.id" th:field="*{localizacion.id}">
         <option th:each="localizacion : ${localizaciones}" th:value="${localizacion.id}" th:text="${localizacion.nombre}" th:selected="${localizacion.id != null and actividad.localizacion.id == localizacion.id}"></option>
       </select>
       <div class="text-danger" th:if="${#fields.hasErrors('localizacion')}" th:errors="*{localizacion}">Localización error message</div>
@@ -96,7 +96,7 @@
 
     <div class="form-group">
       <label for="tipoActividad">Tipo:</label>
-      <select class="form-control" id="tipoActividad" th:field="*{tipo.id}">
+      <select class="form-control" id="tipoActividad" name="tipo.id" th:field="*{tipo.id}">
         <option th:each="tipo : ${tipos}" th:value="${tipo.id}" th:text="${tipo.nombre}" th:selected="${tipo.id != null and actividad.tipo.id == tipo.id}"></option>
       </select>
       <div class="text-danger" th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}">Tipo error message</div>
@@ -104,13 +104,13 @@
 
     <div class="form-group">
       <label for="maximo">Máximos Asistentes:</label>
-      <input type="number" class="form-control" id="maximo" th:field="*{maximosAsistentes}">
+      <input type="number" class="form-control" id="maximo" name="maximosAsistentes" th:field="*{maximosAsistentes}">
       <div class="text-danger" th:if="${#fields.hasErrors('maximosAsistentes')}" th:errors="*{maximosAsistentes}">Máximos Asistentes error message</div>
     </div>
 
     <div class="form-group">
       <label for="confirmados">Asistentes confirmados:</label>
-      <input type="number" class="form-control" id="confirmados" th:field="*{asistentesConfirmados}">
+      <input type="number" class="form-control" id="confirmados" name="asistentesConfirmados" th:field="*{asistentesConfirmados}">
       <div class="text-danger" th:if="${#fields.hasErrors('asistentesConfirmados')}" th:errors="*{asistentesConfirmados}">Asistentes confirmados error message</div>
     </div>
 

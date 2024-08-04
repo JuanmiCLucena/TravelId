@@ -82,21 +82,21 @@
 
             <div class="form-group">
               <label for="compania">Compañia:</label>
-              <select class="form-control" id="compania" th:field="*{compania.id}">
+              <select class="form-control" id="compania" name="compania.id" th:field="*{compania.id}">
                 <option th:each="compania : ${companias}" th:value="${compania.id}" th:text="${compania.nombre}" th:selected="${compania.id != null and vuelo.compania.id == compania.id}"></option>
               </select>
             </div>
 
             <div class="form-group">
               <label for="origen">Origen:</label>
-              <select class="form-control" name="origen" id="origen" th:field="*{origen.id}">
+              <select class="form-control" name="origen.id" id="origen" th:field="*{origen.id}">
                 <option  th:each="localizacion : ${localizaciones}" th:value="${localizacion.id}" th:text="${localizacion.nombre}" th:selected="${vuelo.origen != null and vuelo.origen.id == localizacion.id}"></option>
               </select>
             </div>
 
             <div class="form-group">
               <label for="destino">Destino:</label>
-              <select class="form-control" name="destino" id="destino" th:field="*{destino.id}">
+              <select class="form-control" name="destino.id" id="destino" th:field="*{destino.id}">
                 <option  th:each="localizacion : ${localizaciones}" th:value="${localizacion.id}" th:text="${localizacion.nombre}" th:selected="${vuelo.destino != null and vuelo.destino.id == localizacion.id}"></option>
               </select>
             </div>

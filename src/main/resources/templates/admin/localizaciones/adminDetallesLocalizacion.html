@@ -65,17 +65,17 @@
 
           <div class="form-group">
             <label for="nombre">Nombre de Localización:</label>
-            <input type="text" class="form-control" id="nombre" th:value="${localizacion.nombre}" th:field="*{nombre}">
+            <input type="text" class="form-control" id="nombre" name="nombre" th:value="${localizacion.nombre}" th:field="*{nombre}">
           </div>
 
           <div class="form-group">
             <label for="codigo">Código de Localización:</label>
-            <input type="text" class="form-control" id="codigo" th:value="${localizacion.codigo}" th:field="*{codigo}">
+            <input type="text" class="form-control" id="codigo" name="codigo" th:value="${localizacion.codigo}" th:field="*{codigo}">
           </div>
 
           <div class="form-group">
             <label for="pais">País:</label>
-            <select class="form-control" name="pais" id="pais" th:field="*{pais.id}">
+            <select class="form-control" name="pais.id" id="pais" th:field="*{pais.id}">
               <option  th:each="pais : ${paises}" th:value="${pais.id}" th:text="${pais.nombre}" th:selected="${pais.id != null and localizacion.pais.id == pais.id}"></option>
             </select>
           </div>

@@ -62,7 +62,7 @@
           <form class="d-flex gap-3 flex-column" action="/admin/habitaciones/crear" method="post" enctype="multipart/form-data" th:object="${habitacion}">
             <div class="form-group">
               <label for="tipoNombre">Tipo de Habitación</label>
-              <select class="form-control" id="tipoNombre" th:field="*{tipo.id}">
+              <select class="form-control" id="tipoNombre"  name="tipo.id" th:field="*{tipo.id}">
                 <option th:each="tipo : ${tiposHabitacion}" th:value="${tipo.id}" th:text="${tipo.nombre}" th:selected="${habitacion.tipo != null and habitacion.tipo.id == tipo.id}"></option>
               </select>
             </div>
@@ -84,7 +84,7 @@
 
             <div class="form-group">
               <label for="hotelNombre">Hotel:</label>
-              <select class="form-control" id="hotelNombre" th:field="*{hotel.id}">
+              <select class="form-control" id="hotelNombre" name="hotel.id" th:field="*{hotel.id}">
                 <option th:each="hotel : ${hoteles}" th:value="${hotel.id}" th:text="${hotel.nombre}" th:selected="${habitacion.hotel != null and habitacion.hotel.id == hotel.id}"></option>
               </select>
             </div>
