@@ -80,12 +80,12 @@
             <td th:text="${reserva.cancelado}"></td>
             <td th:if="${reserva.usu != null}" th:text="${reserva.usu.id}"></td>
             <td th:if="${reserva.usu == null}"></td>
-            <td class="d-flex gap-2">
+            <td class="d-flex gap-2 justify-content-end">
                 <form th:action="@{'/admin/reservas/' + ${reserva.id}}" th:method="get">
-                    <button type="submit" class="btn btn-outline-info">Actualizar</button>
+                    <button type="submit" class="btn btn-info"><i class="bi bi-pencil text-white"></i></button>
                 </form>
                 <form th:action="@{'/admin/reservas/eliminar/' + ${reserva.id}}" th:method="delete">
-                    <button type="submit" class="btn btn-outline-danger">Eliminar</button>
+                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
                 </form>
             </td>
         </tr>
