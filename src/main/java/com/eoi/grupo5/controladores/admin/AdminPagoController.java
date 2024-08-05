@@ -63,6 +63,7 @@ public class AdminPagoController {
 
             if (reserva.isPresent() && metodoPago.isPresent()) {
                 pago.setReserva(reserva.get());
+                reserva.get().setPago(pago);
                 pago.setMetodoPago(metodoPago.get());
                 servicioPago.guardar(pago);
             } else {

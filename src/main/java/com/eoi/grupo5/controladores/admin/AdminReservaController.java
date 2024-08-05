@@ -32,24 +32,9 @@ public class AdminReservaController {
     ) {
         PaginaRespuestaReservas<Reserva> reservasPage = servicioReserva.buscarEntidadesPaginadas(page, size);
         List<Reserva> reservas = servicioReserva.buscarEntidades();
-        modelo.addAttribute("reservas",reservas);
+        modelo.addAttribute("reservas", reservas);
         modelo.addAttribute("page", reservasPage);
         return "admin/reservas/adminReservas";
-    }
-
-    @GetMapping("/{id}")
-    public String detalles(Model modelo, @PathVariable Integer id) {
-        Optional<Reserva> reserva = servicioReserva.encuentraPorId(id);
-        if(reserva.isPresent()) {
-            modelo.addAttribute("reserva",reserva.get());
-            modelo.addAttribute("usuarios", servicioUsuario.buscarEntidades());
-
-            return "admin/reservas/adminDetallesReserva";
-        } else {
-            // Habitacion no encontrado - htlm
-            return "reservaNoEncontrada";
-        }
-
     }
 
     @GetMapping("/crear")
@@ -74,13 +59,45 @@ public class AdminReservaController {
         return "redirect:/admin/reservas";
     }
 
+    @GetMapping("/editar/{id}")
+    public String mostrarPaginaEditar(Model modelo, @PathVariable Integer id) {
+        Optional<Reserva> reserva = servicioReserva.encuentraPorId(id);
+        if (reserva.isPresent()) {
+            modelo.addAttribute("reserva", reserva.get());
+            modelo.addAttribute("usuarios", servicioUsuario.buscarEntidades());
+            return "admin/reservas/adminDetallesReserva";
+        } else {
+            // Reserva no encontrada - html
+            return "error/paginaError";
+        }
+    }
+
+    @PostMapping("/editar/{id}")
+    public String editar(@PathVariable Integer id, @Valid @ModelAttribute("reserva") Reserva reserva, BindingResult result, Model modelo) {
+        if (result.hasErrors()) {
+            modelo.addAttribute("usuarios", servicioUsuario.buscarEntidades());
+            return "admin/reservas/adminDetallesReserva";
+        }
+        Optional<Reserva> optionalReserva = servicioReserva.encuentraPorId(id);
+        if (optionalReserva.isPresent()) {
+            reserva.setId(id);
+            try {
+                servicioReserva.guardar(reserva);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            return "redirect:/admin/reservas";
+        } else {
+            return "reservaNoEncontrada";
+        }
+    }
+
     @DeleteMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Integer id) {
         Optional<Reserva> optionalReserva = servicioReserva.encuentraPorId(id);
-        if(optionalReserva.isPresent()) {
+        if (optionalReserva.isPresent()) {
             servicioReserva.eliminarPorId(id);
         }
         return "redirect:/admin/reservas";
     }
-
 }

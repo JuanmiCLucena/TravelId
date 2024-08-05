@@ -62,17 +62,13 @@
     <div class="form-group">
       <label for="importe">Importe:</label>
       <input type="number" class="form-control" id="importe" name="importe" th:field="*{importe}" step="0.01" required>
-      <div th:if="${#fields.hasErrors('importe')}" class="invalid-feedback">
-        <div th:errors="*{importe}"></div>
-      </div>
+      <div class="text-danger" th:if="${#fields.hasErrors('importe')}" th:errors="*{importe}"></div>
     </div>
 
     <div class="form-group">
       <label for="fechaPago">Fecha De Pago:</label>
       <input type="datetime-local" class="form-control" name="fechaPago" id="fechaPago" th:field="*{fechaPago}">
-      <div th:if="${#fields.hasErrors('fechaPago')}" class="invalid-feedback">
-        <div th:errors="*{fechaPago}"></div>
-      </div>
+      <div class="text-danger" th:if="${#fields.hasErrors('fechaPago')}" th:errors="*{fechaPago}"></div>
     </div>
 
     <div class="form-group">
@@ -80,9 +76,7 @@
       <select class="form-control" id="reserva" name="reserva.id" th:field="*{reserva.id}">
         <option th:each="reserva : ${reservas}" th:value="${reserva.id}" th:text="${reserva.id}" th:selected="${reserva.id != null and pago.reserva.id == reserva.id}"></option>
       </select>
-      <div th:if="${#fields.hasErrors('reserva.id')}" class="invalid-feedback">
-        <div th:errors="*{reserva.id}"></div>
-      </div>
+      <div class="text-danger" th:if="${#fields.hasErrors('reserva.id')}" th:errors="*{reserva.id}"></div>
     </div>
 
     <div class="form-group">
@@ -90,9 +84,7 @@
       <select class="form-control" id="metodoPago" name="metodoPago.id" th:field="*{metodoPago.id}">
         <option th:each="metodoPago : ${metodosPago}" th:value="${metodoPago.id}" th:text="${metodoPago.metodo}" th:selected="${metodoPago.id != null and pago.metodoPago.id == metodoPago.id}"></option>
       </select>
-      <div th:if="${#fields.hasErrors('metodoPago.id')}" class="invalid-feedback">
-        <div th:errors="*{metodoPago.id}"></div>
-      </div>
+      <div class="text-danger" th:if="${#fields.hasErrors('metodoPago.id')}" th:errors="*{metodoPago.id}"></div>
     </div>
 
     <button type="submit" class="btn btn-primary mt-3">Guardar</button>

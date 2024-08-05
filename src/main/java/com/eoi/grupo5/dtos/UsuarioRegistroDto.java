@@ -21,17 +21,17 @@ public class UsuarioRegistroDto {
     private Integer id;
 
     @Column(name = "nombreUsuario", nullable = false, length = 45)
-    @NotNull(message = "Debes introducir un nombre de usuario")
+    @NotBlank(message = "Debes introducir un nombre de usuario")
     @Size(min = 2, max = 45, message = "El nombre de usuario debe tener entre 2 y 45 caracteres")
     private String nombreUsuario;
 
     @Column(name = "password", nullable = false, length = 150)
-    @NotNull(message = "La contraseña no puede ser nula")
+    @NotBlank(message = "La contraseña no puede ser nula")
     @Size(min = 5, max = 150, message = "La contraseña debe tener entre 5 y 150 caracteres")
     private String password;
 
     @Column(name = "email", nullable = false, length = 50)
-    @NotNull(message = "Introduce un Correo electrónico")
+    @NotBlank(message = "Introduce un Correo electrónico")
     @Email(message = "El correo debe ser válido")
     @Size(min = 5, max = 50, message = "El correo debe tener entre 5 y 50 caracteres")
     private String email;
@@ -83,9 +83,9 @@ public class UsuarioRegistroDto {
      * @param value La cadena que se va a convertir.
      * @return {@code null} si la cadena es vacía o solo contiene espacios; de lo contrario, devuelve la cadena original.
      */
-    public static String convertEmptyToNull(String value) {
-        return (value != null && value.trim().isEmpty()) ? null : value;
-    }
+//    public static String convertEmptyToNull(String value) {
+//        return (value != null && value.trim().isEmpty()) ? null : value;
+//    }
 
     /**
      * Sanitiza los campos del DTO, convirtiendo las cadenas vacías en {@code null}.
@@ -94,15 +94,15 @@ public class UsuarioRegistroDto {
      * se conviertan en {@code null} en lugar de quedarse como cadenas vacías.
      * Esto evitará posibles errores de validación
      */
-    public void sanitize() {
-        this.nombreUsuario = convertEmptyToNull(this.nombreUsuario);
-        this.password = convertEmptyToNull(this.password);
-        this.email = convertEmptyToNull(this.email);
-        this.dni = convertEmptyToNull(this.dni);
-        this.telefono = convertEmptyToNull(this.telefono);
-        this.nombre = convertEmptyToNull(this.nombre);
-        this.apellidos = convertEmptyToNull(this.apellidos);
-    }
+//    public void sanitize() {
+//        this.nombreUsuario = convertEmptyToNull(this.nombreUsuario);
+//        this.password = convertEmptyToNull(this.password);
+//        this.email = convertEmptyToNull(this.email);
+//        this.dni = convertEmptyToNull(this.dni);
+//        this.telefono = convertEmptyToNull(this.telefono);
+//        this.nombre = convertEmptyToNull(this.nombre);
+//        this.apellidos = convertEmptyToNull(this.apellidos);
+//    }
 
 
 }

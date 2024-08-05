@@ -82,7 +82,7 @@
             <td th:if="${reserva.usu != null}" th:text="${reserva.usu.id}"></td>
             <td th:if="${reserva.usu == null}"></td>
             <td class="d-flex gap-2 justify-content-end">
-                <form th:action="@{'/admin/reservas/' + ${reserva.id}}" th:method="get">
+                <form th:action="@{'/admin/reservas/editar/' + ${reserva.id}}" th:method="get">
                     <button type="submit" class="btn btn-info"><i class="bi bi-pencil text-white"></i></button>
                 </form>
                 <form th:action="@{'/admin/reservas/eliminar/' + ${reserva.id}}" th:method="delete">

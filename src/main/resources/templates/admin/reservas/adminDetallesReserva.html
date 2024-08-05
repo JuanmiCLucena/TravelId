@@ -59,25 +59,28 @@
       <header th:replace="~{admin/fragments/fragmentos :: adminHeader}"></header>
 
       <div class="container main">
-        <form class="d-flex gap-3 flex-column" action="/admin/reservas/crear" method="post" enctype="multipart/form-data" th:object="${reserva}">
+        <form class="d-flex gap-3 flex-column" th:action="@{'/admin/reservas/editar/' + ${reserva.id}}" method="post" enctype="multipart/form-data" th:object="${reserva}">
           <input type="hidden" name="id" id="id" th:value="${reserva.id}" th:field="*{id}">
 
           <div class="form-group">
             <label for="fechaInicio">Fecha Inicio</label>
             <input type="datetime-local" class="form-control" name="fechaInicio" id="fechaInicio" th:field="*{fechaInicio}">
+            <div class="text-danger" th:if="${#fields.hasErrors('fechaInicio')}" th:errors="*{fechaInicio}"></div>
           </div>
 
           <div class="form-group">
             <label for="fechaFin">Fecha Fin</label>
             <input type="datetime-local" class="form-control" name="fechaFin" id="fechaFin" th:field="*{fechaFin}">
+            <div class="text-danger" th:if="${#fields.hasErrors('fechaFin')}" th:errors="*{fechaFin}"></div>
           </div>
 
           <div class="form-group">
             <label for="cancelado">Cancelado:</label>
             <select th:field="*{cancelado}" id="cancelado" name="cancelado">
-              <option value="true" th:text="${reserva.cancelado}">Cancelado</option>
-              <option value="false" th:text="${reserva.cancelado}">No cancelado</option>
+              <option value="true">Cancelado</option>
+              <option value="false">No cancelado</option>
             </select>
+            <div class="text-danger" th:if="${#fields.hasErrors('cancelado')}" th:errors="*{cancelado}"></div>
           </div>
 
           <div class="form-group">
@@ -85,11 +88,17 @@
             <select class="form-control" id="usuario" name="usu.id" th:field="*{usu.id}">
               <option th:each="usuario : ${usuarios}" th:value="${usuario.id}" th:text="${usuario.nombreUsuario}" th:selected="${usuario.id != null and reserva.usu.id == usuario.id}"></option>
             </select>
+            <div class="text-danger" th:if="${#fields.hasErrors('usu.id')}" th:errors="*{usu.id}"></div>
           </div>
 
-          <div class="form-group">
+          <div class="form-group" th:if="${reserva.pago != null}">
             <label for="pago">id Pago:</label>
-            <input type="number" class="form-control" readonly id="pago" name="id" th:value="${reserva.pago}" th:field="*{id}">
+            <input type="number" class="form-control" readonly id="pago" name="pago.id"  th:value="${reserva.pago.id}" th:field="*{pago.id}">
+          </div>
+
+          <div class="form-group" th:if="${reserva.pago == null}">
+            <label for="pagoNulo">id Pago:</label>
+            <input type="number" class="form-control" readonly id="pagoNulo" name="pago.id">
           </div>
 
           <button type="submit" class="btn btn-primary mt-3">Guardar</button>
