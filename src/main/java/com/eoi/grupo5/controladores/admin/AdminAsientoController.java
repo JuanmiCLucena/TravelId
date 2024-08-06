@@ -93,7 +93,7 @@ public class AdminAsientoController {
         }
     }
 
-    @PostMapping("/editar/{id}")
+    @PutMapping("/editar/{id}")
     public String editar(
             @PathVariable Integer id,
             @ModelAttribute("asiento") @Valid Asiento asiento,

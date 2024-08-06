@@ -121,7 +121,7 @@ public class AdminPrecioController {
 
     }
 
-    @PostMapping("/editar/{id}")
+    @PutMapping("/editar/{id}")
     public String editar(
             @PathVariable Integer id,
             @Valid @ModelAttribute("precio") Precio precio,

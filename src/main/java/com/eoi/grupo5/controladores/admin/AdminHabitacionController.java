@@ -122,7 +122,7 @@ public class AdminHabitacionController {
         }
     }
 
-    @PostMapping("/editar/{id}")
+    @PutMapping("/editar/{id}")
     public String editar(
             @PathVariable Integer id,
             @RequestParam(name = "imagen", required = false) MultipartFile imagen,

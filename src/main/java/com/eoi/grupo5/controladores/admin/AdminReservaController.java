@@ -72,7 +72,7 @@ public class AdminReservaController {
         }
     }
 
-    @PostMapping("/editar/{id}")
+    @PutMapping("/editar/{id}")
     public String editar(@PathVariable Integer id, @Valid @ModelAttribute("reserva") Reserva reserva, BindingResult result, Model modelo) {
         if (result.hasErrors()) {
             modelo.addAttribute("usuarios", servicioUsuario.buscarEntidades());

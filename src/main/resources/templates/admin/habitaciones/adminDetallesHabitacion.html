@@ -21,7 +21,7 @@
 <header th:replace="~{admin/fragments/fragmentos :: adminHeader}"></header>
 
 <div class="container main">
-  <form class="d-flex gap-3 flex-column" th:action="@{'/admin/habitaciones/editar/' + ${habitacion.id}}" method="post" enctype="multipart/form-data" th:object="${habitacion}">
+  <form class="d-flex gap-3 flex-column" th:action="@{'/admin/habitaciones/editar/' + ${habitacion.id}}" th:method="put" enctype="multipart/form-data" th:object="${habitacion}">
     <input type="hidden" name="id" id="id" th:value="${habitacion.id}" th:field="*{id}">
 
     <div class="form-group">

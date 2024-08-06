@@ -94,7 +94,7 @@ public class AdminPagoController {
         }
     }
 
-    @PostMapping("/editar/{id}")
+    @PutMapping("/editar/{id}")
     public String editar(@PathVariable Integer id, @Valid @ModelAttribute("pago") Pago pago, BindingResult result, Model modelo) {
         if (result.hasErrors()) {
             modelo.addAttribute("reservas", servicioReserva.buscarEntidades());

@@ -89,7 +89,7 @@ public class AdminLocalizacionController {
         }
     }
 
-    @PostMapping("/editar/{id}")
+    @PutMapping("/editar/{id}")
     public String editar(@PathVariable Integer id, @Valid @ModelAttribute("localizacion") Localizacion localizacion, BindingResult result, Model modelo) {
         if (result.hasErrors()) {
             modelo.addAttribute("vuelos", servicioVuelo.buscarEntidades());
