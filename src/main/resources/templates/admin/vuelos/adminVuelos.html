@@ -83,7 +83,7 @@
       <td th:text="${vuelo.fechaSalida}"></td>
       <td th:text="${vuelo.fechaLlegada}"></td>
       <td class="d-flex gap-2 justify-content-end">
-        <form th:action="@{'/admin/vuelos/' + ${vuelo.id}}" th:method="get">
+        <form th:action="@{'/admin/vuelos/editar/' + ${vuelo.id}}" th:method="get">
           <button type="submit" class="btn btn-info"><i class="bi bi-pencil text-white"></i></button>
         </form>
         <form th:action="@{'/admin/vuelos/eliminar/' + ${vuelo.id}}" th:method="delete">

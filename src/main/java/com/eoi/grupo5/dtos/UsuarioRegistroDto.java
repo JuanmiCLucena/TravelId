@@ -1,6 +1,8 @@
 package com.eoi.grupo5.dtos;
 
 import com.eoi.grupo5.modelos.Usuario;
+import com.eoi.grupo5.validacionesCustom.anotaciones.DniPattern;
+import com.eoi.grupo5.validacionesCustom.anotaciones.TelefonoPattern;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -21,23 +23,23 @@ public class UsuarioRegistroDto {
     private Integer id;
 
     @Column(name = "nombreUsuario", nullable = false, length = 45)
-    @NotNull(message = "Debes introducir un nombre de usuario")
+    @NotBlank(message = "Debes introducir un nombre de usuario")
     @Size(min = 2, max = 45, message = "El nombre de usuario debe tener entre 2 y 45 caracteres")
     private String nombreUsuario;
 
     @Column(name = "password", nullable = false, length = 150)
-    @NotNull(message = "La contraseña no puede ser nula")
+    @NotBlank(message = "La contraseña no puede ser nula")
     @Size(min = 5, max = 150, message = "La contraseña debe tener entre 5 y 150 caracteres")
     private String password;
 
     @Column(name = "email", nullable = false, length = 50)
-    @NotNull(message = "Introduce un Correo electrónico")
+    @NotBlank(message = "Introduce un Correo electrónico")
     @Email(message = "El correo debe ser válido")
     @Size(min = 5, max = 50, message = "El correo debe tener entre 5 y 50 caracteres")
     private String email;
 
     @Column(name = "dni", length = 10)
-    @Pattern(regexp = "\\d{8}[A-Za-z]", message = "El DNI debe tener 8 dígitos seguidos de una letra")
+    @DniPattern
     private String dni;
 
     @Column(name = "edad")
@@ -45,7 +47,7 @@ public class UsuarioRegistroDto {
     private Integer edad;
 
     @Column(name = "telefono", length = 15)
-    @Pattern(regexp = "\\d{9,15}", message = "El teléfono debe tener entre 9 y 15 dígitos")
+    @TelefonoPattern
     private String telefono;
 
     @Column(name="nombre", length = 45)

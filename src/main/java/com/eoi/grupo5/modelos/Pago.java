@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -27,6 +28,7 @@ public class Pago {
     @Min(value = 0, message = "El importe debe ser mayor o igual a 0")
     private Double importe;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @Column(name = "fechaPago")
     @NotNull(message = "Debes introducir una fecha de pago")
     private LocalDateTime fechaPago;

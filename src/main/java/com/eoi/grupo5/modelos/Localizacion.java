@@ -1,6 +1,7 @@
 package com.eoi.grupo5.modelos;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -24,12 +25,12 @@ public class Localizacion {
     private Integer id;
 
     @Column(name = "nombre", length = 45)
-    @NotNull(message = "La localización debe tener un nombre")
+    @NotBlank(message = "La localización debe tener un nombre")
     @Size(max = 45, message = "El nombre no puede tener más de 45 caracteres")
     private String nombre;
 
     @Column(name = "codigo", length = 10)
-    @NotNull(message = "La localización debe tener un código")
+    @NotBlank(message = "La localización debe tener un código")
     @Size(max = 10, message = "El código no puede tener más de 10 caracteres")
     private String codigo;
 

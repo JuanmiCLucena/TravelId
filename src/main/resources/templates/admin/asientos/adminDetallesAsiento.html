@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Detalles Hotel</title>
+    <title>Detalles Asiento</title>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="description" content="Travelix Project" />
@@ -58,40 +58,37 @@
 
 <header th:replace="~{admin/fragments/fragmentos :: adminHeader}"></header>
 
-
 <div class="container main">
-    <form class="d-flex gap-3 flex-column" action="/admin/asientos/crear" method="post" enctype="multipart/form-data" th:object="${asiento}">
+    <form class="d-flex gap-3 flex-column needs-validation" th:action="@{'/admin/asientos/editar/' + ${asiento.id}}" th:method="put" enctype="multipart/form-data" th:object="${asiento}" novalidate>
         <input type="hidden" name="id" id="id" th:value="${asiento.id}" th:field="*{id}">
 
         <div class="form-group">
             <label for="numeroAsiento">Número de Asiento:</label>
-            <input type="text" class="form-control" id="numeroAsiento" th:value="${asiento.numero}" th:field="*{numero}">
+            <input type="text" class="form-control" id="numeroAsiento" name="numero" th:field="*{numero}" required>
+            <div class="text-danger" th:if="${#fields.hasErrors('numero')}" th:errors="*{numero}">Número de asiento es obligatorio.</div>
         </div>
 
         <div class="form-group">
-            <label for="categoria">Categoria:</label>
-            <select class="form-control" id="categoria" th:field="*{categoria.id}">
+            <label for="categoria">Categoría:</label>
+            <select class="form-control" id="categoria" name="categoria.id" th:field="*{categoria.id}" required>
+                <option value="" th:text="'Seleccione categoría'" th:if="${asiento.categoria == null}" disabled></option>
                 <option th:each="categoria : ${categoriasAsiento}" th:value="${categoria.id}" th:text="${categoria.nombre}" th:selected="${asiento.categoria != null and asiento.categoria.id == categoria.id}"></option>
             </select>
+            <div class="text-danger" th:if="${#fields.hasErrors('categoria')}" th:errors="*{categoria}">Categoría es obligatoria.</div>
         </div>
 
         <div class="form-group">
             <label for="vueloNombre">Vuelo:</label>
-            <select class="form-control" id="vueloNombre" th:field="*{vuelo.id}">
+            <select class="form-control" id="vueloNombre" name="vuelo.id" th:field="*{vuelo.id}" required>
+                <option value="" th:text="'Seleccione vuelo'" th:if="${asiento.vuelo == null}" disabled></option>
                 <option th:each="vuelo : ${vuelos}" th:value="${vuelo.id}" th:text="${vuelo.nombre}" th:selected="${asiento.vuelo != null and asiento.vuelo.id == vuelo.id}"></option>
             </select>
+            <div class="text-danger" th:if="${#fields.hasErrors('vuelo')}" th:errors="*{vuelo}">Vuelo es obligatorio.</div>
         </div>
-
-        <!--          <div class="form-group">-->
-        <!--            <label for="precio">Precio Actual Habitación:</label>-->
-        <!--            <input type="text" class="form-control" name="precio" id="precio" th:value="${precioActual.precio}" th:field="*{precio}">-->
-        <!--          </div>-->
 
         <button type="submit" class="btn btn-primary mt-3">Guardar</button>
     </form>
 </div>
-
-
 
 <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
 <script th:src="@{/plugins/easing/easing.js}"></script>

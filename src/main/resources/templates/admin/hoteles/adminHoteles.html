@@ -81,7 +81,7 @@
                     <td th:text="${hotel.categoria}"></td>
                     <td th:text="${hotel.localizacion.nombre}"></td>
                     <td class="d-flex gap-2 justify-content-end">
-                        <form th:action="@{'/admin/hoteles/' + ${hotel.id}}" th:method="get">
+                        <form th:action="@{'/admin/hoteles/editar/' + ${hotel.id}}" th:method="get">
                             <button type="submit" class="btn btn-info"><i class="bi bi-pencil text-white"></i></button>
                         </form>
                         <form th:action="@{'/admin/hoteles/eliminar/' + ${hotel.id}}" th:method="delete">

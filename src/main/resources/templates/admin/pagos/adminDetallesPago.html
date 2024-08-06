@@ -1,104 +1,102 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <title>Detalles Actividad</title>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="description" content="Travelix Project" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-      crossorigin="anonymous"
-    />
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"
-    ></script>
-    <link
-      th:href="@{/plugins/font-awesome-4.7.0/css/font-awesome.min.css}"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <link
-      th:href="@{/plugins/colorbox/colorbox.css}"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      th:href="@{/plugins/OwlCarousel2-2.2.1/owl.carousel.css}"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      th:href="@{/plugins/OwlCarousel2-2.2.1/owl.theme.default.css}"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      th:href="@{/plugins/OwlCarousel2-2.2.1/animate.css}"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      th:href="@{/styles/admin_styles.css}"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      th:href="@{/styles/admin_responsive.css}"
-    />
-  </head>
+<head>
+  <title>Detalles Pago</title>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="description" content="Travelix Project" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+          crossorigin="anonymous"
+  />
+  <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+          crossorigin="anonymous"
+  ></script>
+  <link
+          th:href="@{/plugins/font-awesome-4.7.0/css/font-awesome.min.css}"
+          rel="stylesheet"
+          type="text/css"
+  />
+  <link
+          th:href="@{/plugins/colorbox/colorbox.css}"
+          rel="stylesheet"
+          type="text/css"
+  />
+  <link
+          rel="stylesheet"
+          type="text/css"
+          th:href="@{/plugins/OwlCarousel2-2.2.1/owl.carousel.css}"
+  />
+  <link
+          rel="stylesheet"
+          type="text/css"
+          th:href="@{/plugins/OwlCarousel2-2.2.1/owl.theme.default.css}"
+  />
+  <link
+          rel="stylesheet"
+          type="text/css"
+          th:href="@{/plugins/OwlCarousel2-2.2.1/animate.css}"
+  />
+  <link
+          rel="stylesheet"
+          type="text/css"
+          th:href="@{/styles/admin_styles.css}"
+  />
+  <link
+          rel="stylesheet"
+          type="text/css"
+          th:href="@{/styles/admin_responsive.css}"
+  />
+</head>
 
-  <body>
+<body>
+<header th:replace="~{admin/fragments/fragmentos :: adminHeader}"></header>
 
-      <header th:replace="~{admin/fragments/fragmentos :: adminHeader}"></header>
+<div class="container main">
+  <form class="d-flex gap-3 flex-column" th:action="@{'/admin/pagos/editar/' + ${pago.id}}" th:method="put" enctype="multipart/form-data" th:object="${pago}">
+    <input type="hidden" name="id" id="id" th:value="${pago.id}" th:field="*{id}">
 
+    <div class="form-group">
+      <label for="importe">Importe:</label>
+      <input type="number" class="form-control" id="importe" name="importe" th:field="*{importe}" step="0.01" required>
+      <div class="text-danger" th:if="${#fields.hasErrors('importe')}" th:errors="*{importe}"></div>
+    </div>
 
-      <div class="container main">
-        <form class="d-flex gap-3 flex-column" action="/admin/pagos/crear" method="post" enctype="multipart/form-data" th:object="${pago}">
-          <input type="hidden" name="id" id="id" th:value="${pago.id}" th:field="*{id}">
+    <div class="form-group">
+      <label for="fechaPago">Fecha De Pago</label>
+      <input type="datetime-local" class="form-control" name="fechaPago" id="fechaPago" th:field="*{fechaPago}">
+      <div class="text-danger" th:if="${#fields.hasErrors('fechaPago')}" th:errors="*{fechaPago}"></div>
+    </div>
 
-          <div class="form-group">
-            <label for="importe">Importe:</label>
-            <input type="number" class="form-control" id="importe"  th:field="*{importe}" step="0.01" required>
-          </div>
+    <div class="form-group">
+      <label for="reserva">Reserva:</label>
+      <select class="form-control" id="reserva" name="reserva.id" th:field="*{reserva.id}">
+        <option th:each="reserva : ${reservas}" th:value="${reserva.id}" th:text="${reserva.id}" th:selected="${reserva.id != null and pago.reserva.id == reserva.id}"></option>
+      </select>
+      <div class="text-danger" th:if="${#fields.hasErrors('reserva.id')}" th:errors="*{reserva.id}"></div>
+    </div>
 
-          <div class="form-group">
-            <label for="fechaPago">Fecha De Pago</label>
-            <input type="datetime-local" class="form-control" name="fechaPago" id="fechaPago" th:field="*{fechaPago}">
-          </div>
+    <div class="form-group">
+      <label for="metodoPago">Método de Pago:</label>
+      <select class="form-control" id="metodoPago" name="metodoPago.id" th:field="*{metodoPago.id}">
+        <option th:each="metodoPago : ${metodosPago}" th:value="${metodoPago.id}" th:text="${metodoPago.metodo}" th:selected="${metodoPago.id != null and pago.metodoPago.id == metodoPago.id}"></option>
+      </select>
+      <div class="text-danger" th:if="${#fields.hasErrors('metodoPago.id')}" th:errors="*{metodoPago.id}"></div>
+    </div>
 
-          <div class="form-group">
-            <label for="reserva">Reserva:</label>
-            <select class="form-control" id="reserva" th:field="*{reserva.id}">
-              <option th:each="reserva : ${reservas}" th:value="${reserva.id}" th:text="${reserva.id}" th:selected="${reserva.id != null and pago.reserva.id == reserva.id}"></option>
-            </select>
-          </div>
+    <button type="submit" class="btn btn-primary mt-3">Guardar</button>
+  </form>
+</div>
 
-          <div class="form-group">
-            <label for="metodoPago">Metodo de Pago:</label>
-            <select class="form-control" id="MetodoPago" th:field="*{metodoPago.id}">
-              <option th:each="metodoPago : ${metodosPago}" th:value="${metodoPago.id}" th:text="${metodoPago.metodo}" th:selected="${metodoPago.id != null and pago.metodoPago.id == metodoPago.id}"></option>
-            </select>
-          </div>
-
-          <button type="submit" class="btn btn-primary mt-3">Guardar</button>
-        </form>
-      </div>
-
-
-
-
-
-      <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
-    <script th:src="@{/plugins/easing/easing.js}"></script>
-    <script th:src="@{/plugins/parallax-js-master/parallax.min.js}"></script>
-    <script th:src="@{/plugins/colorbox/jquery.colorbox-min.js}"></script>
-    <script th:src="@{/plugins/OwlCarousel2-2.2.1/owl.carousel.js}"></script>
-  </body>
+<script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/plugins/easing/easing.js}"></script>
+<script th:src="@{/plugins/parallax-js-master/parallax.min.js}"></script>
+<script th:src="@{/plugins/colorbox/jquery.colorbox-min.js}"></script>
+<script th:src="@{/plugins/OwlCarousel2-2.2.1/owl.carousel.js}"></script>
+</body>
 </html>

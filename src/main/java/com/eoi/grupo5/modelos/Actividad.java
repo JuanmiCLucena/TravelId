@@ -2,6 +2,7 @@ package com.eoi.grupo5.modelos;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -28,18 +29,21 @@ public class Actividad {
     private Integer id;
 
     @Column(name = "maximosAsistentes")
+    @NotNull(message = "Introduce la cantidad máxima de asistentes")
     private Integer maximosAsistentes;
 
     @Column(name = "asistentesConfirmados")
+    @NotNull(message = "Introduce los asistentes confirmados")
     private Integer asistentesConfirmados;
 
     @Column(name = "nombre", length = 45)
-    @NotNull(message = "Introduce un nombre de Actividad")
     @Size(max = 45, message = "El nombre no puede tener más de 45 caracteres")
+    @NotBlank(message = "Introduce un nombre de Actividad")
     private String nombre;
 
     @Column(name = "descripcion", length = 150)
     @Size(max = 150, message = "La descripción no puede tener más de 150 caracteres")
+    @NotBlank(message = "Introduce una descripción")
     private String descripcion;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
@@ -67,6 +71,7 @@ public class Actividad {
     private Localizacion localizacion;
 
     @OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL, orphanRemoval = true)
+    @NotNull(message = "Debes introducir una imagen")
     private Set<Imagen> imagenes = new HashSet<>();
 
     @OneToMany(mappedBy = "actividad")

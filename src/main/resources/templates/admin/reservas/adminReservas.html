@@ -17,6 +17,7 @@
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"
     ></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link
             th:href="@{/plugins/font-awesome-4.7.0/css/font-awesome.min.css}"
             rel="stylesheet"
@@ -80,12 +81,12 @@
             <td th:text="${reserva.cancelado}"></td>
             <td th:if="${reserva.usu != null}" th:text="${reserva.usu.id}"></td>
             <td th:if="${reserva.usu == null}"></td>
-            <td class="d-flex gap-2">
-                <form th:action="@{'/admin/reservas/' + ${reserva.id}}" th:method="get">
-                    <button type="submit" class="btn btn-outline-info">Actualizar</button>
+            <td class="d-flex gap-2 justify-content-end">
+                <form th:action="@{'/admin/reservas/editar/' + ${reserva.id}}" th:method="get">
+                    <button type="submit" class="btn btn-info"><i class="bi bi-pencil text-white"></i></button>
                 </form>
                 <form th:action="@{'/admin/reservas/eliminar/' + ${reserva.id}}" th:method="delete">
-                    <button type="submit" class="btn btn-outline-danger">Eliminar</button>
+                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
                 </form>
             </td>
         </tr>

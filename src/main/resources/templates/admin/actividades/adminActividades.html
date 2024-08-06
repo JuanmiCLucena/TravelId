@@ -80,7 +80,7 @@
                     <td th:text="${actividad.localizacion.nombre}"></td>
                     <td th:text="${actividad.tipo.nombre}"></td>
                     <td class="d-flex gap-2 justify-content-end">
-                        <form th:action="@{'/admin/actividades/' + ${actividad.id}}" th:method="get">
+                        <form th:action="@{'/admin/actividades/editar/' + ${actividad.id}}" th:method="get">
                             <button type="submit" class="btn btn-info"><i class="bi bi-pencil text-white"></i></button>
                         </form>
                         <form th:action="@{'/admin/actividades/eliminar/' + ${actividad.id}}" th:method="delete">

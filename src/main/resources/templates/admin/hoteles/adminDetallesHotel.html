@@ -1,116 +1,127 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <title>Detalles Hotel</title>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="description" content="Travelix Project" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-      crossorigin="anonymous"
-    />
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"
-    ></script>
-    <link
-      th:href="@{/plugins/font-awesome-4.7.0/css/font-awesome.min.css}"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <link
-      th:href="@{/plugins/colorbox/colorbox.css}"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      th:href="@{/plugins/OwlCarousel2-2.2.1/owl.carousel.css}"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      th:href="@{/plugins/OwlCarousel2-2.2.1/owl.theme.default.css}"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      th:href="@{/plugins/OwlCarousel2-2.2.1/animate.css}"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      th:href="@{/styles/admin_styles.css}"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      th:href="@{/styles/admin_responsive.css}"
-    />
-  </head>
+<head>
+  <title>Detalles Hotel</title>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="description" content="Travelix Project"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+          crossorigin="anonymous"
+  />
+  <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+          crossorigin="anonymous"
+  ></script>
+  <link
+          th:href="@{/plugins/font-awesome-4.7.0/css/font-awesome.min.css}"
+          rel="stylesheet"
+          type="text/css"
+  />
+  <link
+          th:href="@{/plugins/colorbox/colorbox.css}"
+          rel="stylesheet"
+          type="text/css"
+  />
+  <link
+          rel="stylesheet"
+          type="text/css"
+          th:href="@{/plugins/OwlCarousel2-2.2.1/owl.carousel.css}"
+  />
+  <link
+          rel="stylesheet"
+          type="text/css"
+          th:href="@{/plugins/OwlCarousel2-2.2.1/owl.theme.default.css}"
+  />
+  <link
+          rel="stylesheet"
+          type="text/css"
+          th:href="@{/plugins/OwlCarousel2-2.2.1/animate.css}"
+  />
+  <link
+          rel="stylesheet"
+          type="text/css"
+          th:href="@{/styles/admin_styles.css}"
+  />
+  <link
+          rel="stylesheet"
+          type="text/css"
+          th:href="@{/styles/admin_responsive.css}"
+  />
+</head>
 
-  <body>
+<body>
 
-      <header th:replace="~{admin/fragments/fragmentos :: adminHeader}"></header>
+<header th:replace="~{admin/fragments/fragmentos :: adminHeader}"></header>
 
+<div class="container main">
+  <form class="d-flex gap-3 flex-column" th:action="@{'/admin/hoteles/editar/' + ${hotel.id}}" th:method="put"
+        enctype="multipart/form-data" th:object="${hotel}">
+    <input type="hidden" name="id" id="id" th:value="${hotel.id}" th:field="*{id}">
 
-      <div class="container main">
-        <form class="d-flex gap-3 flex-column" action="/admin/hoteles/crear" method="post" enctype="multipart/form-data" th:object="${hotel}">
-          <input type="hidden" name="id" id="id" th:value="${hotel.id}" th:field="*{id}">
+    <div class="form-group">
+      <label for="nombre">Nombre del Hotel</label>
+      <input type="text" class="form-control" id="nombre" name="nombre" th:value="${hotel.nombre}"
+             th:field="*{nombre}">
+      <div th:if="${#fields.hasErrors('nombre')}" class="text-danger" th:errors="*{nombre}">Nombre error</div>
+    </div>
 
-          <div class="form-group">
-            <label for="nombre">Nombre del Hotel</label>
-            <input type="text" class="form-control" id="nombre" th:value="${hotel.nombre}" th:field="*{nombre}">
-          </div>
-
-          <div class="form-group">
-            <label for="categoria">Categoría</label>
-            <input type="number" class="form-control" id="categoria" th:value="${hotel.categoria}" th:field="*{categoria}">
-          </div>
-
-          <div class="form-group">
-            <label for="descripcion">Descripción</label>
-            <input type="text" class="form-control" id="descripcion" th:value="${hotel.descripcion}" th:field="*{descripcion}">
-          </div>
-
-          <div class="form-group">
-            <label for="contacto">Contacto</label>
-            <input type="text" class="form-control" id="contacto" th:value="${hotel.contacto}" th:field="*{contacto}">
-          </div>
-
-          <div class="form-group">
-            <label for="localizacion">Hotel:</label>
-            <select class="form-control" id="localizacion" th:field="*{localizacion.id}">
-              <option th:each="localizacion : ${localizaciones}" th:value="${localizacion.id}" th:text="${localizacion.nombre}" th:selected="${localizacion.id != null and hotel.localizacion.id == localizacion.id}"></option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <input type="hidden" name="habitaciones" th:field="*{habitaciones}">
-          </div>
-
-          <div class="form-group">
-            <label for="imagen">Imagen</label>
-            <input type="file" class="form-control-file" id="imagen" name="imagen">
-          </div>
-
-          <button type="submit" class="btn btn-primary mt-3">Guardar</button>
-        </form>
+    <div class="form-group">
+      <label for="categoria">Categoría</label>
+      <input type="number" class="form-control" id="categoria" name="categoria" th:value="${hotel.categoria}"
+             th:field="*{categoria}">
+      <div th:if="${#fields.hasErrors('categoria')}" class="text-danger" th:errors="*{categoria}">Categoría error
       </div>
+    </div>
 
+    <div class="form-group">
+      <label for="descripcion">Descripción</label>
+      <input type="text" class="form-control" id="descripcion" name="descripcion" th:value="${hotel.descripcion}"
+             th:field="*{descripcion}">
+      <div th:if="${#fields.hasErrors('descripcion')}" class="text-danger" th:errors="*{descripcion}">Descripción error
+      </div>
+    </div>
 
+    <div class="form-group">
+      <label for="contacto">Contacto</label>
+      <input type="text" class="form-control" id="contacto" name="contacto" th:value="${hotel.contacto}"
+             th:field="*{contacto}">
+      <div th:if="${#fields.hasErrors('contacto')}" class="text-danger" th:errors="*{contacto}">Contacto error
+      </div>
+    </div>
 
+    <div class="form-group">
+      <label for="localizacion">Localización:</label>
+      <select class="form-control" id="localizacion" name="localizacion.id" th:field="*{localizacion.id}">
+        <option th:each="localizacion : ${localizaciones}" th:value="${localizacion.id}"
+                th:text="${localizacion.nombre}"
+                th:selected="${localizacion.id != null and hotel.localizacion.id == localizacion.id}"></option>
+      </select>
+      <div th:if="${#fields.hasErrors('localizacion.id')}" class="text-danger" th:errors="*{localizacion.id}">Localización error
+      </div>
+    </div>
 
+    <div class="form-group">
+      <input type="hidden" name="habitaciones" th:field="*{habitaciones}">
+    </div>
 
-      <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
-    <script th:src="@{/plugins/easing/easing.js}"></script>
-    <script th:src="@{/plugins/parallax-js-master/parallax.min.js}"></script>
-    <script th:src="@{/plugins/colorbox/jquery.colorbox-min.js}"></script>
-    <script th:src="@{/plugins/OwlCarousel2-2.2.1/owl.carousel.js}"></script>
-  </body>
+    <div class="form-group">
+      <label for="imagen">Imagen</label>
+      <input type="file" class="form-control-file" id="imagen" name="imagen">
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Guardar</button>
+  </form>
+</div>
+
+<script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/plugins/easing/easing.js}"></script>
+<script th:src="@{/plugins/parallax-js-master/parallax.min.js}"></script>
+<script th:src="@{/plugins/colorbox/jquery.colorbox-min.js}"></script>
+<script th:src="@{/plugins/OwlCarousel2-2.2.1/owl.carousel.js}"></script>
+</body>
 </html>

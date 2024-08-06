@@ -75,7 +75,7 @@
             <td th:text="${usuario.id}"></td>
             <td th:text="${usuario.nombreUsuario}"></td>
             <td class="d-flex gap-2 justify-content-end">
-                <form th:action="@{'/admin/usuarios/' + ${usuario.id}}" th:method="get">
+                <form th:action="@{'/admin/usuarios/editar/' + ${usuario.id}}" th:method="get">
                     <button type="submit" class="btn btn-info"><i class="bi bi-pencil text-white"></i></button>
                 </form>
                 <form th:action="@{'/admin/usuarios/eliminar/' + ${usuario.id}}" th:method="delete">

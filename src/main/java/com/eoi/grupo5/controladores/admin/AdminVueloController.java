@@ -50,21 +50,6 @@ public class AdminVueloController {
         return "admin/vuelos/adminVuelos";
     }
 
-    @GetMapping("/{id}")
-    public String detalles(Model modelo, @PathVariable Integer id) {
-        Optional<Vuelo> vuelo = servicioVuelo.encuentraPorId(id);
-        if (vuelo.isPresent()) {
-            modelo.addAttribute("vuelo", vuelo.get());
-            modelo.addAttribute("preciosActuales", servicioAsiento.obtenerPreciosActualesAsientosVuelo(vuelo.get()));
-            modelo.addAttribute("localizaciones", servicioLocalizacion.buscarEntidades());
-            modelo.addAttribute("companias", servicioCompaniaVuelo.buscarEntidades());
-            return "admin/vuelos/adminDetallesVuelo";
-        } else {
-            modelo.addAttribute("error", "Vuelo no encontrado");
-            return "admin/vuelos/adminVuelos";
-        }
-    }
-
     @GetMapping("/crear")
     public String mostrarPaginaCrear(Model modelo) {
         Vuelo vuelo = new Vuelo();
@@ -112,7 +97,20 @@ public class AdminVueloController {
         return "redirect:/admin/vuelos";
     }
 
-
+    @GetMapping("editar/{id}")
+    public String mostrarPaginaEditar(Model modelo, @PathVariable Integer id) {
+        Optional<Vuelo> vuelo = servicioVuelo.encuentraPorId(id);
+        if (vuelo.isPresent()) {
+            modelo.addAttribute("vuelo", vuelo.get());
+            modelo.addAttribute("preciosActuales", servicioAsiento.obtenerPreciosActualesAsientosVuelo(vuelo.get()));
+            modelo.addAttribute("localizaciones", servicioLocalizacion.buscarEntidades());
+            modelo.addAttribute("companias", servicioCompaniaVuelo.buscarEntidades());
+            return "admin/vuelos/adminDetallesVuelo";
+        } else {
+            modelo.addAttribute("error", "Vuelo no encontrado");
+            return "admin/vuelos/adminVuelos";
+        }
+    }
 
     @DeleteMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Integer id) {

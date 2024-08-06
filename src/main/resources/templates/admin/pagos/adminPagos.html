@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Actividades</title>
+    <title>Pagos</title>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="description" content="Travelix Project" />
@@ -77,7 +77,7 @@
                     <td th:text="${pago.fechaPago}"></td>
                     <td th:text="${pago.reserva.id}"></td>
                     <td class="d-flex gap-2 justify-content-end">
-                        <form th:action="@{'/admin/pagos/' + ${pago.id}}" th:method="get">
+                        <form th:action="@{'/admin/pagos/editar/' + ${pago.id}}" th:method="get">
                             <button type="submit" class="btn btn-info"><i class="bi bi-pencil text-white"></i></button>
                         </form>
                         <form th:action="@{'/admin/pagos/eliminar/' + ${pago.id}}" th:method="delete">
