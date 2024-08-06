@@ -62,7 +62,6 @@ public class AdminUsuarioController {
         }
 
         try {
-//            usuarioRegistroDto.sanitize();
             Usuario usuario = Usuario.from(usuarioRegistroDto);
             usuario.getDetalles().setUsu(usuario);
             usuario.setPassword(bCryptPasswordEncoder.encode(usuario.getPassword()));
@@ -88,10 +87,9 @@ public class AdminUsuarioController {
         }
     }
 
-    @PostMapping("/editar/{id}")
+    @PutMapping("/editar/{id}")
     public String editar(@PathVariable Integer id, @Valid @ModelAttribute("usuario") UsuarioRegistroDto usuarioRegistroDto, BindingResult result, Model modelo) {
 
-//        usuarioRegistroDto.sanitize();
 
         // Verifica si hay errores en el BindingResult actualizado
         if (result.hasErrors()) {
@@ -101,14 +99,15 @@ public class AdminUsuarioController {
 
 
         try {
-
             Optional<Usuario> optionalUsuario = servicioUsuario.encuentraPorId(id);
             if (optionalUsuario.isPresent()) {
                 Usuario usuarioExistente = optionalUsuario.get();
+                // Saneamos los campos convirtiendo los que estén vacíos a null
+                usuarioRegistroDto.sanitize();
                 Usuario usuarioActualizado = Usuario.from(usuarioRegistroDto);
                 usuarioActualizado.setId(usuarioExistente.getId());
-                usuarioActualizado.setPassword(bCryptPasswordEncoder.encode(usuarioRegistroDto.getPassword()));
                 usuarioActualizado.getDetalles().setId(usuarioExistente.getDetalles().getId());
+                usuarioActualizado.setPassword(bCryptPasswordEncoder.encode(usuarioRegistroDto.getPassword()));
                 servicioUsuario.guardar(usuarioActualizado);
             } else {
                 modelo.addAttribute("error", "Usuario no encontrado");

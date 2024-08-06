@@ -1,6 +1,8 @@
 package com.eoi.grupo5.dtos;
 
 import com.eoi.grupo5.modelos.Usuario;
+import com.eoi.grupo5.validacionesCustom.anotaciones.DniPattern;
+import com.eoi.grupo5.validacionesCustom.anotaciones.TelefonoPattern;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -37,7 +39,7 @@ public class UsuarioRegistroDto {
     private String email;
 
     @Column(name = "dni", length = 10)
-    @Pattern(regexp = "\\d{8}[A-Za-z]", message = "El DNI debe tener 8 dígitos seguidos de una letra")
+    @DniPattern
     private String dni;
 
     @Column(name = "edad")
@@ -45,7 +47,7 @@ public class UsuarioRegistroDto {
     private Integer edad;
 
     @Column(name = "telefono", length = 15)
-    @Pattern(regexp = "\\d{9,15}", message = "El teléfono debe tener entre 9 y 15 dígitos")
+    @TelefonoPattern
     private String telefono;
 
     @Column(name="nombre", length = 45)
@@ -83,9 +85,9 @@ public class UsuarioRegistroDto {
      * @param value La cadena que se va a convertir.
      * @return {@code null} si la cadena es vacía o solo contiene espacios; de lo contrario, devuelve la cadena original.
      */
-//    public static String convertEmptyToNull(String value) {
-//        return (value != null && value.trim().isEmpty()) ? null : value;
-//    }
+    public static String convertEmptyToNull(String value) {
+        return (value != null && value.trim().isEmpty()) ? null : value;
+    }
 
     /**
      * Sanitiza los campos del DTO, convirtiendo las cadenas vacías en {@code null}.
@@ -94,15 +96,15 @@ public class UsuarioRegistroDto {
      * se conviertan en {@code null} en lugar de quedarse como cadenas vacías.
      * Esto evitará posibles errores de validación
      */
-//    public void sanitize() {
-//        this.nombreUsuario = convertEmptyToNull(this.nombreUsuario);
-//        this.password = convertEmptyToNull(this.password);
-//        this.email = convertEmptyToNull(this.email);
-//        this.dni = convertEmptyToNull(this.dni);
-//        this.telefono = convertEmptyToNull(this.telefono);
-//        this.nombre = convertEmptyToNull(this.nombre);
-//        this.apellidos = convertEmptyToNull(this.apellidos);
-//    }
+    public void sanitize() {
+        this.nombreUsuario = convertEmptyToNull(this.nombreUsuario);
+        this.password = convertEmptyToNull(this.password);
+        this.email = convertEmptyToNull(this.email);
+        this.dni = convertEmptyToNull(this.dni);
+        this.telefono = convertEmptyToNull(this.telefono);
+        this.nombre = convertEmptyToNull(this.nombre);
+        this.apellidos = convertEmptyToNull(this.apellidos);
+    }
 
 
 }
