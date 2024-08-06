@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <title>Detalles Hotel</title>
   <meta charset="utf-8"/>
+  <link rel="icon" sizes="16x16 32x32 64x64" href="/images/AAAfavicon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/images/AAAfavicon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
   <meta name="description" content="Travelix Project"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -75,6 +78,7 @@
       <input type="number" class="form-control" id="categoria" name="categoria" th:value="${hotel.categoria}"
              th:field="*{categoria}">
       <div th:if="${#fields.hasErrors('categoria')}" class="text-danger" th:errors="*{categoria}">Categoría error
+
       </div>
     </div>
 
