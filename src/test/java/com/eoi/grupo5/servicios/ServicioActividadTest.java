@@ -31,7 +31,7 @@ public class ServicioActividadTest {
     @Mock
     private RepoActividad repoActividad;
 
-    @InjectMocks
+
     private ServicioActividad servicioActividad;
 
     @BeforeEach

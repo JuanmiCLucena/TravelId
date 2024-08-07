@@ -27,7 +27,6 @@ public class ServicioLocalizacionTest {
     @Mock
     private RepoLocalizacion repoLocalizacion;
 
-    @InjectMocks
     private ServicioLocalizacion servicioLocalizacion;
 
     @BeforeEach

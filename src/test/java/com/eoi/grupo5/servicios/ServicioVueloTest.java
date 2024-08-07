@@ -29,7 +29,6 @@ public class ServicioVueloTest {
     @Mock
     private RepoVuelo repoVuelo;
 
-    @InjectMocks
     private ServicioVuelo servicioVuelo;
 
     @BeforeEach
@@ -54,7 +53,7 @@ public class ServicioVueloTest {
 
     @Test
     void testObtenerVuelosDisponiblesPaginados() {
-// Crear datos de prueba
+        // Crear datos de prueba
         LocalDateTime fechaActual = LocalDateTime.now();
 
         Vuelo vuelo1 = new Vuelo();

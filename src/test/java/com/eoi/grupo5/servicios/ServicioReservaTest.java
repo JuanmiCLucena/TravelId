@@ -40,7 +40,6 @@ public class ServicioReservaTest {
     @Mock
     private RepoMetodoPago repoMetodoPago;
 
-    @InjectMocks
     private ServicioReserva servicioReserva;
 
     @BeforeEach

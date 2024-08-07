@@ -24,7 +24,6 @@ public class ServicioPrecioTest {
     @Mock
     private RepoPrecio repoPrecio;
 
-    @InjectMocks
     private ServicioPrecio servicioPrecio;
 
     @BeforeEach

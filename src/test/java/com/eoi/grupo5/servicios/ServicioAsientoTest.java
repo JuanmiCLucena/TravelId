@@ -32,7 +32,6 @@ public class ServicioAsientoTest {
     @Mock
     private RepoAsiento repoAsiento;
 
-    @InjectMocks
     private ServicioAsiento servicioAsiento;
 
     private Asiento asiento;

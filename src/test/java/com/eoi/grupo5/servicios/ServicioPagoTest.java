@@ -25,7 +25,6 @@ public class ServicioPagoTest {
     @Mock
     private RepoPago repoPago;
 
-    @InjectMocks
     private ServicioPago servicioPago;
 
     @BeforeEach

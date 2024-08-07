@@ -31,7 +31,6 @@ public class ServicioHabitacionTest {
     @Mock
     private ServicioHotel servicioHotel;
 
-    @InjectMocks
     private ServicioHabitacion servicioHabitacion;
 
     @BeforeEach

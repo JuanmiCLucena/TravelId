@@ -30,7 +30,6 @@ public class ServicioHotelTest {
     @Mock
     private RepoHotel repoHotel;
 
-    @InjectMocks
     private ServicioHotel servicioHotel;
 
     @BeforeEach

@@ -24,7 +24,6 @@ public class ServicioUsuarioTest {
     @Mock
     private RepoUsuario repoUsuario;
 
-    @InjectMocks
     private ServicioUsuario servicioUsuario;
 
     @BeforeEach
