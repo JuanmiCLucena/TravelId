@@ -16,7 +16,7 @@ public interface RepoUsuario extends JpaRepository<Usuario, Integer> {
 
     Optional<Usuario> findByNombreUsuario(String nombreUsuario);
 
-    Page<Usuario> findAll(@Nullable Specification<Usuario> spec, @Nonnull Pageable pageable);
+    Page<Usuario> findAll(@Nonnull Pageable pageable);
 
     boolean existsBynombreUsuario(String username);
 }
