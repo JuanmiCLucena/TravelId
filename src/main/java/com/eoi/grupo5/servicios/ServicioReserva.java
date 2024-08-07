@@ -75,7 +75,7 @@ public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Int
             }
     }
 
-    public void añadirAsiento(Integer reservaId, Integer idAsiento) {
+    public void addAsiento(Integer reservaId, Integer idAsiento) {
         Optional<Reserva> optionalReserva = repoReserva.findById(reservaId);
         if (optionalReserva.isPresent()) {
             Reserva reserva = optionalReserva.get();
@@ -92,16 +92,16 @@ public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Int
         }
     }
 
-    public void confirmarReserva(Integer reservaId) {
-        Optional<Reserva> optionalReserva = repoReserva.findById(reservaId);
-        if (optionalReserva.isPresent()) {
-            Reserva reserva = optionalReserva.get();
-            reserva.setCancelado(false);
-            repoReserva.save(reserva);
-        } else {
-            throw new RuntimeException("No se encontró la reserva.");
-        }
-    }
+//    public void confirmarReserva(Integer reservaId) {
+//        Optional<Reserva> optionalReserva = repoReserva.findById(reservaId);
+//        if (optionalReserva.isPresent()) {
+//            Reserva reserva = optionalReserva.get();
+//            reserva.setCancelado(false);
+//            repoReserva.save(reserva);
+//        } else {
+//            throw new RuntimeException("No se encontró la reserva.");
+//        }
+//    }
 
     public void cancelarReserva(Integer reservaId) {
         Optional<Reserva> optionalReserva = repoReserva.findById(reservaId);

@@ -1,14 +1,12 @@
 package com.eoi.grupo5.servicios;
 
-import com.eoi.grupo5.modelos.Actividad;
-import com.eoi.grupo5.modelos.Habitacion;
-import com.eoi.grupo5.modelos.Hotel;
-import com.eoi.grupo5.modelos.Precio;
+import com.eoi.grupo5.modelos.*;
 import com.eoi.grupo5.repos.RepoHabitacion;
 import com.eoi.grupo5.repos.RepoReserva;
 import com.eoi.grupo5.paginacion.PaginaRespuestaHabitaciones;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
@@ -19,9 +17,8 @@ import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ServicioHabitacionTest {
 
@@ -34,6 +31,7 @@ public class ServicioHabitacionTest {
     @Mock
     private ServicioHotel servicioHotel;
 
+    @InjectMocks
     private ServicioHabitacion servicioHabitacion;
 
     @BeforeEach
@@ -165,13 +163,95 @@ public class ServicioHabitacionTest {
     }
 
     @Test
-    void testObtenerRangosDisponibles() {
+    public void testObtenerRangosDisponibles() {
+        Integer idHabitacion = 1;
+        LocalDateTime fechaEntrada = LocalDateTime.of(2024, 8, 1, 14, 0);
+        LocalDateTime fechaSalida = LocalDateTime.of(2024, 8, 10, 11, 0);
 
+        Habitacion habitacion = new Habitacion();
+        habitacion.setId(idHabitacion);
+
+        List<Reserva> reservas = new ArrayList<>();
+        Reserva reserva1 = new Reserva();
+        reserva1.setFechaInicio(LocalDateTime.of(2024, 8, 2, 12, 0));
+        reserva1.setFechaFin(LocalDateTime.of(2024, 8, 5, 10, 0));
+        reservas.add(reserva1);
+
+        Reserva reserva2 = new Reserva();
+        reserva2.setFechaInicio(LocalDateTime.of(2024, 8, 6, 14, 0));
+        reserva2.setFechaFin(LocalDateTime.of(2024, 8, 8, 12, 0));
+        reservas.add(reserva2);
+
+
+        when(repoReserva.findByHabitacionesReservadasId(idHabitacion)).thenReturn(reservas);
+        when(repoHabitacion.findById(idHabitacion)).thenReturn(Optional.of(habitacion));
+
+        List<ServicioHabitacion.Interval> rangosDisponibles = servicioHabitacion.obtenerRangosDisponibles(idHabitacion, fechaEntrada, fechaSalida);
+
+        assertEquals(3, rangosDisponibles.size());
+        assertEquals(fechaEntrada, rangosDisponibles.get(0).getStart());
+        assertEquals(LocalDateTime.of(2024, 8, 2, 12, 0), rangosDisponibles.get(0).getEnd());
+        assertEquals(LocalDateTime.of(2024, 8, 5, 10, 0), rangosDisponibles.get(1).getStart());
+        assertEquals(LocalDateTime.of(2024, 8, 6, 14, 0), rangosDisponibles.get(1).getEnd());
+    }
+
+    @Test
+    public void testObtenerRangosDisponiblesHabitacionNoExiste() {
+        Integer idHabitacion = 1;
+        LocalDateTime fechaEntrada = LocalDateTime.of(2024, 8, 1, 14, 0);
+        LocalDateTime fechaSalida = LocalDateTime.of(2024, 8, 10, 11, 0);
+
+        when(repoHabitacion.findById(idHabitacion)).thenReturn(Optional.empty());
+
+        List<ServicioHabitacion.Interval> rangosDisponibles = servicioHabitacion.obtenerRangosDisponibles(idHabitacion, fechaEntrada, fechaSalida);
+
+        assertTrue(rangosDisponibles.isEmpty());
     }
 
     @Test
     void testObtenerHotelesEnTuZona() {
+        // Crear datos de prueba
+        Hotel hotel1 = new Hotel();
+        hotel1.setId(1);
+        hotel1.setNombre("hotel1");
 
+        Hotel hotel2 = new Hotel();
+        hotel2.setId(2);
+        hotel2.setNombre("hotel2");
+
+        Hotel hotel3 = new Hotel();
+        hotel3.setId(3);
+        hotel3.setNombre("hotel3");
+
+        Habitacion habitacion1 = new Habitacion();
+        habitacion1.setId(3);
+        habitacion1.setHotel(hotel1);
+
+        Localizacion localizacion1 = new Localizacion();
+        localizacion1.setNombre("Madrid");
+
+        Localizacion localizacion2 = new Localizacion();
+        localizacion2.setNombre("Barcelona");
+
+        Localizacion localizacion3 = new Localizacion();
+        localizacion3.setNombre("Sevilla");
+
+        hotel1.setLocalizacion(localizacion1);
+        hotel2.setLocalizacion(localizacion1);
+        hotel3.setLocalizacion(localizacion2);
+
+        List<Hotel> todosLosHoteles = Arrays.asList(hotel1, hotel2, hotel3);
+
+        // Configurar el comportamiento del mock
+        when(servicioHotel.buscarEntidades()).thenReturn(todosLosHoteles);
+
+        // Ejecutar el método a probar
+        List<Hotel> resultado = servicioHabitacion.obtenerHotelesEnTuZona(habitacion1);
+
+        // Verificar los resultados
+        assertEquals(1, resultado.size());
+        assertEquals(hotel2, resultado.getFirst());
+        assertNotEquals(habitacion1.getHotel().getLocalizacion().getNombre(), hotel3.getLocalizacion().getNombre());
     }
 
 

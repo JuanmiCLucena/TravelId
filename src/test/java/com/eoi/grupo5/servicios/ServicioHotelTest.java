@@ -9,6 +9,7 @@ import com.eoi.grupo5.repos.RepoActividad;
 import com.eoi.grupo5.repos.RepoHotel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
@@ -24,11 +25,12 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-class ServicioHotelTest {
+public class ServicioHotelTest {
 
     @Mock
     private RepoHotel repoHotel;
 
+    @InjectMocks
     private ServicioHotel servicioHotel;
 
     @BeforeEach

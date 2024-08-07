@@ -10,6 +10,7 @@ import com.eoi.grupo5.repos.RepoActividad;
 import com.eoi.grupo5.repos.RepoAsiento;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
@@ -26,11 +27,12 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-class ServicioAsientoTest {
+public class ServicioAsientoTest {
 
     @Mock
     private RepoAsiento repoAsiento;
 
+    @InjectMocks
     private ServicioAsiento servicioAsiento;
 
     private Asiento asiento;

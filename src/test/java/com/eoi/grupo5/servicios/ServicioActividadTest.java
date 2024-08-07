@@ -26,11 +26,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 
-class ServicioActividadTest {
+public class ServicioActividadTest {
 
     @Mock
     private RepoActividad repoActividad;
 
+    @InjectMocks
     private ServicioActividad servicioActividad;
 
     @BeforeEach
@@ -93,7 +94,7 @@ class ServicioActividadTest {
     @Test
     public void testBuscarEntidadesPaginadas() {
         Pageable pageable = PageRequest.of(0, 1);
-        Actividad actividad = new Actividad(); // Construct activity object here
+        Actividad actividad = new Actividad();
         Page<Actividad> actividadPage = new PageImpl<>(Collections.singletonList(actividad), pageable, 1);
 
         when(repoActividad.findAll((Specification<Actividad>) null, pageable)).thenReturn(actividadPage);

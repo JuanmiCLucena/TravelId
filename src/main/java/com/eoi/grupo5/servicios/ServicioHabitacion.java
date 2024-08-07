@@ -198,7 +198,7 @@ public class ServicioHabitacion extends AbstractBusinessServiceSoloEnt<Habitacio
         Hotel hotel = habitacion.getHotel();
         return servicioHotel.buscarEntidades()
                 .stream()
-                .filter(h -> h.getLocalizacion().getId().equals(hotel.getLocalizacion().getId()) && !Objects.equals(h.getId(), hotel.getId()))
+                .filter(h -> h.getLocalizacion().getNombre().equals(hotel.getLocalizacion().getNombre()) && !Objects.equals(h.getId(), hotel.getId()))
                 .limit(2)
                 .toList();
     }
