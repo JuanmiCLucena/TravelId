@@ -98,7 +98,7 @@ public class LoginController {
         details.setUsu(newUser);
         repoDetallesUsuario.save(details);
         repoUsuario.save(newUser);
-        emailService.sendSimpleMessage(details.getEmail(), "Bienvenido a Travel ID " + details.getNombre(), "Bienvenido a Travel ID " + details.getNombre());
+        emailService.sendSimpleMessage(details.getEmail(), "Bienvenido a TravelId " + newUser.getNombreUsuario(), "Bienvenido a TravelId " + newUser.getNombreUsuario());
 
         return "index";
     }

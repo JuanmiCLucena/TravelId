@@ -72,7 +72,7 @@
       <tr th:each="intervalo : ${rangosDisponibles}">
         <td th:text="${#temporals.format(intervalo.start, 'dd MMMM yyyy, HH:mm', #locale)}"></td>
         <td th:text="${#temporals.format(intervalo.end, 'dd MMMM yyyy, HH:mm', #locale)}"></td>
-        <td class="d-flex gap-3 align-items-center">
+        <td class="d-flex gap-3 align-items-center" th:if="${intervalo.intervalPrice > 0}">
           <span th:text="${intervalo.intervalPrice} + ' €'"></span>
 
           <!-- Botón modal -->
@@ -122,6 +122,11 @@
           </div>
 
 
+        </td>
+        <td class="d-flex gap-3 align-items-center" th:if="${intervalo.intervalPrice <= 0}">
+          <div class="btn btn-danger px-5 py-3 rounded-5">
+            No Disponible
+          </div>
         </td>
       </tr>
       <tr th:if="${rangosDisponibles.isEmpty()}">

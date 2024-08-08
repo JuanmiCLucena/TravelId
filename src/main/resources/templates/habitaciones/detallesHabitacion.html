@@ -109,9 +109,12 @@
                                     </div>
                                 </div>
                                 <div class="hotel_title_button ml-lg-auto text-lg-right">
-                                    <div class="button book_button trans_200">
+                                    <div class="button book_button trans_200" th:if="${precioActual != null}">
                                         <a th:href="@{'/reservas/habitacion/reservar/' + ${habitacion.id}}"
                                         >Comprobar Disponibilidad</a>
+                                    </div>
+                                    <div class="btn btn-danger px-5 py-3 rounded-5" th:if="${precioActual == null}">
+                                        No Disponible
                                     </div>
                                 </div>
                             </div>

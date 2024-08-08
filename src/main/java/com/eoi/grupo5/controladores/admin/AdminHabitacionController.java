@@ -139,38 +139,57 @@ public class AdminHabitacionController {
         }
 
         try {
-            Optional<Hotel> hotelOpt = servicioHotel.encuentraPorId(hotelId);
-            if (hotelOpt.isPresent()) {
-                habitacion.setHotel(hotelOpt.get());
+            Optional<Habitacion> habitacionOpt = servicioHabitacion.encuentraPorId(id);
+            if (habitacionOpt.isPresent()) {
+                Habitacion habitacionExistente = habitacionOpt.get();
+
+                // Actualizar los campos básicos de la habitación
+                habitacionExistente.setNumero(habitacion.getNumero());
+                habitacionExistente.setCapacidad(habitacion.getCapacidad());
+                habitacionExistente.setNumeroCamas(habitacion.getNumeroCamas());
+
+                // Actualizar el hotel
+                Optional<Hotel> hotelOpt = servicioHotel.encuentraPorId(hotelId);
+                if (hotelOpt.isPresent()) {
+                    habitacionExistente.setHotel(hotelOpt.get());
+                } else {
+                    modelo.addAttribute("error", "Hotel no encontrado");
+                    return "admin/habitaciones/adminDetallesHabitacion";
+                }
+
+                // Actualizar el tipo de habitación
+                Optional<TipoHabitacion> tipoOpt = servicioTipoHabitacion.encuentraPorId(tipoId);
+                if (tipoOpt.isPresent()) {
+                    habitacionExistente.setTipo(tipoOpt.get());
+                } else {
+                    modelo.addAttribute("error", "Tipo de habitación no encontrado");
+                    return "admin/habitaciones/adminDetallesHabitacion";
+                }
+
+                // Si se proporciona una nueva imagen, actualízala
+                if (imagen != null && !imagen.isEmpty()) {
+                    Imagen imagenBD = new Imagen();
+                    imagenBD.setHabitacionImagen(habitacionExistente);
+                    imagenBD.setUrl(String.valueOf(habitacionExistente.getId()));
+                    servicioImagen.guardar(imagenBD);
+
+                    String FILE_NAME = "habitacion-" + habitacionExistente.getId() + "-" + imagenBD.getId() + "." + FilenameUtils.getExtension(imagen.getOriginalFilename());
+                    imagenBD.setUrl(FILE_NAME);
+                    fileSystemStorageService.store(imagen, FILE_NAME);
+
+                    // Actualizar la lista de imágenes
+                    habitacionExistente.getImagenesHabitacion().clear();
+                    habitacionExistente.getImagenesHabitacion().add(imagenBD);
+                }
+
+                // Guardar la habitación actualizada en la base de datos
+                servicioHabitacion.guardar(habitacionExistente);
+
             } else {
-                modelo.addAttribute("error", "Hotel no encontrado");
+                modelo.addAttribute("error", "Habitación no encontrada");
                 return "admin/habitaciones/adminDetallesHabitacion";
             }
 
-            Optional<TipoHabitacion> tipoOpt = servicioTipoHabitacion.encuentraPorId(tipoId);
-            if (tipoOpt.isPresent()) {
-                habitacion.setTipo(tipoOpt.get());
-            } else {
-                modelo.addAttribute("error", "Tipo de habitación no encontrado");
-                return "admin/habitaciones/adminDetallesHabitacion";
-            }
-
-            servicioHabitacion.guardar(habitacion);
-
-            if (imagen != null && !imagen.isEmpty()) {
-                Imagen imagenBD = new Imagen();
-                imagenBD.setHabitacionImagen(habitacion);
-                imagenBD.setUrl(String.valueOf(habitacion.getId()));
-                servicioImagen.guardar(imagenBD);
-
-                String FILE_NAME = "habitacion-" + habitacion.getId() + "-" + imagenBD.getId() + "." + FilenameUtils.getExtension(imagen.getOriginalFilename());
-                imagenBD.setUrl(FILE_NAME);
-                fileSystemStorageService.store(imagen, FILE_NAME);
-
-                habitacion.getImagenesHabitacion().clear();
-                habitacion.getImagenesHabitacion().add(imagenBD);
-                servicioHabitacion.guardar(habitacion);
-            }
         } catch (Exception e) {
             modelo.addAttribute("error", "Error al editar la habitación");
             return "admin/habitaciones/adminDetallesHabitacion";
@@ -178,6 +197,8 @@ public class AdminHabitacionController {
 
         return "redirect:/admin/habitaciones";
     }
+
+
 
     @DeleteMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Integer id, Model modelo) {
