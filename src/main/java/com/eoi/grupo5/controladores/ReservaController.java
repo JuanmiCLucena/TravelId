@@ -1,5 +1,6 @@
 package com.eoi.grupo5.controladores;
 
+import com.eoi.grupo5.email.CustomEmailService;
 import com.eoi.grupo5.modelos.*;
 import com.eoi.grupo5.repos.RepoUsuario;
 import com.eoi.grupo5.servicios.ServicioActividad;
@@ -16,11 +17,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 @RequestMapping("/reservas")
@@ -31,13 +31,15 @@ public class ReservaController {
     private final ServicioActividad servicioActividad;
     private final RepoUsuario repoUsuario;
     private final ServicioMetodoPago servicioMetodoPago;
+    private final CustomEmailService emailService;
 
-    public ReservaController(ServicioReserva servicioReserva, ServicioHabitacion servicioHabitacion, ServicioActividad servicioActividad, RepoUsuario repoUsuario, ServicioMetodoPago servicioMetodoPago) {
+    public ReservaController(ServicioReserva servicioReserva, ServicioHabitacion servicioHabitacion, ServicioActividad servicioActividad, RepoUsuario repoUsuario, ServicioMetodoPago servicioMetodoPago, CustomEmailService emailService) {
         this.servicioReserva = servicioReserva;
         this.servicioHabitacion = servicioHabitacion;
         this.servicioActividad = servicioActividad;
         this.repoUsuario = repoUsuario;
         this.servicioMetodoPago = servicioMetodoPago;
+        this.emailService = emailService;
     }
 
     @GetMapping("/tus-reservas")
@@ -179,6 +181,28 @@ public class ReservaController {
 
                 servicioReserva.generarPago(reserva, precioTotal, metodoPagoId);
 
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy HH:mm");
+
+                String fechaInicioFormateada = reserva.getFechaInicio().format(formatter);
+                String fechaFinFormateada = reserva.getFechaFin().format(formatter);
+
+                emailService.sendSimpleMessage(
+                        usuario.getDetalles().getEmail(),
+                        "Confirmación de tu reserva en TravelId",
+                        "Hola " + usuario.getNombreUsuario() + ",\n\n" +
+                                "Gracias por realizar tu reserva con TravelId. A continuación, encontrarás los detalles de tu reserva:\n\n" +
+                                "Usuario: " + usuario.getNombreUsuario() + "\n" +
+                                "Email: " + usuario.getDetalles().getEmail() + "\n" +
+                                "Habitación: " + servicioHabitacion.encuentraPorId(idHabitacion).get().getNumero() + "\n" +
+                                "Fecha de la reserva:" + fechaInicioFormateada + " hasta " + fechaFinFormateada + "\n" +
+                                "Importe: " + reserva.getPago().getImporte() + "\n" +
+                                "Si tienes alguna pregunta o necesitas asistencia adicional, no dudes en contactarnos.\n\n" +
+                                "¡Gracias por confiar en TravelId!\n\n" +
+                                "Saludos cordiales,\n" +
+                                "El equipo de TravelId"
+                );
+
+
                 return "redirect:/reservas/tus-reservas";
             } catch (Exception e) {
                 modelo.addAttribute("error", e.getMessage());
@@ -225,6 +249,29 @@ public class ReservaController {
 
             // Generar el pago
             servicioReserva.generarPago(reserva, precioTotal, metodoPagoId);
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy HH:mm");
+
+            String fechaInicioFormateada = reserva.getFechaInicio().format(formatter);
+            String fechaFinFormateada = reserva.getFechaFin().format(formatter);
+
+            emailService.sendSimpleMessage(
+                    usuario.getDetalles().getEmail(),
+                    "Confirmación de tu reserva en TravelId",
+                    "Hola " + usuario.getNombreUsuario() + ",\n\n" +
+                            "Gracias por realizar tu reserva con TravelId. A continuación, encontrarás los detalles de tu reserva:\n\n" +
+                            "Usuario: " + usuario.getNombreUsuario() + "\n" +
+                            "Email: " + usuario.getDetalles().getEmail() + "\n" +
+                            "Actividad: " + actividad.getNombre() + "\n" +
+                            "Fecha de la reserva:" + fechaInicioFormateada + " hasta " + fechaFinFormateada + "\n" +
+                            "Plazas Reservadas: " + asistentes + "\n" +
+                            "Importe por plaza: " + precioTotal/asistentes + "\n" +
+                            "Importe Total: " + reserva.getPago().getImporte() + "\n" +
+                            "Si tienes alguna pregunta o necesitas asistencia adicional, no dudes en contactarnos.\n\n" +
+                            "¡Gracias por confiar en TravelId!\n\n" +
+                            "Saludos cordiales,\n" +
+                            "El equipo de TravelId"
+            );
 
             return "redirect:/reservas/tus-reservas";
         } catch (Exception e) {
