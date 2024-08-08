@@ -2,6 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" sizes="16x16 32x32 64x64" href="/images/AAAfavicon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/AAAfavicon.png">
     <title>Página de Error</title>
     <link rel="stylesheet" type="text/css" th:href="@{/styles/error.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/styles/error_responsive.css}" />
@@ -11,7 +13,7 @@
     <div class="message">
         Ooops... Aterrizaste en el lugar incorrecto.
     </div>
-    <a th:href="@{/static}" class="link">Volver al inicio</a>
+    <a th:href="@{/}" class="link">Volver al inicio</a>
 </div>
 </body>
 </html>

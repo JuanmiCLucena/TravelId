@@ -3,6 +3,8 @@
 <head>
     <title>Actividades</title>
     <meta charset="utf-8"/>
+    <link rel="icon" sizes="16x16 32x32 64x64" href="/images/AAAfavicon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/AAAfavicon.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="description" content="Travelix Project"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -127,43 +129,51 @@
                                     <h3 class="d-block d-sm-none d-xl-block">
                                         <span th:text="${actividad.nombre}">Nombre Actividad</span>
                                         <span class="pull-right"
-                                              th:text="${preciosActuales[actividad.id] != null ? preciosActuales[actividad.id] + ' €' : ''}">
+                                              th:if="${preciosActuales[actividad.id] != null}"
+                                              th:text="${preciosActuales[actividad.id] + ' €'}">
                                             Precio
+                                        </span>
+                                        <span class="pull-right text-danger"
+                                              th:if="${preciosActuales[actividad.id] == null}">
+                                            No disponible
                                         </span>
                                     </h3>
 
                                     <div class="d-none d-sm-block d-xl-none">
                                         <h3 th:text="${actividad.nombre}">Nombre Actividad</h3>
                                         <h4 class="text-dark"
-                                            th:text="${preciosActuales[actividad.id] != null ? preciosActuales[actividad.id] + ' €' : 'No disponible'}">
+                                            th:if="${preciosActuales[actividad.id] != null}"
+                                            th:text="${preciosActuales[actividad.id] + ' €'}">
                                             Precio
+                                        </h4>
+                                        <h4 class="text-danger"
+                                            th:if="${preciosActuales[actividad.id] == null}">
+                                            No Disponible
                                         </h4>
                                     </div>
                                     <div class="packages-para">
                                         <p>
                                           <span>
                                               <i class="fa fa-angle-right"
-                                                 th:text="${#temporals.format(actividad.fechaInicio, 'dd-MMMM-yyyy, HH:mm', #locale)}">
-                                              </i>
-                                              -
-                                              <i
-                                                 th:text="${#temporals.format(actividad.fechaFin, 'dd-MMMM-yyyy, HH:mm', #locale)}">
+                                                 th:text="' Inicio: ' + ${#temporals.format(actividad.fechaInicio, 'dd-MMMM-yyyy, HH:mm', #locale)}">
                                               </i>
                                           </span>
                                         </p>
                                         <p>
                                           <span>
-                                            <i class="fa fa-angle-right" th:text="${actividad.tipo.nombre}"></i>
+                                              <i class="fa fa-angle-right"
+                                                 th:text="' Fin: ' + ${#temporals.format(actividad.fechaFin, 'dd-MMMM-yyyy, HH:mm', #locale)}">
+                                              </i>
                                           </span>
                                         </p>
                                         <p>
                                           <span>
-                                            <i class="fa fa-angle-right" th:text="${actividad.localizacion.nombre}"></i>
+                                            <i class="fa fa-angle-right" th:text="' ' + ${actividad.tipo.nombre}"></i>
                                           </span>
                                         </p>
                                         <p>
                                           <span>
-                                            <i class="fa fa-angle-right" th:text="${actividad.descripcion}"></i>
+                                            <i class="fa fa-angle-right" th:text="' ' + ${actividad.localizacion.nombre}"></i>
                                           </span>
                                         </p>
                                     </div>

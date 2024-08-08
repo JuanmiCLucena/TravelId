@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
@@ -75,7 +77,7 @@ public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Int
             }
     }
 
-    public void añadirAsiento(Integer reservaId, Integer idAsiento) {
+    public void addAsiento(Integer reservaId, Integer idAsiento) {
         Optional<Reserva> optionalReserva = repoReserva.findById(reservaId);
         if (optionalReserva.isPresent()) {
             Reserva reserva = optionalReserva.get();
@@ -92,16 +94,16 @@ public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Int
         }
     }
 
-    public void confirmarReserva(Integer reservaId) {
-        Optional<Reserva> optionalReserva = repoReserva.findById(reservaId);
-        if (optionalReserva.isPresent()) {
-            Reserva reserva = optionalReserva.get();
-            reserva.setCancelado(false);
-            repoReserva.save(reserva);
-        } else {
-            throw new RuntimeException("No se encontró la reserva.");
-        }
-    }
+//    public void confirmarReserva(Integer reservaId) {
+//        Optional<Reserva> optionalReserva = repoReserva.findById(reservaId);
+//        if (optionalReserva.isPresent()) {
+//            Reserva reserva = optionalReserva.get();
+//            reserva.setCancelado(false);
+//            repoReserva.save(reserva);
+//        } else {
+//            throw new RuntimeException("No se encontró la reserva.");
+//        }
+//    }
 
     public void cancelarReserva(Integer reservaId) {
         Optional<Reserva> optionalReserva = repoReserva.findById(reservaId);
@@ -120,7 +122,7 @@ public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Int
             MetodoPago metodoPago = optionalMetodoPago.get();
             Pago pago = new Pago();
             pago.setImporte(precioTotal);
-            pago.setFechaPago(LocalDateTime.now());
+            pago.setFechaPago(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
             pago.setMetodoPago(metodoPago);
             pago.setReserva(reserva);
 

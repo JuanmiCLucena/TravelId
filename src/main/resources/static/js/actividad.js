@@ -20,29 +20,30 @@
  * 4. **Evento de entrada del campo de asistentes:**
  *    - Añade un oyente de eventos al campo de número de asistentes (`#asistentes`) para que cada vez que el usuario cambie el valor (evento `input`), se ejecute la función `updatePrecioTotal` y se actualice el precio total.
  */
-    document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
     // Comprobación de errores y apertura de modal
     const errorElement = document.querySelector(".text-danger");
     if (errorElement && errorElement.textContent.trim() !== "") {
-    const modal = new bootstrap.Modal(
-    document.getElementById("modalReserva")
-    );
-    modal.show();
-}
+        const modal = new bootstrap.Modal(
+            document.getElementById("modalReserva")
+        );
+        modal.show();
+    }
 
     // Obtén los elementos del DOM
     const asistentesInput = document.getElementById("asistentes");
     const precioTotalInput = document.getElementById("precioTotal");
-    const precioActividadPorAsistente =
-    parseFloat(precioTotalInput.value) || 0;
+    if(precioTotalInput && asistentesInput) {
+        const precioActividadPorAsistente =
+            parseFloat(precioTotalInput.value) || 0;
 
-    // Función para actualizar el precio total
-    function updatePrecioTotal() {
-    const asistentes = parseInt(asistentesInput.value) || 1;
-    const precioTotal = asistentes * precioActividadPorAsistente;
-    precioTotalInput.value = precioTotal.toFixed(2);
-}
-
+        // Función para actualizar el precio total
+        function updatePrecioTotal() {
+            const asistentes = parseInt(asistentesInput.value) || 1;
+            const precioTotal = asistentes * precioActividadPorAsistente;
+            precioTotalInput.value = precioTotal.toFixed(2);
+        }
+    }
     // Escucha el evento input en el campo de asistentes
     asistentesInput.addEventListener("input", updatePrecioTotal);
 });

@@ -18,7 +18,7 @@ public class ServicioUsuario extends AbstractBusinessServiceSoloEnt<Usuario, Int
 
     public PaginaRespuestaUsuarios<Usuario> buscarEntidadesPaginadas(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Usuario> usuarioPage = getRepo().findAll((Specification<Usuario>) null, pageable);
+        Page<Usuario> usuarioPage = getRepo().findAll(pageable);
 
         PaginaRespuestaUsuarios<Usuario> respuesta = new PaginaRespuestaUsuarios<>();
         respuesta.setContent(usuarioPage.getContent());

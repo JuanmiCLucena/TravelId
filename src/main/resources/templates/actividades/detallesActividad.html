@@ -3,6 +3,8 @@
 <head>
   <title>Detalles Actividad</title>
   <meta charset="utf-8" />
+  <link rel="icon" sizes="16x16 32x32 64x64" href="/images/AAAfavicon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/images/AAAfavicon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="description" content="Travelix Project" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -101,8 +103,16 @@
                           class="button book_button trans_200"
                           data-bs-toggle="modal"
                           data-bs-target="#modalReserva"
+                          th:if="${precioActual != null}"
                   >
                     Reservar
+                  </button>
+                  <button
+                          type="button"
+                          class="btn btn-danger px-5 py-3 rounded-5"
+                          th:if="${precioActual == null}"
+                  >
+                    No Disponible
                   </button>
 
                   <!-- Modal -->
@@ -170,7 +180,7 @@
                               <span th:if="${error}" th:text="${error}" class="text-danger"></span>
                               <span> Plazas Disponibles: <span th:if="${plazasDisponibles}" th:text="${plazasDisponibles}"></span></span>
                             </div>
-                            <div class="form-group mb-3">
+                            <div class="form-group mb-3" th:if="${precioActual != null}">
                               <label for="precioTotal" class="form-label">Precio Total:</label>
                               <div class="input-group">
                                 <span class="input-group-text">€</span>
@@ -181,7 +191,6 @@
                                         id="precioTotal"
                                         class="form-control"
                                         th:value="${precioActual.valor}"
-                                        th:if="${precioActual != null}"
                                 />
                               </div>
                             </div>
@@ -331,7 +340,7 @@
                     <div class="col-lg-2">
                       <div class="room_image">
                         <img
-                                th:src="@{${actividadRecomendado.imagenes.isEmpty()} ? '/images/Hoteles/Nobu_Hotel.jpg' : '/imagenes/' + ${actividadRecomendado.imagenes.stream().findFirst().get().url}}"
+                                th:src="@{'/imagenes/' + ${imagenActividad}}"
                                 alt="https://unsplash.com/@grovemade"
                         />
                       </div>

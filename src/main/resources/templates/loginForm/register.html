@@ -3,6 +3,8 @@
   <head>
     <title>Contact</title>
     <meta charset="utf-8" />
+    <link rel="icon" sizes="16x16 32x32 64x64" href="/images/AAAfavicon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/AAAfavicon.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="description" content="Travelix Project" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -64,19 +66,19 @@
                         </div>
 
                         <div data-mdb-input-init class="form-outline mb-4">
-                          <input type="text" name="username" id="username" th:field="*{username}" class="form-control form-control-lg" />
+                          <input type="text" name="username" id="username" th:field="*{username}" class="form-control form-control-lg" autocomplete="username"/>
                           <label class="form-label" for="username">Nombre Usuario</label>
                           <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger"></span>
                         </div>
 
                         <div data-mdb-input-init class="form-outline mb-4">
-                          <input type="password" name="password" id="password" th:field="*{password}" class="form-control form-control-lg" />
+                          <input type="password" name="password" id="password" th:field="*{password}" class="form-control form-control-lg" autocomplete="new-password"/>
                           <label class="form-label" for="password">Contraseña</label>
                           <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></span>
                         </div>
 
                         <div data-mdb-input-init class="form-outline mb-4">
-                          <input type="password" name="repeatPassword" id="repeatPassword" th:field="*{repeatPassword}" class="form-control form-control-lg" />
+                          <input type="password" name="repeatPassword" id="repeatPassword" th:field="*{repeatPassword}" class="form-control form-control-lg" autocomplete="new-password"/>
                           <label class="form-label" for="repeatPassword">Repetir Contraseña</label>
                           <span th:if="${#fields.hasErrors('repeatPassword')}" th:errors="*{repeatPassword}" class="text-danger"></span>
                         </div>

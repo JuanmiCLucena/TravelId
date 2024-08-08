@@ -253,9 +253,7 @@
                     <div>
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                         Copyright &copy;
-                        <script>
-                            document.write(new Date().getFullYear());
-                        </script>
+                        <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}"></span>
                         Todos los derechos reservados | Esta app ha sido producida
                         <i class="fa fa-heart-o" aria-hidden="true"></i> por
                         <a
