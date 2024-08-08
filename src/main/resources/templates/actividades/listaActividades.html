@@ -129,27 +129,40 @@
                                     <h3 class="d-block d-sm-none d-xl-block">
                                         <span th:text="${actividad.nombre}">Nombre Actividad</span>
                                         <span class="pull-right"
-                                              th:text="${preciosActuales[actividad.id] != null ? preciosActuales[actividad.id] + ' €' : ''}">
+                                              th:if="${preciosActuales[actividad.id] != null}"
+                                              th:text="${preciosActuales[actividad.id] + ' €'}">
                                             Precio
+                                        </span>
+                                        <span class="pull-right text-danger"
+                                              th:if="${preciosActuales[actividad.id] == null}">
+                                            No disponible
                                         </span>
                                     </h3>
 
                                     <div class="d-none d-sm-block d-xl-none">
                                         <h3 th:text="${actividad.nombre}">Nombre Actividad</h3>
                                         <h4 class="text-dark"
-                                            th:text="${preciosActuales[actividad.id] != null ? preciosActuales[actividad.id] + ' €' : 'No disponible'}">
+                                            th:if="${preciosActuales[actividad.id] != null}"
+                                            th:text="${preciosActuales[actividad.id] + ' €'}">
                                             Precio
+                                        </h4>
+                                        <h4 class="text-danger"
+                                            th:if="${preciosActuales[actividad.id] == null}">
+                                            No Disponible
                                         </h4>
                                     </div>
                                     <div class="packages-para">
                                         <p>
                                           <span>
                                               <i class="fa fa-angle-right"
-                                                 th:text="${#temporals.format(actividad.fechaInicio, 'dd-MMMM-yyyy, HH:mm', #locale)}">
+                                                 th:text="'Inicio: ' + ${#temporals.format(actividad.fechaInicio, 'dd-MMMM-yyyy, HH:mm', #locale)}">
                                               </i>
-                                              -
-                                              <i
-                                                 th:text="${#temporals.format(actividad.fechaFin, 'dd-MMMM-yyyy, HH:mm', #locale)}">
+                                          </span>
+                                        </p>
+                                        <p>
+                                          <span>
+                                              <i class="fa fa-angle-right"
+                                                 th:text="'Fin: ' + ${#temporals.format(actividad.fechaFin, 'dd-MMMM-yyyy, HH:mm', #locale)}">
                                               </i>
                                           </span>
                                         </p>
@@ -161,11 +174,6 @@
                                         <p>
                                           <span>
                                             <i class="fa fa-angle-right" th:text="${actividad.localizacion.nombre}"></i>
-                                          </span>
-                                        </p>
-                                        <p>
-                                          <span>
-                                            <i class="fa fa-angle-right" th:text="${actividad.descripcion}"></i>
                                           </span>
                                         </p>
                                     </div>
