@@ -180,7 +180,7 @@
                               <span th:if="${error}" th:text="${error}" class="text-danger"></span>
                               <span> Plazas Disponibles: <span th:if="${plazasDisponibles}" th:text="${plazasDisponibles}"></span></span>
                             </div>
-                            <div class="form-group mb-3">
+                            <div class="form-group mb-3" th:if="${precioActual != null}">
                               <label for="precioTotal" class="form-label">Precio Total:</label>
                               <div class="input-group">
                                 <span class="input-group-text">€</span>
@@ -191,7 +191,6 @@
                                         id="precioTotal"
                                         class="form-control"
                                         th:value="${precioActual.valor}"
-                                        th:if="${precioActual != null}"
                                 />
                               </div>
                             </div>
@@ -341,7 +340,7 @@
                     <div class="col-lg-2">
                       <div class="room_image">
                         <img
-                                th:src="@{${actividadRecomendado.imagenes.isEmpty()} ? '/images/Hoteles/Nobu_Hotel.jpg' : '/imagenes/' + ${actividadRecomendado.imagenes.stream().findFirst().get().url}}"
+                                th:src="@{'/imagenes/' + ${imagenActividad}}"
                                 alt="https://unsplash.com/@grovemade"
                         />
                       </div>
