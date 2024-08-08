@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
@@ -120,7 +122,7 @@ public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Int
             MetodoPago metodoPago = optionalMetodoPago.get();
             Pago pago = new Pago();
             pago.setImporte(precioTotal);
-            pago.setFechaPago(LocalDateTime.now());
+            pago.setFechaPago(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
             pago.setMetodoPago(metodoPago);
             pago.setReserva(reserva);
 

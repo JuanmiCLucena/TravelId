@@ -120,7 +120,9 @@ public class AdminHotelController {
             if (hotelOptional.isPresent()) {
                 Hotel hotelExistente = hotelOptional.get();
                 hotelExistente.setNombre(hotel.getNombre());
+                hotelExistente.setCategoria(hotel.getCategoria());
                 hotelExistente.setDescripcion(hotel.getDescripcion());
+                hotelExistente.setContacto(hotel.getContacto());
                 hotelExistente.setLocalizacion(hotel.getLocalizacion());
 
                 if (imagen != null && !imagen.isEmpty()) {
