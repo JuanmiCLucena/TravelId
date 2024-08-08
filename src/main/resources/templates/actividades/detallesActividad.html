@@ -103,8 +103,16 @@
                           class="button book_button trans_200"
                           data-bs-toggle="modal"
                           data-bs-target="#modalReserva"
+                          th:if="${precioActual != null}"
                   >
                     Reservar
+                  </button>
+                  <button
+                          type="button"
+                          class="btn btn-danger px-5 py-3 rounded-5"
+                          th:if="${precioActual == null}"
+                  >
+                    No Disponible
                   </button>
 
                   <!-- Modal -->
