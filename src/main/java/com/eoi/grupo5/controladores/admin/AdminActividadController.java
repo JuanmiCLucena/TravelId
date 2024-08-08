@@ -110,42 +110,61 @@ public class AdminActividadController {
             BindingResult result,
             Model modelo) {
 
-
+        // Verifica si hay errores en los datos del formulario
         if (result.hasErrors()) {
-            // Agregar las listas necesarias al modelo
+            // Agregar las listas necesarias al modelo para el formulario
             modelo.addAttribute("localizaciones", servicioLocalizacion.buscarEntidades());
             modelo.addAttribute("tipos", servicioTipoActividad.buscarEntidades());
 
-            // Devolver la vista con errores
+            // Devuelve la vista con los errores del formulario
             return "admin/actividades/adminDetallesActividad";
         }
-
 
         try {
             Optional<Actividad> actividadOptional = servicioActividad.encuentraPorId(id);
             if (actividadOptional.isPresent()) {
                 Actividad actividadExistente = actividadOptional.get();
+                // Actualiza los campos de la actividad existente con los nuevos valores
                 actividadExistente.setNombre(actividad.getNombre());
                 actividadExistente.setDescripcion(actividad.getDescripcion());
+                actividadExistente.setFechaInicio(actividad.getFechaInicio());
+                actividadExistente.setFechaFin(actividad.getFechaFin());
+                actividadExistente.setLocalizacion(actividad.getLocalizacion());
+                actividadExistente.setTipo(actividad.getTipo());
+                actividadExistente.setMaximosAsistentes(actividad.getMaximosAsistentes());
+                actividadExistente.setAsistentesConfirmados(actividad.getAsistentesConfirmados());
 
+                // Maneja la imagen si se ha subido una nueva
                 if (imagen != null && !imagen.isEmpty()) {
                     Imagen imagenBD = new Imagen();
                     imagenBD.setActividad(actividadExistente);
-                    imagenBD.setUrl(String.valueOf(actividadExistente.getId()));
-                    servicioImagen.guardar(imagenBD);
-                    String FILE_NAME = "actividad-" + actividadExistente.getId() + "-" + imagenBD.getId() + "." + FilenameUtils.getExtension(imagen.getOriginalFilename());
+                    // Generar un nombre único para la imagen
+                    String FILE_NAME = "actividad-" + actividadExistente.getId() + "-" + System.currentTimeMillis() + "." + FilenameUtils.getExtension(imagen.getOriginalFilename());
                     imagenBD.setUrl(FILE_NAME);
-                    actividadExistente.getImagenes().clear();
+
+                    // Guardar la imagen en el sistema de archivos
                     fileSystemStorageService.store(imagen, FILE_NAME);
+
+                    // Limpiar imágenes existentes y añadir la nueva imagen
+                    actividadExistente.getImagenes().clear();
                     actividadExistente.getImagenes().add(imagenBD);
+
+                    // Guardar la imagen en la base de datos
+                    servicioImagen.guardar(imagenBD);
                 }
+
+                // Guardar la actividad actualizada
                 servicioActividad.guardar(actividadExistente);
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            // Manejo de excepciones
+            throw new RuntimeException("Error al actualizar la actividad", e);
         }
+
+        // Redirige a la lista de actividades después de guardar los cambios
         return "redirect:/admin/actividades";
     }
+
 
     @DeleteMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Integer id) {
