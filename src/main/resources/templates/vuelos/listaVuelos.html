@@ -191,11 +191,14 @@
                         <p>
                           <span>
                             <i class="fa fa-angle-right"
-                               th:text="${#temporals.format(vuelo.fechaSalida, 'dd-MMMM-yyyy, HH:mm', #locale)}">
+                               th:text="' Salida: ' + ${#temporals.format(vuelo.fechaSalida, 'dd-MMMM-yyyy, HH:mm', #locale)}">
                             </i>
-                            -
-                            <i
-                              th:text="${#temporals.format(vuelo.fechaLlegada, 'dd-MMMM-yyyy, HH:mm', #locale)}">
+                          </span>
+                        </p>
+                        <p>
+                          <span>
+                            <i class="fa fa-angle-right"
+                               th:text="' Llegada: ' + ${#temporals.format(vuelo.fechaLlegada, 'dd-MMMM-yyyy, HH:mm', #locale)}">
                             </i>
                           </span>
                         </p>
@@ -211,10 +214,6 @@
                             <span class="d-inline-block" th:text="'Destino:' + ${vuelo.destino.getNombre()}"> Berlín, Alemania</span>
                         </span>
                         </p>
-                        <p th:text="${vuelo.descripcion}"></p>
-                      </div>
-                      <div class="about-btn">
-                        <button class="about-view packages-btn">Reservar</button>
                       </div>
                     </div>
                   </div>
