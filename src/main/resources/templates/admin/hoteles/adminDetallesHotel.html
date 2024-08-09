@@ -62,60 +62,53 @@
 <header th:replace="~{admin/fragments/fragmentos :: adminHeader}"></header>
 
 <div class="container main">
-  <form class="d-flex gap-3 flex-column" th:action="@{'/admin/hoteles/editar/' + ${hotel.id}}" th:method="put"
-        enctype="multipart/form-data" th:object="${hotel}">
-    <input type="hidden" name="id" id="id" th:value="${hotel.id}" th:field="*{id}">
+  <form class="d-flex gap-3 flex-column" th:action="@{'/admin/hoteles/editar/' + ${hotelFormDto.id}}" th:method="put"
+        enctype="multipart/form-data" th:object="${hotelFormDto}">
+
+    <input type="hidden" name="id" id="id" th:value="${hotelFormDto.id}" th:field="*{id}">
 
     <div class="form-group">
       <label for="nombre">Nombre del Hotel</label>
-      <input type="text" class="form-control" id="nombre" name="nombre" th:value="${hotel.nombre}"
+      <input type="text" class="form-control" id="nombre" name="nombre" th:value="${hotelFormDto.nombre}"
              th:field="*{nombre}">
       <div th:if="${#fields.hasErrors('nombre')}" class="text-danger" th:errors="*{nombre}">Nombre error</div>
     </div>
 
     <div class="form-group">
       <label for="categoria">Categoría</label>
-      <input type="number" class="form-control" id="categoria" name="categoria" th:value="${hotel.categoria}"
+      <input type="number" class="form-control" id="categoria" name="categoria" th:value="${hotelFormDto.categoria}"
              th:field="*{categoria}">
-      <div th:if="${#fields.hasErrors('categoria')}" class="text-danger" th:errors="*{categoria}">Categoría error
-
-      </div>
+      <div th:if="${#fields.hasErrors('categoria')}" class="text-danger" th:errors="*{categoria}">Categoría error</div>
     </div>
 
     <div class="form-group">
       <label for="descripcion">Descripción</label>
-      <input type="text" class="form-control" id="descripcion" name="descripcion" th:value="${hotel.descripcion}"
+      <input type="text" class="form-control" id="descripcion" name="descripcion" th:value="${hotelFormDto.descripcion}"
              th:field="*{descripcion}">
-      <div th:if="${#fields.hasErrors('descripcion')}" class="text-danger" th:errors="*{descripcion}">Descripción error
-      </div>
+      <div th:if="${#fields.hasErrors('descripcion')}" class="text-danger" th:errors="*{descripcion}">Descripción error</div>
     </div>
 
     <div class="form-group">
       <label for="contacto">Contacto</label>
-      <input type="text" class="form-control" id="contacto" name="contacto" th:value="${hotel.contacto}"
+      <input type="text" class="form-control" id="contacto" name="contacto" th:value="${hotelFormDto.contacto}"
              th:field="*{contacto}">
-      <div th:if="${#fields.hasErrors('contacto')}" class="text-danger" th:errors="*{contacto}">Contacto error
-      </div>
+      <div th:if="${#fields.hasErrors('contacto')}" class="text-danger" th:errors="*{contacto}">Contacto error</div>
     </div>
 
     <div class="form-group">
-      <label for="localizacion">Localización:</label>
-      <select class="form-control" id="localizacion" name="localizacion.id" th:field="*{localizacion.id}">
+      <label for="localizacionId">Localización:</label>
+      <select class="form-control" id="localizacionId" name="localizacionId" th:field="*{localizacionId}">
         <option th:each="localizacion : ${localizaciones}" th:value="${localizacion.id}"
                 th:text="${localizacion.nombre}"
-                th:selected="${localizacion.id != null and hotel.localizacion.id == localizacion.id}"></option>
+                th:selected="${localizacion.id != null and hotelFormDto.localizacionId == localizacion.id}"></option>
       </select>
-      <div th:if="${#fields.hasErrors('localizacion.id')}" class="text-danger" th:errors="*{localizacion.id}">Localización error
-      </div>
+      <div th:if="${#fields.hasErrors('localizacionId')}" class="text-danger" th:errors="*{localizacionId}">Localización error</div>
     </div>
 
     <div class="form-group">
-      <input type="hidden" name="habitaciones" th:field="*{habitaciones}">
-    </div>
-
-    <div class="form-group">
-      <label for="imagen">Imagen</label>
-      <input type="file" class="form-control-file" id="imagen" name="imagen">
+      <label for="imagenes">Imágenes:</label>
+      <input type="file" class="form-control-file" name="imagenes" id="imagenes" multiple>
+      <!-- Puedes agregar un mensaje de error específico para imágenes si lo necesitas -->
     </div>
 
     <button type="submit" class="btn btn-primary mt-3">Guardar</button>

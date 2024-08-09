@@ -56,5 +56,4 @@ public class ActividadFormDto {
 
     private MultipartFile[] imagenes; // Para manejar múltiples archivos de imagen
 
-    // Getters y setters
 }
