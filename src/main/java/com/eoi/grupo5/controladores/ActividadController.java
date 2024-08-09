@@ -110,6 +110,7 @@ public class ActividadController {
                 modelo.addAttribute("tipoId", criteria.getTipoId());
                 modelo.addAttribute("fechaInicio", criteria.getFechaInicio());
                 modelo.addAttribute("fechaFin", criteria.getFechaFin());
+                modelo.addAttribute("localizacionNombre", criteria.getLocalizacionNombre());
                 PaginaRespuestaActividades<ActividadDto> actividades = servicioFiltroActividades
                         .buscarActividades(actividadesMapper.filtrar(criteria), criteria.getPage(), criteria.getSize());
                 modelo.addAttribute("page",actividades);

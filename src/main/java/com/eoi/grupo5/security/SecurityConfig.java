@@ -60,6 +60,7 @@ public class SecurityConfig {
                         .requestMatchers("/actividades/**").permitAll()
                         .requestMatchers("/actividad/**").permitAll()
                         .requestMatchers("/filtrar-actividades").permitAll()
+                        .requestMatchers("/autocomplete-localizacion/**").permitAll()
                         .requestMatchers("/conocenos/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/login/").permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")

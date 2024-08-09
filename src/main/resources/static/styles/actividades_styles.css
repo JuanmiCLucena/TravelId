@@ -1202,3 +1202,24 @@ h3 span {
   border-radius: .25rem; /* Redondeo de bordes */
   padding: 8px
 }
+
+/* Autocompletado - Destino*/
+
+.suggestions-box {
+  border: 1px solid #ccc;
+  width: 100%;
+  position: absolute;
+  top: 100%;
+  z-index: 1000;
+  background-color: white;
+  max-height: 150px;
+  overflow-y: auto;
+  display: none;
+}
+.suggestion-item {
+  padding: 8px;
+  cursor: pointer;
+}
+.suggestion-item:hover {
+  background-color: #f0f0f0;
+}

@@ -24,6 +24,8 @@ public class ActividadSpec {
      */
     public static final String FECHA_FIN = "fechaFin";
 
+    public static final String LOCALIZACION_NOMBRE = "localizacionNombre";
+
     private ActividadSpec() {
 
     }
@@ -39,7 +41,8 @@ public class ActividadSpec {
                 .where(esTipo(filtroActividades.tipoId()))
                 .and(tieneFechaMayorQueInicio(filtroActividades.fechaInicio()))
                 .and(tieneFechaMenorQueFin(filtroActividades.fechaFin()))
-                .and(tieneMenosAsistentesConfirmadosQueMaximos());
+                .and(tieneMenosAsistentesConfirmadosQueMaximos())
+                .and(tieneLocalizacionNombre(filtroActividades.localizacionNombre()));
     }
 
     /**
@@ -88,6 +91,18 @@ public class ActividadSpec {
      */
     private static Specification<Actividad> tieneMenosAsistentesConfirmadosQueMaximos() {
         return (root, query, cb) -> cb.lessThan(root.get("asistentesConfirmados"), root.get("maximosAsistentes"));
+    }
+
+    /**
+     * Crea una especificación que filtra las actividades por el nombre de la localización.
+     *
+     * @param localizacionNombre El nombre de la localización a filtrar. Si es {@code null} o vacío, no se aplica filtro.
+     * @return Una especificación que filtra las actividades por el nombre de la localización.
+     */
+    private static Specification<Actividad> tieneLocalizacionNombre(String localizacionNombre) {
+        return (root, query, cb) -> localizacionNombre == null || localizacionNombre.isEmpty()
+                ? cb.conjunction()
+                : cb.like(cb.lower(root.get("localizacion").get("nombre")), "%" + localizacionNombre.toLowerCase() + "%");
     }
 
 }

@@ -58,6 +58,13 @@
     <!-- Barra filtro -->
     <form id="filtrarForm" action="/filtrar-actividades" method="get" >
         <div class="filter-bar">
+
+            <div class="filter-group">
+                <label for="localizacionNombre">Destino:</label>
+                <input type="text" name="localizacionNombre" id="localizacionNombre" th:value="${localizacionNombre}" placeholder="Introduce un destino" autocomplete="off"/>
+                <div id="suggestions" class="suggestions-box"></div>
+            </div>
+
             <div class="filter-group">
                 <label for="category">Tipo:</label>
                 <select id="category" name="tipoId">
@@ -244,6 +251,7 @@
 <script th:src="@{/plugins/parallax-js-master/parallax.min.js}"></script>
 <script th:src="@{/js/offers_custom.js}"></script>
 <script th:src="@{/plugins/colorbox/jquery.colorbox-min.js}"></script>
+<script th:src="@{/js/autocompletado_destino.js}"></script>
 
 </body>
 </html>
