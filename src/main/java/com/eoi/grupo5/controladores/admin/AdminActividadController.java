@@ -1,7 +1,10 @@
 package com.eoi.grupo5.controladores.admin;
 
+import com.eoi.grupo5.dtos.ActividadFormDto;
 import com.eoi.grupo5.modelos.Actividad;
 import com.eoi.grupo5.modelos.Imagen;
+import com.eoi.grupo5.modelos.Localizacion;
+import com.eoi.grupo5.modelos.TipoActividad;
 import com.eoi.grupo5.paginacion.PaginaRespuestaActividades;
 import com.eoi.grupo5.servicios.*;
 import com.eoi.grupo5.servicios.archivos.FileSystemStorageService;
@@ -13,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -50,8 +54,8 @@ public class AdminActividadController {
 
     @GetMapping("/crear")
     public String mostrarPaginaCrear(Model modelo) {
-        Actividad actividad = new Actividad();
-        modelo.addAttribute("actividad", actividad);
+        ActividadFormDto actividad = new ActividadFormDto();
+        modelo.addAttribute("actividadFormDto", actividad);
         modelo.addAttribute("localizaciones", servicioLocalizacion.buscarEntidades());
         modelo.addAttribute("tipos", servicioTipoActividad.buscarEntidades());
         return "admin/actividades/adminNuevaActividad";
@@ -59,8 +63,7 @@ public class AdminActividadController {
 
     @PostMapping("/crear")
     public String crear(
-            @RequestParam(name = "imagen") MultipartFile imagen,
-            @Valid @ModelAttribute("actividad") Actividad actividad,
+            @Valid @ModelAttribute("actividadFormDto") ActividadFormDto actividadFormDto,
             BindingResult result,
             Model modelo) {
 
@@ -71,52 +74,96 @@ public class AdminActividadController {
         }
 
         try {
-            servicioActividad.guardar(actividad);
-            Imagen imagenBD = new Imagen();
-            imagenBD.setActividad(actividad);
-            imagenBD.setUrl(String.valueOf(actividad.getId()));
-            servicioImagen.guardar(imagenBD);
-            String FILE_NAME = "actividad-" + actividad.getId() + "-" + imagenBD.getId() + "." + FilenameUtils.getExtension(imagen.getOriginalFilename());
-            imagenBD.setUrl(FILE_NAME);
-            actividad.getImagenes().clear();
-            fileSystemStorageService.store(imagen, FILE_NAME);
-            actividad.getImagenes().add(imagenBD);
-            servicioActividad.guardar(actividad);
+            // Crear la actividad
+            Actividad actividad = new Actividad();
+            actividad.setNombre(actividadFormDto.getNombre());
+            actividad.setDescripcion(actividadFormDto.getDescripcion());
+            actividad.setFechaInicio(actividadFormDto.getFechaInicio());
+            actividad.setFechaFin(actividadFormDto.getFechaFin());
+            actividad.setMaximosAsistentes(actividadFormDto.getMaximosAsistentes());
+            actividad.setAsistentesConfirmados(actividadFormDto.getAsistentesConfirmados());
+
+            Optional<Localizacion> optLocalizacion = servicioLocalizacion.encuentraPorId(actividadFormDto.getLocalizacionId());
+            Optional<TipoActividad> optTipo = servicioTipoActividad.encuentraPorId(actividadFormDto.getTipoId());
+
+            optLocalizacion.ifPresent(actividad::setLocalizacion);
+            optTipo.ifPresent(actividad::setTipo);
+
+            // Guardar la actividad sin imágenes primero
+            Actividad actividadGuardada = servicioActividad.guardar(actividad);
+
+            // Procesar las imágenes
+            if (actividadFormDto.getImagenes() != null) {
+                for (MultipartFile archivo : actividadFormDto.getImagenes()) {
+                    if (!archivo.isEmpty()) {
+                        Imagen imagenBD = new Imagen();
+                        imagenBD.setActividad(actividadGuardada);
+                        String FILE_NAME = "actividad-" + actividadGuardada.getId() + "-" + System.currentTimeMillis() + "." + FilenameUtils.getExtension(archivo.getOriginalFilename());
+                        imagenBD.setUrl(FILE_NAME);
+
+                        // Almacenar la imagen en el sistema de archivos
+                        fileSystemStorageService.store(archivo, FILE_NAME);
+
+                        // Agregar la imagen a la actividad
+                        actividadGuardada.getImagenes().add(imagenBD);
+
+                        // Guardar la imagen en la base de datos
+                        servicioImagen.guardar(imagenBD);
+                    }
+                }
+            }
+
+            // Guardar la actividad con las nuevas imágenes
+            servicioActividad.guardar(actividadGuardada);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
         return "redirect:/admin/actividades";
     }
 
     @GetMapping("/editar/{id}")
     public String mostrarPaginaEditar(@PathVariable Integer id, Model modelo) {
-        Optional<Actividad> actividad = servicioActividad.encuentraPorId(id);
-        if (actividad.isPresent()) {
-            modelo.addAttribute("actividad", actividad.get());
+        Optional<Actividad> actividadOptional = servicioActividad.encuentraPorId(id);
+        if (actividadOptional.isPresent()) {
+            Actividad actividad = actividadOptional.get();
+
+            // Crear el DTO y mapear los valores de la entidad Actividad
+            ActividadFormDto actividadFormDto = new ActividadFormDto();
+            actividadFormDto.setId(actividad.getId());
+            actividadFormDto.setNombre(actividad.getNombre());
+            actividadFormDto.setDescripcion(actividad.getDescripcion());
+            actividadFormDto.setFechaInicio(actividad.getFechaInicio());
+            actividadFormDto.setFechaFin(actividad.getFechaFin());
+            actividadFormDto.setLocalizacionId(actividad.getLocalizacion().getId());
+            actividadFormDto.setTipoId(actividad.getTipo().getId());
+            actividadFormDto.setMaximosAsistentes(actividad.getMaximosAsistentes());
+            actividadFormDto.setAsistentesConfirmados(actividad.getAsistentesConfirmados());
+
+            // Añadir DTO y listas al modelo
+            modelo.addAttribute("actividadFormDto", actividadFormDto);
             modelo.addAttribute("localizaciones", servicioLocalizacion.buscarEntidades());
             modelo.addAttribute("tipos", servicioTipoActividad.buscarEntidades());
+
             return "admin/actividades/adminDetallesActividad";
         } else {
-            // Actividad no encontrado - html
+            // Actividad no encontrada - redirigir o mostrar una página de error
             return "error/paginaError";
         }
     }
 
+
     @PutMapping("/editar/{id}")
     public String editar(
             @PathVariable Integer id,
-            @RequestParam(name = "imagen", required = false) MultipartFile imagen,
-            @Valid @ModelAttribute("actividad") Actividad actividad,
+            @RequestParam(name = "imagenes", required = false) MultipartFile[] imagenes,
+            @Valid @ModelAttribute("actividadFormDto") ActividadFormDto actividadFormDto,
             BindingResult result,
             Model modelo) {
 
-        // Verifica si hay errores en los datos del formulario
         if (result.hasErrors()) {
-            // Agregar las listas necesarias al modelo para el formulario
             modelo.addAttribute("localizaciones", servicioLocalizacion.buscarEntidades());
             modelo.addAttribute("tipos", servicioTipoActividad.buscarEntidades());
-
-            // Devuelve la vista con los errores del formulario
             return "admin/actividades/adminDetallesActividad";
         }
 
@@ -124,44 +171,64 @@ public class AdminActividadController {
             Optional<Actividad> actividadOptional = servicioActividad.encuentraPorId(id);
             if (actividadOptional.isPresent()) {
                 Actividad actividadExistente = actividadOptional.get();
-                // Actualiza los campos de la actividad existente con los nuevos valores
-                actividadExistente.setNombre(actividad.getNombre());
-                actividadExistente.setDescripcion(actividad.getDescripcion());
-                actividadExistente.setFechaInicio(actividad.getFechaInicio());
-                actividadExistente.setFechaFin(actividad.getFechaFin());
-                actividadExistente.setLocalizacion(actividad.getLocalizacion());
-                actividadExistente.setTipo(actividad.getTipo());
-                actividadExistente.setMaximosAsistentes(actividad.getMaximosAsistentes());
-                actividadExistente.setAsistentesConfirmados(actividad.getAsistentesConfirmados());
 
-                // Maneja la imagen si se ha subido una nueva
-                if (imagen != null && !imagen.isEmpty()) {
-                    Imagen imagenBD = new Imagen();
-                    imagenBD.setActividad(actividadExistente);
-                    // Generar un nombre único para la imagen
-                    String FILE_NAME = "actividad-" + actividadExistente.getId() + "-" + System.currentTimeMillis() + "." + FilenameUtils.getExtension(imagen.getOriginalFilename());
-                    imagenBD.setUrl(FILE_NAME);
+                // Actualizar los campos de la actividad existente con los nuevos valores
+                actividadExistente.setNombre(actividadFormDto.getNombre());
+                actividadExistente.setDescripcion(actividadFormDto.getDescripcion());
+                actividadExistente.setFechaInicio(actividadFormDto.getFechaInicio());
+                actividadExistente.setFechaFin(actividadFormDto.getFechaFin());
+                actividadExistente.setLocalizacion(servicioLocalizacion.encuentraPorId(actividadFormDto.getLocalizacionId()).orElse(null));
+                actividadExistente.setTipo(servicioTipoActividad.encuentraPorId(actividadFormDto.getTipoId()).orElse(null));
+                actividadExistente.setMaximosAsistentes(actividadFormDto.getMaximosAsistentes());
+                actividadExistente.setAsistentesConfirmados(actividadFormDto.getAsistentesConfirmados());
 
-                    // Guardar la imagen en el sistema de archivos
-                    fileSystemStorageService.store(imagen, FILE_NAME);
+                // Maneja las imágenes si se han subido nuevas
+                if (imagenes != null && imagenes.length > 0) {
+                    boolean algunaImagenNueva = false;
 
-                    // Limpiar imágenes existentes y añadir la nueva imagen
-                    actividadExistente.getImagenes().clear();
-                    actividadExistente.getImagenes().add(imagenBD);
+                    // Verifica si hay alguna imagen no vacía
+                    for (MultipartFile archivo : imagenes) {
+                        if (!archivo.isEmpty()) {
+                            algunaImagenNueva = true;
+                            break;
+                        }
+                    }
 
-                    // Guardar la imagen en la base de datos
-                    servicioImagen.guardar(imagenBD);
+                    if (algunaImagenNueva) {
+                        // Limpiar imágenes existentes solo si hay nuevas imágenes
+                        actividadExistente.getImagenes().clear();
+
+                        for (MultipartFile archivo : imagenes) {
+                            if (!archivo.isEmpty()) {
+                                Imagen imagenBD = new Imagen();
+                                imagenBD.setActividad(actividadExistente);
+
+                                // Crear un nombre único para la imagen
+                                String FILE_NAME = "actividad-" + actividadExistente.getId() + "-" + System.currentTimeMillis() + "." + FilenameUtils.getExtension(archivo.getOriginalFilename());
+                                imagenBD.setUrl(FILE_NAME);
+
+                                // Almacenar la imagen en el sistema de archivos
+                                fileSystemStorageService.store(archivo, FILE_NAME);
+
+                                // Agregar la imagen a la actividad
+                                actividadExistente.getImagenes().add(imagenBD);
+
+                                // Guardar la imagen en la base de datos
+                                servicioImagen.guardar(imagenBD);
+                            }
+                        }
+                    }
                 }
 
                 // Guardar la actividad actualizada
                 servicioActividad.guardar(actividadExistente);
             }
-        } catch (Exception e) {
-            // Manejo de excepciones
+        } catch (IOException e) {
             throw new RuntimeException("Error al actualizar la actividad", e);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
-        // Redirige a la lista de actividades después de guardar los cambios
         return "redirect:/admin/actividades";
     }
 

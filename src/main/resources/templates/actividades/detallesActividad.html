@@ -32,21 +32,6 @@
   <link
           rel="stylesheet"
           type="text/css"
-          th:href="@{/plugins/OwlCarousel2-2.2.1/owl.carousel.css}"
-  />
-  <link
-          rel="stylesheet"
-          type="text/css"
-          th:href="@{/plugins/OwlCarousel2-2.2.1/owl.theme.default.css}"
-  />
-  <link
-          rel="stylesheet"
-          type="text/css"
-          th:href="@{/plugins/OwlCarousel2-2.2.1/animate.css}"
-  />
-  <link
-          rel="stylesheet"
-          type="text/css"
           th:href="@{/styles/single_listing_styles.css}"
   />
   <link
@@ -223,101 +208,24 @@
               </div>
 
               <!-- Listing Image -->
-              <div class="hotel_image" th:object="${actividad}">
-                <img
-                        th:src="@{'/imagenes/' + ${imagenActividad}}"
-                        alt="Imagen del actividad"
-                />
-              </div>
-
-              <!-- Actividad Gallery -->
-              <div class="hotel_gallery">
-                <div class="hotel_slider_container">
-                  <div class="owl-carousel owl-theme hotel_slider">
-                    <!-- Hotel Gallery Slider Item -->
-                    <div
-                            class="owl-item"
-                            th:each="imagen : ${actividad.imagenes}"
-                    >
-                      <a
-                              class="colorbox cboxElement"
-                              th:href="@{'/imagenes/' + ${imagen.url}}"
-                      >
-                        <img
-                                th:src="'/imagenes/' + ${imagen.url}"
-                                alt="https://unsplash.com/@jbriscoe"
-                        />
-                      </a>
-                    </div>
-                  </div>
-
-                  <!-- Actividad Slider Nav - Prev -->
-                  <div class="hotel_slider_nav hotel_slider_prev">
-                    <svg
-                            version="1.1"
-                            id="Layer_6"
-                            xmlns="http://www.w3.org/2000/svg"
-                            x="0px"
-                            y="0px"
-                            width="28px"
-                            height="33px"
-                            viewBox="0 0 28 33"
-                            enable-background="new 0 0 28 33"
-                            xml:space="preserve"
-                    >
-                          <defs>
-                            <linearGradient id="hotel_grad_prev">
-                              <stop offset="0%" stop-color="#fa9e1b" />
-                              <stop offset="100%" stop-color="#8d4fff" />
-                            </linearGradient>
-                          </defs>
-                      <path
-                              class="nav_path"
-                              fill="#F3F6F9"
-                              d="M19,0H9C4.029,0,0,4.029,0,9v15c0,4.971,4.029,9,9,9h10c4.97,0,9-4.029,9-9V9C28,4.029,23.97,0,19,0z M26,23.091C26,27.459,22.545,31,18.285,31H9.714C5.454,31,2,27.459,2,23.091V9.909C2,5.541,5.454,2,9.714,2h8.571C22.545,2,26,5.541,26,9.909V23.091z"
-                      />
-                      <polygon
-                              class="nav_arrow"
-                              fill="#F3F6F9"
-                              points="15.044,22.222 16.377,20.888 12.374,16.885 16.377,12.882 15.044,11.55 9.708,16.885 11.04,18.219 11.042,18.219 "
-                      />
-                        </svg>
-                  </div>
-
-                  <!-- Actividad Slider Nav - Next -->
-                  <div class="hotel_slider_nav hotel_slider_next">
-                    <svg
-                            version="1.1"
-                            id="Layer_7"
-                            xmlns="http://www.w3.org/2000/svg"
-                            x="0px"
-                            y="0px"
-                            width="28px"
-                            height="33px"
-                            viewBox="0 0 28 33"
-                            enable-background="new 0 0 28 33"
-                            xml:space="preserve"
-                    >
-                          <defs>
-                            <linearGradient id="hotel_grad_next">
-                              <stop offset="0%" stop-color="#fa9e1b" />
-                              <stop offset="100%" stop-color="#8d4fff" />
-                            </linearGradient>
-                          </defs>
-                      <path
-                              class="nav_path"
-                              fill="#F3F6F9"
-                              d="M19,0H9C4.029,0,0,4.029,0,9v15c0,4.971,4.029,9,9,9h10c4.97,0,9-4.029,9-9V9C28,4.029,23.97,0,19,0z M26,23.091C26,27.459,22.545,31,18.285,31H9.714C5.454,31,2,27.459,2,23.091V9.909C2,5.541,5.454,2,9.714,2h8.571C22.545,2,26,5.541,26,9.909V23.091z"
-                      />
-                      <polygon
-                              class="nav_arrow"
-                              fill="#F3F6F9"
-                              points="13.044,11.551 11.71,12.885 15.714,16.888 11.71,20.891 13.044,22.224 18.379,16.888 17.048,15.554 17.046,15.554 "
-                      />
-                        </svg>
+              <div id="carouselExampleControls" class="carousel slide pt-3" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                  <!-- Iterar sobre las imágenes -->
+                  <div class="carousel-item" th:each="imagen, iterStat : ${actividad.imagenes}" th:classappend="${iterStat.first} ? 'active' : ''">
+                    <img class="d-block w-100" th:src="@{'/imagenes/' + ${imagen.url}}" alt="Imagen de la actividad" style="height: 700px; object-fit: cover;">
                   </div>
                 </div>
+                <!-- Controles de navegación -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
               </div>
+
 
               <!-- Actividad Info Text -->
               <div class="hotel_info_text">
@@ -340,7 +248,7 @@
                     <div class="col-lg-2">
                       <div class="room_image">
                         <img
-                                th:src="@{'/imagenes/' + ${imagenActividad}}"
+                                th:src="@{'/imagenes/' + ${actividad.getPrimeraImagenUrl()}}"
                                 alt="https://unsplash.com/@grovemade"
                         />
                       </div>
@@ -381,7 +289,6 @@
 <script th:src="@{/plugins/easing/easing.js}"></script>
 <script th:src="@{/plugins/parallax-js-master/parallax.min.js}"></script>
 <script th:src="@{/plugins/colorbox/jquery.colorbox-min.js}"></script>
-<script th:src="@{/plugins/OwlCarousel2-2.2.1/owl.carousel.js}"></script>
 <script th:src="@{/js/offers_custom.js}"></script>
 <script th:src="@{/js/actividad.js}"></script>
 

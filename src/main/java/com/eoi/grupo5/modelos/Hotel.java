@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -55,9 +56,9 @@ public class Hotel {
 
     public String getPrimeraImagenUrl() {
         return imagenesHotel.stream()
-                .findFirst()                      // Obtener la primera imagen del Set
-                .map(Imagen::getUrl)              // Obtener la URL de la primera imagen
-                .orElse(null);                    // Devolver null si el Set está vacío
+                .min(Comparator.comparing(Imagen::getId))
+                .map(Imagen::getUrl)
+                .orElse(null);
     }
 
 }

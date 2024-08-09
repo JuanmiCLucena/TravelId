@@ -12,6 +12,7 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -78,9 +79,8 @@ public class Actividad {
     private Set<Precio> precio = new HashSet<>();
 
     public String getPrimeraImagenUrl() {
-        return imagenes.stream()
-                .findFirst()                      // Obtener la primera imagen del Set
-                .map(Imagen::getUrl)              // Obtener la URL de la primera imagen
-                .orElse(null);                    // Devolver null si el Set está vacío
+        return imagenes.stream().min(Comparator.comparing(Imagen::getId))
+                .map(Imagen::getUrl)
+                .orElse(null);
     }
 }
