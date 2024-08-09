@@ -101,6 +101,7 @@ public class ActividadController {
                 modelo.addAttribute("lista", actividades.getContent());
                 modelo.addAttribute("fechaInicio", criteria.getFechaInicio());
                 modelo.addAttribute("fechaFin", criteria.getFechaFin());
+                modelo.addAttribute("localizacionNombre", criteria.getLocalizacionNombre());
                 modelo.addAttribute("preciosActuales", servicioActividad
                         .obtenerPreciosActualesActividades(actividades));
                 modelo.addAttribute("tiposActividad", servicioTipoActividad.buscarEntidades());

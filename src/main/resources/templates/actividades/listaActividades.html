@@ -205,7 +205,7 @@
                     <!-- Página anterior -->
                     <li th:if="${page.hasPrevious()}" class="page-item">
                         <a class="page-link"
-                           th:href="@{/filtrar-actividades(page=${page.page - 1}, size=${page.size}, tipoId=${tipoId}, fechaInicio=${fechaInicio}, fechaFin=${fechaFin})}"
+                           th:href="@{/filtrar-actividades(page=${page.page - 1}, size=${page.size}, localizacionNombre=${localizacionNombre}, tipoId=${tipoId}, fechaInicio=${fechaInicio}, fechaFin=${fechaFin})}"
                            aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
@@ -215,7 +215,7 @@
                     <li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
                         th:classappend="${i == page.page} ? 'page-item active' : 'page-item'">
                         <a class="page-link"
-                           th:href="@{/filtrar-actividades(page=${i}, size=${page.size}, localizacionNombre=${localizacionNombre} tipoId=${tipoId}, fechaInicio=${fechaInicio}, fechaFin=${fechaFin})}"
+                           th:href="@{/filtrar-actividades(page=${i}, size=${page.size}, localizacionNombre=${localizacionNombre}, tipoId=${tipoId}, fechaInicio=${fechaInicio}, fechaFin=${fechaFin})}"
                            th:text="${i + 1}"></a>
                     </li>
 
