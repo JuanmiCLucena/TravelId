@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function() {
     input.addEventListener("input", function() {
         const query = input.value;
 
-        if (query.length >= 2) { // Minimo de 2 caracteres antes de buscar
+        if (query.length >= 2) { // Mínimo de 2 caracteres antes de buscar
             fetch(`/autocomplete-localizacion?query=${query}`)
                 .then(response => response.json())
                 .then(data => {
@@ -18,11 +18,20 @@ document.addEventListener("DOMContentLoaded", function() {
                         const suggestionItem = document.createElement("div");
                         suggestionItem.textContent = item;
                         suggestionItem.classList.add("suggestion-item");
+                        suggestionItem.setAttribute("tabindex", "0"); // Hacer el div enfocables
+                        suggestionItem.setAttribute("role", "option"); // Añadir rol para accesibilidad
 
                         // Manejar la selección de sugerencia
                         suggestionItem.addEventListener("click", function() {
                             input.value = item;
                             suggestionsBox.style.display = "none"; // Ocultar sugerencias
+                        });
+
+                        suggestionItem.addEventListener("keydown", function(e) {
+                            if (e.key === "Enter") { // Permitir selección con Enter
+                                input.value = item;
+                                suggestionsBox.style.display = "none"; // Ocultar sugerencias
+                            }
                         });
 
                         suggestionsBox.appendChild(suggestionItem);
