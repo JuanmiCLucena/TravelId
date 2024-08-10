@@ -1772,3 +1772,28 @@ section {
 .footer_nav_item a:hover {
   color: #ffffff;
 }
+
+/* Estilos para los botones de navegación del carrusel */
+.carousel-control-next,
+.carousel-control-prev {
+  opacity: 1;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  background-color: rgba(0,0,0,0.7);
+  border-radius: 50%;
+  background-size: 50%;
+  background-position: center;
+}
+
+.carousel-control-prev-icon:hover,
+.carousel-control-next-icon:hover {
+  background-color: #000;
+}
+
+
+
+

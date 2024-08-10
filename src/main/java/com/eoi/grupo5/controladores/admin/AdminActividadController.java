@@ -128,17 +128,7 @@ public class AdminActividadController {
         if (actividadOptional.isPresent()) {
             Actividad actividad = actividadOptional.get();
 
-            // Crear el DTO y mapear los valores de la entidad Actividad
-            ActividadFormDto actividadFormDto = new ActividadFormDto();
-            actividadFormDto.setId(actividad.getId());
-            actividadFormDto.setNombre(actividad.getNombre());
-            actividadFormDto.setDescripcion(actividad.getDescripcion());
-            actividadFormDto.setFechaInicio(actividad.getFechaInicio());
-            actividadFormDto.setFechaFin(actividad.getFechaFin());
-            actividadFormDto.setLocalizacionId(actividad.getLocalizacion().getId());
-            actividadFormDto.setTipoId(actividad.getTipo().getId());
-            actividadFormDto.setMaximosAsistentes(actividad.getMaximosAsistentes());
-            actividadFormDto.setAsistentesConfirmados(actividad.getAsistentesConfirmados());
+            ActividadFormDto actividadFormDto = ActividadFormDto.from(actividad);
 
             // Añadir DTO y listas al modelo
             modelo.addAttribute("actividadFormDto", actividadFormDto);

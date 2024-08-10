@@ -1,5 +1,6 @@
 package com.eoi.grupo5.dtos;
 
+import com.eoi.grupo5.modelos.Actividad;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -55,5 +56,22 @@ public class ActividadFormDto {
     private Integer asistentesConfirmados;
 
     private MultipartFile[] imagenes; // Para manejar múltiples archivos de imagen
+
+    // Helpers
+    public static ActividadFormDto from(Actividad actividad) {
+        // Crear el DTO y mapear los valores de la entidad Actividad
+        ActividadFormDto actividadFormDto = new ActividadFormDto();
+        actividadFormDto.setId(actividad.getId());
+        actividadFormDto.setNombre(actividad.getNombre());
+        actividadFormDto.setDescripcion(actividad.getDescripcion());
+        actividadFormDto.setFechaInicio(actividad.getFechaInicio());
+        actividadFormDto.setFechaFin(actividad.getFechaFin());
+        actividadFormDto.setLocalizacionId(actividad.getLocalizacion().getId());
+        actividadFormDto.setTipoId(actividad.getTipo().getId());
+        actividadFormDto.setMaximosAsistentes(actividad.getMaximosAsistentes());
+        actividadFormDto.setAsistentesConfirmados(actividad.getAsistentesConfirmados());
+
+        return actividadFormDto;
+    }
 
 }

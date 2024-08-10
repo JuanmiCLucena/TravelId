@@ -98,7 +98,7 @@
                     <div class="carousel-inner">
                       <!-- Iterar sobre las imágenes -->
                       <div class="carousel-item" th:each="imagen, iterStat : ${hotel.imagenesHotel}" th:classappend="${iterStat.first} ? 'active' : ''">
-                        <img class="d-block w-100" th:src="@{'/imagenes/' + ${imagen.url}}" alt="Imagen del Hotel" style="height: 700px; object-fit: cover;">
+                        <img class="d-block w-100" th:src="@{'/imagenes/' + ${imagen.url}}" alt="Imagen del Hotel">
                       </div>
                     </div>
                     <!-- Controles de navegación -->
@@ -131,7 +131,7 @@
                       <div class="col-lg-2">
                         <div class="room_image">
                           <img
-                                  th:src="@{${habitacion.imagenesHabitacion.isEmpty()} ? '/images/Hoteles/Nobu_Hotel.jpg' : '/imagenes/' + ${habitacion.imagenesHabitacion.stream().findFirst().get().url}}"
+                                  th:src="@{'/imagenes/' + ${habitacion.getPrimeraImagenUrl()}}"
                                   alt="https://unsplash.com/@grovemade"
                           />
                         </div>
@@ -171,7 +171,7 @@
                       <div class="col-lg-2">
                         <div class="room_image">
                           <img
-                                  th:src="@{${hotelRecomendado.imagenesHotel.isEmpty()} ? '/images/Hoteles/Nobu_Hotel.jpg' : '/imagenes/' + ${hotelRecomendado.imagenesHotel.stream().findFirst().get().url}}"
+                                  th:src="@{'/imagenes/' + ${hotelRecomendado.getPrimeraImagenUrl()}} "
                             alt="https://unsplash.com/@grovemade"
                           />
                         </div>

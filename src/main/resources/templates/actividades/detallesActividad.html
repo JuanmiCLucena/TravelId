@@ -212,7 +212,7 @@
                 <div class="carousel-inner">
                   <!-- Iterar sobre las imágenes -->
                   <div class="carousel-item" th:each="imagen, iterStat : ${actividad.imagenes}" th:classappend="${iterStat.first} ? 'active' : ''">
-                    <img class="d-block w-100" th:src="@{'/imagenes/' + ${imagen.url}}" alt="Imagen de la actividad" style="height: 700px; object-fit: cover;">
+                    <img class="d-block w-100" th:src="@{'/imagenes/' + ${imagen.url}}" alt="Imagen de la actividad">
                   </div>
                 </div>
                 <!-- Controles de navegación -->
