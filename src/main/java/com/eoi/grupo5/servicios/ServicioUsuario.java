@@ -34,7 +34,7 @@ public class ServicioUsuario extends AbstractBusinessServiceSoloEnt<Usuario, Int
         return respuesta;
     }
 
-    public Optional<Usuario> findByNombreUsuario(String nombreUsuario) {
+    public Optional<Usuario> encuentraPorNombreUsuario(String nombreUsuario) {
         return repoUsuario.findByNombreUsuario(nombreUsuario);
     }
 
