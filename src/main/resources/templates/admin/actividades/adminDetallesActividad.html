@@ -56,14 +56,14 @@
   />
 </head>
 
-
 <body>
 
 <header th:replace="~{admin/fragments/fragmentos :: adminHeader}"></header>
 
 <div class="container main">
-  <form class="d-flex gap-3 flex-column" th:action="@{'/admin/actividades/editar/' + ${actividad.id}}" th:method="put" enctype="multipart/form-data" th:object="${actividad}">
-    <input type="hidden" name="id" id="id" th:value="${actividad.id}" th:field="*{id}">
+  <form class="d-flex gap-3 flex-column" th:action="@{'/admin/actividades/editar/' + ${actividadFormDto.id}}" th:method="put" enctype="multipart/form-data" th:object="${actividadFormDto}">
+
+    <input type="hidden" name="id" id="id" th:value="${actividadFormDto.id}">
 
     <div class="form-group">
       <label for="nombre">Nombre de la Actividad</label>
@@ -91,18 +91,18 @@
 
     <div class="form-group">
       <label for="localizacion">Localización:</label>
-      <select class="form-control" id="localizacion" name="localizacion.id" th:field="*{localizacion.id}">
-        <option th:each="localizacion : ${localizaciones}" th:value="${localizacion.id}" th:text="${localizacion.nombre}" th:selected="${localizacion.id != null and actividad.localizacion.id == localizacion.id}"></option>
+      <select class="form-control" name="localizacionId" id="localizacion" th:field="*{localizacionId}">
+        <option th:each="localizacion : ${localizaciones}" th:value="${localizacion.id}" th:text="${localizacion.nombre}" th:selected="${actividadFormDto.localizacionId != null and actividadFormDto.localizacionId == localizacion.id}"></option>
       </select>
-      <div class="text-danger" th:if="${#fields.hasErrors('localizacion')}" th:errors="*{localizacion}">Localización error message</div>
+      <div class="text-danger" th:if="${#fields.hasErrors('localizacionId')}" th:errors="*{localizacionId}"></div>
     </div>
 
     <div class="form-group">
       <label for="tipoActividad">Tipo:</label>
-      <select class="form-control" id="tipoActividad" name="tipo.id" th:field="*{tipo.id}">
-        <option th:each="tipo : ${tipos}" th:value="${tipo.id}" th:text="${tipo.nombre}" th:selected="${tipo.id != null and actividad.tipo.id == tipo.id}"></option>
+      <select class="form-control" id="tipoActividad" name="tipoId" th:field="*{tipoId}">
+        <option th:each="tipo : ${tipos}" th:value="${tipo.id}" th:text="${tipo.nombre}" th:selected="${actividadFormDto.tipoId != null and actividadFormDto.tipoId == tipo.id}"></option>
       </select>
-      <div class="text-danger" th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}">Tipo error message</div>
+      <div class="text-danger" th:if="${#fields.hasErrors('tipoId')}" th:errors="*{tipoId}"></div>
     </div>
 
     <div class="form-group">
@@ -118,8 +118,8 @@
     </div>
 
     <div class="form-group">
-      <label for="imagen">Imagen</label>
-      <input type="file" class="form-control-file" id="imagen" name="imagen">
+      <label for="imagenes">Imágenes:</label>
+      <input type="file" class="form-control-file" id="imagenes" name="imagenes" multiple>
     </div>
 
     <button type="submit" class="btn btn-primary mt-3">Guardar</button>

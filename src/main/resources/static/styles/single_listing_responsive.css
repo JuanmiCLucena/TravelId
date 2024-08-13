@@ -183,6 +183,9 @@
 ************/
 
 @media only screen and (max-width: 1100px) {
+  .home_title {
+    font-size: 62px;
+  }
 }
 
 /************
@@ -197,6 +200,11 @@
 ************/
 
 @media only screen and (max-width: 991px) {
+
+  .home_title {
+    font-size: 52px;
+  }
+
   .main_nav_container {
     display: none;
   }
@@ -300,6 +308,9 @@
 ************/
 
 @media only screen and (max-width: 880px) {
+  .home_title {
+    font-size: 48px;
+  }
 }
 
 /************
@@ -307,19 +318,23 @@
 ************/
 
 @media only screen and (max-width: 768px) {
-}
-
-/************
-10. 767px
-************/
-
-@media only screen and (max-width: 767px) {
   .search_extras_item {
     width: 50%;
   }
   .home_title {
-    font-size: 48px;
+    font-size: 40px;
   }
+}
+
+/************
+10. 667px
+************/
+
+@media only screen and (max-width: 667px) {
+  .home_title {
+    font-size: 35px;
+  }
+
 }
 
 /************
@@ -419,7 +434,7 @@
     background: transparent;
   }
   .home_title {
-    font-size: 24px;
+    font-size: 30px;
   }
   .hotel_slider_nav {
     display: none !important;
@@ -459,13 +474,9 @@
 ************/
 
 @media only screen and (max-width: 539px) {
-}
-
-/************
-12. 480px
-************/
-
-@media only screen and (max-width: 480px) {
+  .home_title {
+    font-size: 27px;
+  }
 }
 
 /************
@@ -473,6 +484,11 @@
 ************/
 
 @media only screen and (max-width: 479px) {
+
+  .home_title {
+    font-size: 24px;
+  }
+
   h2 {
     font-size: 24px;
   }
@@ -486,4 +502,7 @@
 ************/
 
 @media only screen and (max-width: 400px) {
+  .home_title {
+    font-size: 22px;
+  }
 }

@@ -1,5 +1,6 @@
 package com.eoi.grupo5.controladores.admin;
 
+import com.eoi.grupo5.dtos.HabitacionFormDto;
 import com.eoi.grupo5.modelos.*;
 import com.eoi.grupo5.paginacion.PaginaRespuestaHabitaciones;
 import com.eoi.grupo5.servicios.*;
@@ -12,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,11 +47,11 @@ public class AdminHabitacionController {
         modelo.addAttribute("page", habitacionesPage);
         return "admin/habitaciones/adminHabitaciones";
     }
-    
+
     @GetMapping("/crear")
     public String mostrarPaginaCrear(Model modelo) {
-        Habitacion habitacion = new Habitacion();
-        modelo.addAttribute("habitacion", habitacion);
+        HabitacionFormDto habitacionFormDto = new HabitacionFormDto();
+        modelo.addAttribute("habitacionFormDto", habitacionFormDto);
         modelo.addAttribute("hoteles", servicioHotel.buscarEntidades());
         modelo.addAttribute("tiposHabitacion", servicioTipoHabitacion.buscarEntidades());
         return "admin/habitaciones/adminNuevaHabitacion";
@@ -57,53 +59,57 @@ public class AdminHabitacionController {
 
     @PostMapping("/crear")
     public String crear(
-            @RequestParam(name = "imagen") MultipartFile imagen,
-            @Valid @ModelAttribute("habitacion") Habitacion habitacion,
-            BindingResult bindingResult,
-            Model modelo,
-            @RequestParam("tipo.id") Integer tipoId,
-            @RequestParam("hotel.id") Integer hotelId
-    ) {
-        if (bindingResult.hasErrors()) {
+            @Valid @ModelAttribute("habitacionFormDto") HabitacionFormDto habitacionFormDto,
+            BindingResult result,
+            Model modelo) {
+
+        if (result.hasErrors()) {
             modelo.addAttribute("hoteles", servicioHotel.buscarEntidades());
             modelo.addAttribute("tiposHabitacion", servicioTipoHabitacion.buscarEntidades());
             return "admin/habitaciones/adminNuevaHabitacion";
         }
 
         try {
-            Optional<Hotel> hotelOpt = servicioHotel.encuentraPorId(hotelId);
-            if (hotelOpt.isPresent()) {
-                habitacion.setHotel(hotelOpt.get());
-            } else {
-                modelo.addAttribute("error", "Hotel no encontrado");
-                return "admin/habitaciones/adminNuevaHabitacion";
+            // Crear la habitación
+            Habitacion habitacion = new Habitacion();
+            habitacion.setNumero(habitacionFormDto.getNumero());
+            habitacion.setCapacidad(habitacionFormDto.getCapacidad());
+            habitacion.setNumeroCamas(habitacionFormDto.getNumeroCamas());
+
+            Optional<Hotel> optHotel = servicioHotel.encuentraPorId(habitacionFormDto.getHotelId());
+            Optional<TipoHabitacion> optTipo = servicioTipoHabitacion.encuentraPorId(habitacionFormDto.getTipoId());
+
+            optHotel.ifPresent(habitacion::setHotel);
+            optTipo.ifPresent(habitacion::setTipo);
+
+            // Guardar la habitación sin imágenes primero
+            Habitacion habitacionGuardada = servicioHabitacion.guardar(habitacion);
+
+            // Procesar las imágenes
+            if (habitacionFormDto.getImagenes() != null) {
+                for (MultipartFile archivo : habitacionFormDto.getImagenes()) {
+                    if (!archivo.isEmpty()) {
+                        Imagen imagenBD = new Imagen();
+                        imagenBD.setHabitacionImagen(habitacionGuardada);
+                        String FILE_NAME = "habitacion-" + habitacionGuardada.getId() + "-" + System.currentTimeMillis() + "." + FilenameUtils.getExtension(archivo.getOriginalFilename());
+                        imagenBD.setUrl(FILE_NAME);
+
+                        // Almacenar la imagen en el sistema de archivos
+                        fileSystemStorageService.store(archivo, FILE_NAME);
+
+                        // Agregar la imagen a la habitación
+                        habitacionGuardada.getImagenesHabitacion().add(imagenBD);
+
+                        // Guardar la imagen en la base de datos
+                        servicioImagen.guardar(imagenBD);
+                    }
+                }
             }
 
-            Optional<TipoHabitacion> tipoOpt = servicioTipoHabitacion.encuentraPorId(tipoId);
-            if (tipoOpt.isPresent()) {
-                habitacion.setTipo(tipoOpt.get());
-            } else {
-                modelo.addAttribute("error", "Tipo de habitación no encontrado");
-                return "admin/habitaciones/adminNuevaHabitacion";
-            }
-
-            servicioHabitacion.guardar(habitacion);
-
-            Imagen imagenBD = new Imagen();
-            imagenBD.setHabitacionImagen(habitacion);
-            imagenBD.setUrl(String.valueOf(habitacion.getId()));
-            servicioImagen.guardar(imagenBD);
-
-            String FILE_NAME = "habitacion-" + habitacion.getId() + "-" + imagenBD.getId() + "." + FilenameUtils.getExtension(imagen.getOriginalFilename());
-            imagenBD.setUrl(FILE_NAME);
-            fileSystemStorageService.store(imagen, FILE_NAME);
-
-            habitacion.getImagenesHabitacion().clear();
-            habitacion.getImagenesHabitacion().add(imagenBD);
-            servicioHabitacion.guardar(habitacion);
+            // Guardar la habitación con las nuevas imágenes
+            servicioHabitacion.guardar(habitacionGuardada);
         } catch (Exception e) {
-            modelo.addAttribute("error", "Error al guardar la habitación");
-            return "admin/habitaciones/adminNuevaHabitacion";
+            throw new RuntimeException(e);
         }
 
         return "redirect:/admin/habitaciones";
@@ -111,94 +117,93 @@ public class AdminHabitacionController {
 
     @GetMapping("/editar/{id}")
     public String mostrarPaginaEditar(@PathVariable Integer id, Model modelo) {
-        Optional<Habitacion> habitacion = servicioHabitacion.encuentraPorId(id);
-        if (habitacion.isPresent()) {
-            modelo.addAttribute("habitacion", habitacion.get());
+        Optional<Habitacion> habitacionOptional = servicioHabitacion.encuentraPorId(id);
+        if (habitacionOptional.isPresent()) {
+            Habitacion habitacion = habitacionOptional.get();
+
+            HabitacionFormDto habitacionFormDto = HabitacionFormDto.from(habitacion);
+
+            modelo.addAttribute("habitacionFormDto", habitacionFormDto);
             modelo.addAttribute("hoteles", servicioHotel.buscarEntidades());
             modelo.addAttribute("tiposHabitacion", servicioTipoHabitacion.buscarEntidades());
+            modelo.addAttribute("imagenesHabitacion", habitacion.getImagenesHabitacion());
+
             return "admin/habitaciones/adminDetallesHabitacion";
         } else {
-            return "admin/habitaciones/habitacionNoEncontrado";
+            return "error/paginaError";
         }
     }
 
     @PutMapping("/editar/{id}")
     public String editar(
             @PathVariable Integer id,
-            @RequestParam(name = "imagen", required = false) MultipartFile imagen,
-            @Valid @ModelAttribute("habitacion") Habitacion habitacion,
-            BindingResult bindingResult,
-            Model modelo,
-            @RequestParam("tipo.id") Integer tipoId,
-            @RequestParam("hotel.id") Integer hotelId
-    ) {
-        if (bindingResult.hasErrors()) {
+            @RequestParam(name = "imagenes", required = false) MultipartFile[] imagenes,
+            @Valid @ModelAttribute("habitacionFormDto") HabitacionFormDto habitacionFormDto,
+            BindingResult result,
+            Model modelo) {
+
+        if (result.hasErrors()) {
             modelo.addAttribute("hoteles", servicioHotel.buscarEntidades());
             modelo.addAttribute("tiposHabitacion", servicioTipoHabitacion.buscarEntidades());
             return "admin/habitaciones/adminDetallesHabitacion";
         }
 
         try {
-            Optional<Habitacion> habitacionOpt = servicioHabitacion.encuentraPorId(id);
-            if (habitacionOpt.isPresent()) {
-                Habitacion habitacionExistente = habitacionOpt.get();
+            Optional<Habitacion> habitacionOptional = servicioHabitacion.encuentraPorId(id);
+            if (habitacionOptional.isPresent()) {
+                Habitacion habitacionExistente = habitacionOptional.get();
 
-                // Actualizar los campos básicos de la habitación
-                habitacionExistente.setNumero(habitacion.getNumero());
-                habitacionExistente.setCapacidad(habitacion.getCapacidad());
-                habitacionExistente.setNumeroCamas(habitacion.getNumeroCamas());
+                habitacionExistente.setNumero(habitacionFormDto.getNumero());
+                habitacionExistente.setCapacidad(habitacionFormDto.getCapacidad());
+                habitacionExistente.setNumeroCamas(habitacionFormDto.getNumeroCamas());
+                habitacionExistente.getTipo().setDescripcion(habitacionFormDto.getDescripcion());
 
-                // Actualizar el hotel
-                Optional<Hotel> hotelOpt = servicioHotel.encuentraPorId(hotelId);
-                if (hotelOpt.isPresent()) {
-                    habitacionExistente.setHotel(hotelOpt.get());
-                } else {
-                    modelo.addAttribute("error", "Hotel no encontrado");
-                    return "admin/habitaciones/adminDetallesHabitacion";
+                habitacionExistente.setHotel(servicioHotel.encuentraPorId(habitacionFormDto.getHotelId()).orElse(null));
+                habitacionExistente.setTipo(servicioTipoHabitacion.encuentraPorId(habitacionFormDto.getTipoId()).orElse(null));
+
+                if (imagenes != null && imagenes.length > 0) {
+                    boolean algunaImagenNueva = false;
+
+                    for (MultipartFile archivo : imagenes) {
+                        if (!archivo.isEmpty()) {
+                            algunaImagenNueva = true;
+                            break;
+                        }
+                    }
+
+                    if (algunaImagenNueva) {
+                        habitacionExistente.getImagenesHabitacion().clear();
+
+                        for (MultipartFile archivo : imagenes) {
+                            if (!archivo.isEmpty()) {
+                                Imagen imagenBD = new Imagen();
+                                imagenBD.setHabitacionImagen(habitacionExistente);
+
+                                String FILE_NAME = "habitacion-" + habitacionExistente.getId() + "-" + System.currentTimeMillis() + "." + FilenameUtils.getExtension(archivo.getOriginalFilename());
+                                imagenBD.setUrl(FILE_NAME);
+
+                                fileSystemStorageService.store(archivo, FILE_NAME);
+
+                                habitacionExistente.getImagenesHabitacion().add(imagenBD);
+                                servicioImagen.guardar(imagenBD);
+                            }
+                        }
+                    }
                 }
 
-                // Actualizar el tipo de habitación
-                Optional<TipoHabitacion> tipoOpt = servicioTipoHabitacion.encuentraPorId(tipoId);
-                if (tipoOpt.isPresent()) {
-                    habitacionExistente.setTipo(tipoOpt.get());
-                } else {
-                    modelo.addAttribute("error", "Tipo de habitación no encontrado");
-                    return "admin/habitaciones/adminDetallesHabitacion";
-                }
-
-                // Si se proporciona una nueva imagen, actualízala
-                if (imagen != null && !imagen.isEmpty()) {
-                    Imagen imagenBD = new Imagen();
-                    imagenBD.setHabitacionImagen(habitacionExistente);
-                    imagenBD.setUrl(String.valueOf(habitacionExistente.getId()));
-                    servicioImagen.guardar(imagenBD);
-
-                    String FILE_NAME = "habitacion-" + habitacionExistente.getId() + "-" + imagenBD.getId() + "." + FilenameUtils.getExtension(imagen.getOriginalFilename());
-                    imagenBD.setUrl(FILE_NAME);
-                    fileSystemStorageService.store(imagen, FILE_NAME);
-
-                    // Actualizar la lista de imágenes
-                    habitacionExistente.getImagenesHabitacion().clear();
-                    habitacionExistente.getImagenesHabitacion().add(imagenBD);
-                }
-
-                // Guardar la habitación actualizada en la base de datos
                 servicioHabitacion.guardar(habitacionExistente);
-
             } else {
                 modelo.addAttribute("error", "Habitación no encontrada");
-                return "admin/habitaciones/adminDetallesHabitacion";
+                return "error/paginaError";
             }
-
+        } catch (IOException e) {
+            throw new RuntimeException("Error al actualizar la habitación", e);
         } catch (Exception e) {
-            modelo.addAttribute("error", "Error al editar la habitación");
-            return "admin/habitaciones/adminDetallesHabitacion";
+            throw new RuntimeException(e);
         }
 
         return "redirect:/admin/habitaciones";
     }
-
-
 
     @DeleteMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Integer id, Model modelo) {

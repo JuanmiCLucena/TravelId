@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -25,8 +26,7 @@ public class ActividadDto {
     private Set<Imagen> imagenes;
 
     public String getPrimeraImagenUrl() {
-        return imagenes.stream()
-                .findFirst()
+        return imagenes.stream().min(Comparator.comparing(Imagen::getId))
                 .map(Imagen::getUrl)
                 .orElse(null);
     }

@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <title>Nueva Habitación</title>
+  <title>Editar Habitación</title>
   <meta charset="utf-8" />
   <link rel="icon" sizes="16x16 32x32 64x64" href="/images/AAAfavicon.png">
   <link rel="icon" type="image/png" sizes="192x192" href="/images/AAAfavicon.png">
@@ -19,23 +19,24 @@
   <link rel="stylesheet" type="text/css" th:href="@{/styles/admin_styles.css}" />
   <link rel="stylesheet" type="text/css" th:href="@{/styles/admin_responsive.css}" />
 </head>
-  
+
 <body>
 
 <header th:replace="~{admin/fragments/fragmentos :: adminHeader}"></header>
 
 <div class="container w-50 d-flex justify-content-center main">
-  <form class="d-flex gap-3 flex-column" action="/admin/habitaciones/crear" method="post" enctype="multipart/form-data" th:object="${habitacion}">
+  <form class="d-flex gap-3 flex-column" action="#" method="post" enctype="multipart/form-data" th:action="@{/admin/habitaciones/crear}" th:object="${habitacionFormDto}">
+
     <div class="form-group">
       <label for="tipoNombre">Tipo de Habitación</label>
-      <select class="form-control" id="tipoNombre" name="tipo.id" th:field="*{tipo.id}">
+      <select class="form-control" id="tipoNombre" name="tipo.id" th:field="*{tipoId}">
         <option th:each="tipo : ${tiposHabitacion}" th:value="${tipo.id}" th:text="${tipo.nombre}"></option>
       </select>
-      <div class="text-danger" th:if="${#fields.hasErrors('tipo.id')}" th:errors="*{tipo.id}"></div>
+      <div class="text-danger" th:if="${#fields.hasErrors('tipoId')}" th:errors="*{tipoId}"></div>
     </div>
 
     <div class="form-group">
-      <label for="numero">Numero de Habitación:</label>
+      <label for="numero">Número de Habitación:</label>
       <input type="number" class="form-control" name="numero" id="numero" th:field="*{numero}">
       <div class="text-danger" th:if="${#fields.hasErrors('numero')}" th:errors="*{numero}"></div>
     </div>
@@ -47,22 +48,22 @@
     </div>
 
     <div class="form-group">
-      <label for="numeroCamas">Numero de Camas:</label>
+      <label for="numeroCamas">Número de Camas:</label>
       <input type="text" class="form-control" name="numeroCamas" id="numeroCamas" th:field="*{numeroCamas}">
       <div class="text-danger" th:if="${#fields.hasErrors('numeroCamas')}" th:errors="*{numeroCamas}"></div>
     </div>
 
     <div class="form-group">
       <label for="hotelNombre">Hotel:</label>
-      <select class="form-control" id="hotelNombre" name="hotel.id" th:field="*{hotel.id}">
+      <select class="form-control" id="hotelNombre" name="hotel.id" th:field="*{hotelId}">
         <option th:each="hotel : ${hoteles}" th:value="${hotel.id}" th:text="${hotel.nombre}"></option>
       </select>
-      <div class="text-danger" th:if="${#fields.hasErrors('hotel.id')}" th:errors="*{hotel.id}"></div>
+      <div class="text-danger" th:if="${#fields.hasErrors('hotelId')}" th:errors="*{hotelId}"></div>
     </div>
 
     <div class="form-group">
-      <label for="imagen">Imagen:</label>
-      <input type="file" class="form-control-file" name="imagen" id="imagen">
+      <label for="imagenes">Imágenes:</label>
+      <input type="file" class="form-control-file" name="imagenes" id="imagenes" multiple>
     </div>
 
     <button type="submit" class="btn btn-primary mt-3">Guardar</button>

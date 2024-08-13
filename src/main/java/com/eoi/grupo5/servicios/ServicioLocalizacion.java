@@ -10,6 +10,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ServicioLocalizacion  extends AbstractBusinessServiceSoloEnt <Localizacion,Integer, RepoLocalizacion>{
     /**
@@ -33,6 +35,21 @@ public class ServicioLocalizacion  extends AbstractBusinessServiceSoloEnt <Local
         respuesta.setTotalPages(localizacionPage.getTotalPages());
 
         return respuesta;
+    }
+
+    /**
+     * Buscar localizaciones por nombre conteniendo el término de búsqueda.
+     *
+     * @param query El término de búsqueda.
+     * @return Una lista de nombres de localizaciones que coinciden con el término.
+     */
+    public List<String> findByNombreContaining(String query) {
+        List<Localizacion> localizaciones = getRepo().findByNombreContainingIgnoreCase(query);
+
+        // Devuelve solo los nombres de las localizaciones
+        return localizaciones.stream()
+                .map(Localizacion::getNombre)
+                .toList();
     }
 
 }

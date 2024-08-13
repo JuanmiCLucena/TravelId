@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -57,5 +58,12 @@ public class Habitacion {
 
     @OneToMany(mappedBy = "habitacion", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Precio> precio = new HashSet<>();
+
+    public String getPrimeraImagenUrl() {
+        return imagenesHabitacion.stream()
+                .min(Comparator.comparing(Imagen::getId))
+                .map(Imagen::getUrl)
+                .orElse(null);
+    }
 
 }

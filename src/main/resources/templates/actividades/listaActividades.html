@@ -58,6 +58,13 @@
     <!-- Barra filtro -->
     <form id="filtrarForm" action="/filtrar-actividades" method="get" >
         <div class="filter-bar">
+
+            <div class="filter-group">
+                <label for="localizacionNombre">Destino:</label>
+                <input type="text" name="localizacionNombre" id="localizacionNombre" th:value="${localizacionNombre}" placeholder="Introduce un destino" autocomplete="off"/>
+                <div id="suggestions" class="suggestions-box"></div>
+            </div>
+
             <div class="filter-group">
                 <label for="category">Tipo:</label>
                 <select id="category" name="tipoId">
@@ -123,7 +130,7 @@
                             <div class="single-package-item">
                                 <img
                                         th:src="'/imagenes/' + ${actividad.primeraImagenUrl}"
-                                        alt="Radisson Blu Hotel"
+                                        alt="Descripción de la actividad"
                                 />
                                 <div class="single-package-item-txt">
                                     <h3 class="d-block d-sm-none d-xl-block">
@@ -198,7 +205,7 @@
                     <!-- Página anterior -->
                     <li th:if="${page.hasPrevious()}" class="page-item">
                         <a class="page-link"
-                           th:href="@{/filtrar-actividades(page=${page.page - 1}, size=${page.size}, tipoId=${tipoId}, fechaInicio=${fechaInicio}, fechaFin=${fechaFin})}"
+                           th:href="@{/filtrar-actividades(page=${page.page - 1}, size=${page.size}, localizacionNombre=${localizacionNombre}, tipoId=${tipoId}, fechaInicio=${fechaInicio}, fechaFin=${fechaFin})}"
                            aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
@@ -208,14 +215,14 @@
                     <li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
                         th:classappend="${i == page.page} ? 'page-item active' : 'page-item'">
                         <a class="page-link"
-                           th:href="@{/filtrar-actividades(page=${i}, size=${page.size}, tipoId=${tipoId}, fechaInicio=${fechaInicio}, fechaFin=${fechaFin})}"
+                           th:href="@{/filtrar-actividades(page=${i}, size=${page.size}, localizacionNombre=${localizacionNombre}, tipoId=${tipoId}, fechaInicio=${fechaInicio}, fechaFin=${fechaFin})}"
                            th:text="${i + 1}"></a>
                     </li>
 
                     <!-- Página siguiente -->
                     <li th:if="${page.hasNext()}" class="page-item">
                         <a class="page-link"
-                           th:href="@{/filtrar-actividades(page=${page.page + 1}, size=${page.size}, tipoId=${tipoId}, fechaInicio=${fechaInicio}, fechaFin=${fechaFin})}"
+                           th:href="@{/filtrar-actividades(page=${page.page + 1}, size=${page.size}, localizacionNombre=${localizacionNombre}, tipoId=${tipoId}, fechaInicio=${fechaInicio}, fechaFin=${fechaFin})}"
                            aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
@@ -244,6 +251,7 @@
 <script th:src="@{/plugins/parallax-js-master/parallax.min.js}"></script>
 <script th:src="@{/js/offers_custom.js}"></script>
 <script th:src="@{/plugins/colorbox/jquery.colorbox-min.js}"></script>
+<script th:src="@{/js/autocompletado_destino.js}"></script>
 
 </body>
 </html>

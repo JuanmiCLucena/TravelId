@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class BusquedaCriteriaActividades {
 
+    private String localizacionNombre;
     private Integer tipoId;
     private LocalDateTime fechaInicio;
     private LocalDateTime fechaFin;
