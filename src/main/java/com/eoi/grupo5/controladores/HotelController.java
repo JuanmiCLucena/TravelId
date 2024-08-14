@@ -1,11 +1,18 @@
 package com.eoi.grupo5.controladores;
 
+import com.eoi.grupo5.dtos.HotelDto;
+import com.eoi.grupo5.filtros.criteria.BusquedaCriteriaHoteles;
+import com.eoi.grupo5.mapper.ActividadesMapper;
+import com.eoi.grupo5.mapper.HotelesMapper;
 import com.eoi.grupo5.modelos.Hotel;
 
 import com.eoi.grupo5.modelos.Imagen;
 import com.eoi.grupo5.paginacion.PaginaRespuestaHoteles;
 import com.eoi.grupo5.servicios.ServicioHabitacion;
 import com.eoi.grupo5.servicios.ServicioHotel;
+import com.eoi.grupo5.servicios.ServicioTipoHabitacion;
+import com.eoi.grupo5.servicios.filtros.ServicioFiltroActividades;
+import com.eoi.grupo5.servicios.filtros.ServicioFiltroHoteles;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,13 +26,20 @@ import java.util.Optional;
 public class HotelController {
 
     private final ServicioHotel servicioHotel;
-
     private final ServicioHabitacion servicioHabitacion;
+    private final ServicioTipoHabitacion servicioTipoHabitacion;
+
+    // Filtro
+    private final ServicioFiltroHoteles servicioFiltroHoteles;
+    private final HotelesMapper hotelesMapper;
 
 
-    public HotelController(ServicioHotel servicioHotel, ServicioHabitacion servicioHabitacion) {
+    public HotelController(ServicioHotel servicioHotel, ServicioHabitacion servicioHabitacion, ServicioTipoHabitacion servicioTipoHabitacion, ServicioFiltroHoteles servicioFiltroHoteles, HotelesMapper hotelesMapper) {
         this.servicioHotel = servicioHotel;
         this.servicioHabitacion = servicioHabitacion;
+        this.servicioTipoHabitacion = servicioTipoHabitacion;
+        this.servicioFiltroHoteles = servicioFiltroHoteles;
+        this.hotelesMapper = hotelesMapper;
     }
 
     @GetMapping("/hoteles/lista")
@@ -35,6 +49,7 @@ public class HotelController {
             @RequestParam(defaultValue = "6") int size
     ) {
 
+        modelo.addAttribute("tiposHabitacion", servicioTipoHabitacion.buscarEntidades());
         PaginaRespuestaHoteles<Hotel> hotelesPage = servicioHotel.buscarEntidadesPaginadas(page, size);
         List<Hotel> hoteles = hotelesPage.getContent();
         modelo.addAttribute("lista", hoteles);
@@ -65,9 +80,34 @@ public class HotelController {
 
     }
 
-//    @PostMapping("/hotel/crear")
-//    public String crearHotel(Model modelo) {
-//        return "hoteles";
-//    }
+    @GetMapping("/filtrar-hoteles")
+    public String filtrarHoteles(Model modelo, BusquedaCriteriaHoteles criteria) {
+
+        // Establecer tamaño de página predeterminado si no está definido o es inválido
+        if (criteria.getSize() == null || criteria.getSize() <= 0) {
+            criteria.setSize(6); // Definir un valor predeterminado de tamaño de página
+        }
+
+        // Realizar búsqueda de hoteles con los criterios de filtro
+        PaginaRespuestaHoteles<HotelDto> hoteles = servicioFiltroHoteles
+                .buscarHoteles(hotelesMapper.filtrar(criteria), criteria.getPage(), criteria.getSize());
+
+        // Añadir los resultados de la búsqueda y otros atributos al modelo
+        modelo.addAttribute("page", hoteles);
+        modelo.addAttribute("lista", hoteles.getContent());
+
+        // Añadir los valores de los criterios de búsqueda al modelo para mantener los filtros en la vista
+        modelo.addAttribute("categoria", criteria.getCategoria());
+        modelo.addAttribute("tipoHabitacionId", criteria.getTipoHabitacionId());
+        modelo.addAttribute("capacidadHabitacion", criteria.getCapacidadHabitacion());
+        modelo.addAttribute("localizacionNombre", criteria.getLocalizacionNombre());
+
+
+        // Cargar otros datos necesarios para la vista, como los tipos de habitación disponibles
+        modelo.addAttribute("tiposHabitacion", servicioTipoHabitacion.buscarEntidades());
+
+        return "hoteles/listaHoteles"; // Redirigir a la vista con los hoteles filtrados
+    }
+
 
 }
