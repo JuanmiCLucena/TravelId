@@ -59,6 +59,7 @@ public class SecurityConfig {
                         .requestMatchers("/habitacion/**").permitAll()
                         .requestMatchers("/actividades/**").permitAll()
                         .requestMatchers("/actividad/**").permitAll()
+                        .requestMatchers("/filtrar-hoteles").permitAll()
                         .requestMatchers("/filtrar-actividades").permitAll()
                         .requestMatchers("/autocomplete-localizacion/**").permitAll()
                         .requestMatchers("/conocenos/**").permitAll()
