@@ -130,7 +130,7 @@ public class ReservaController {
         LocalDateTime fechaActual = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
 
         // Validar que las fechas no sean anteriores a la fecha actual
-        if (fechaInicio.isBefore(fechaActual) || fechaFin.isBefore(fechaActual)) {
+        if (fechaInicio.isBefore(fechaActual.minusMinutes(1)) || fechaFin.isBefore(fechaActual)) {
             redirectAttributes.addFlashAttribute("error", "Las fechas no pueden ser anteriores a la fecha actual.");
             return "redirect:/reservas/habitacion/reservar/" + idHabitacion;
         }
