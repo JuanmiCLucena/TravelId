@@ -47,74 +47,75 @@
 
                 <!-- Iterar sobre habitaciones -->
                 <div th:each="habitacion : ${reserva.habitacionesReservadas}">
-                    <a th:href="@{/habitacion/{id}(id=${habitacion.id})}" class="text-decoration-none text-dark">
                         <div class="card mb-3" style="max-width: 800px;">
-                            <div class="row g-0">
-                                <div class="col-md-4">
-                                    <!-- Imagen del hotel -->
-                                    <img th:src="@{'/imagenes/' + ${habitacion.primeraImagenUrl}}" class="img-fluid rounded-start h-100" alt="Imagen de la habitación">
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="card-body">
-                                        <h5 class="card-title fw-bold border-bottom border-dark py-2">Habitación en <span th:text="${habitacion.hotel.nombre}"></span></h5>
-                                        <p><span class="fw-semibold">Tipo de Habitación:</span> <span th:text="${habitacion.tipo.nombre}"></span></p>
-                                        <p><span class="fw-semibold">Localización:</span> <span th:text="${habitacion.hotel.localizacion.nombre}"></span></p>
-                                        <p><span class="fw-semibold">Fecha Inicio:</span> <span th:text="${#temporals.format(reserva.fechaInicio, 'dd MMMM yyyy, HH:mm', #locale)}"></span></p>
-                                        <p><span class="fw-semibold">Fecha Fin:</span> <span th:text="${#temporals.format(reserva.fechaFin, 'dd MMMM yyyy, HH:mm', #locale)}"></span></p>
-                                        <p><span class="fw-semibold">Precio Total:</span> <span th:text="${reserva.pago.importe + ' €'}"></span></p>
+                            <a th:href="@{/habitacion/{id}(id=${habitacion.id})}" class="text-decoration-none text-dark">
+                                <div class="row g-0">
+                                    <div class="col-md-4">
+                                        <!-- Imagen del hotel -->
+                                        <img th:src="@{'/imagenes/' + ${habitacion.primeraImagenUrl}}" class="img-fluid rounded-start h-100" alt="Imagen de la habitación">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title fw-bold border-bottom border-dark py-2">Habitación en <span th:text="${habitacion.hotel.nombre}"></span></h5>
+                                            <p><span class="fw-semibold">Tipo de Habitación:</span> <span th:text="${habitacion.tipo.nombre}"></span></p>
+                                            <p><span class="fw-semibold">Localización:</span> <span th:text="${habitacion.hotel.localizacion.nombre}"></span></p>
+                                            <p><span class="fw-semibold">Fecha Inicio:</span> <span th:text="${#temporals.format(reserva.fechaInicio, 'dd MMMM yyyy, HH:mm', #locale)}"></span></p>
+                                            <p><span class="fw-semibold">Fecha Fin:</span> <span th:text="${#temporals.format(reserva.fechaFin, 'dd MMMM yyyy, HH:mm', #locale)}"></span></p>
+                                            <p><span class="fw-semibold">Precio Total:</span> <span th:text="${reserva.pago.importe + ' €'}"></span></p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
-                    </a>
                 </div>
 
                 <!-- Iterar sobre actividades -->
                 <div th:each="actividad : ${reserva.actividadesReservadas}">
-                    <a th:href="@{/actividad/{id}(id=${actividad.id})}" class="text-decoration-none text-dark">
                         <div class="card mb-3" style="max-width: 800px;">
-                            <div class="row g-0">
-                                <div class="col-md-4">
-                                    <!-- Imagen de la actividad -->
-                                    <img th:src="@{'/imagenes/' + ${actividad.primeraImagenUrl}}" class="img-fluid rounded-start h-100" alt="Imagen de la actividad">
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="card-body">
-                                        <h5 class="card-title fw-bold border-bottom border-dark py-2">Actividad: <span th:text="${actividad.nombre}"></span></h5>
-                                        <p><span class="fw-semibold">Localización:</span> <span th:text="${actividad.localizacion.nombre}"></span></p>
-                                        <p><span class="fw-semibold">Fecha Inicio:</span> <span th:text="${#temporals.format(actividad.fechaInicio, 'dd MMMM yyyy, HH:mm', #locale)}"></span></p>
-                                        <p><span class="fw-semibold">Fecha Fin:</span> <span th:text="${#temporals.format(actividad.fechaFin, 'dd MMMM yyyy, HH:mm', #locale)}"></span></p>
-                                        <p><span class="fw-semibold">Precio Total:</span> <span th:text="${reserva.pago.importe + ' €'}"></span></p>
+                            <a th:href="@{/actividad/{id}(id=${actividad.id})}" class="text-decoration-none text-dark">
+                                <div class="row g-0">
+                                    <div class="col-md-4">
+                                        <!-- Imagen de la actividad -->
+                                        <img th:src="@{'/imagenes/' + ${actividad.primeraImagenUrl}}" class="img-fluid rounded-start h-100" alt="Imagen de la actividad">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title fw-bold border-bottom border-dark py-2">Actividad: <span th:text="${actividad.nombre}"></span></h5>
+                                            <p><span class="fw-semibold">Localización:</span> <span th:text="${actividad.localizacion.nombre}"></span></p>
+                                            <p><span class="fw-semibold">Fecha Inicio:</span> <span th:text="${#temporals.format(actividad.fechaInicio, 'dd MMMM yyyy, HH:mm', #locale)}"></span></p>
+                                            <p><span class="fw-semibold">Fecha Fin:</span> <span th:text="${#temporals.format(actividad.fechaFin, 'dd MMMM yyyy, HH:mm', #locale)}"></span></p>
+                                            <p><span class="fw-semibold">Precio Total:</span> <span th:text="${reserva.pago.importe + ' €'}"></span></p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
-                    </a>
                 </div>
 
                 <!-- Iterar sobre asientos -->
                 <div th:each="asiento : ${reserva.asientosReservados}">
-                    <a th:href="@{/vuelo/{id}(id=${asiento.vuelo.id})}" class="text-decoration-none text-dark">
                         <div class="card mb-3" style="max-width: 800px;">
-                            <div class="row g-0">
-                                <div class="col-md-4">
-                                    <!-- Imagen del vuelo -->
-                                    <img th:src="@{'/imagenes/' + ${asiento.vuelo.imagen.url}}" class="img-fluid rounded-start h-100" alt="Imagen del vuelo">
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="card-body">
-                                        <h5 class="card-title fw-bold border-bottom border-dark py-2">Vuelo: <span th:text="${asiento.vuelo.nombre}"></span></h5>
-                                        <p><span class="fw-semibold">Origen:</span> <span th:text="${asiento.vuelo.origen.nombre}"></span></p>
-                                        <p><span class="fw-semibold">Destino:</span> <span th:text="${asiento.vuelo.destino.nombre}"></span></p>
-                                        <p><span class="fw-semibold">Número de Asiento:</span> <span th:text="${asiento.numero}"></span></p>
-                                        <p><span class="fw-semibold">Fecha Salida:</span> <span th:text="${#temporals.format(reserva.fechaInicio, 'dd MMMM yyyy, HH:mm', #locale)}"></span></p>
-                                        <p><span class="fw-semibold">Fecha Llegada:</span> <span th:text="${#temporals.format(reserva.fechaFin, 'dd MMMM yyyy, HH:mm', #locale)}"></span></p>
-                                        <p><span class="fw-semibold">Precio Total:</span> <span th:text="${reserva.pago.importe + ' €'}"></span></p>
+                            <a th:href="@{/vuelo/{id}(id=${asiento.vuelo.id})}" class="text-decoration-none text-dark">
+                                <div class="row g-0">
+                                    <div class="col-md-4">
+                                        <!-- Imagen del vuelo -->
+                                        <img th:src="@{'/imagenes/' + ${asiento.vuelo.imagen.url}}" class="img-fluid rounded-start h-100" alt="Imagen del vuelo">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title fw-bold border-bottom border-dark py-2">Vuelo: <span th:text="${asiento.vuelo.nombre}"></span></h5>
+                                            <p><span class="fw-semibold">Origen:</span> <span th:text="${asiento.vuelo.origen.nombre}"></span></p>
+                                            <p><span class="fw-semibold">Destino:</span> <span th:text="${asiento.vuelo.destino.nombre}"></span></p>
+                                            <p><span class="fw-semibold">Número de Asiento:</span> <span th:text="${asiento.numero}"></span></p>
+                                            <p><span class="fw-semibold">Fecha Salida:</span> <span th:text="${#temporals.format(reserva.fechaInicio, 'dd MMMM yyyy, HH:mm', #locale)}"></span></p>
+                                            <p><span class="fw-semibold">Fecha Llegada:</span> <span th:text="${#temporals.format(reserva.fechaFin, 'dd MMMM yyyy, HH:mm', #locale)}"></span></p>
+                                            <p><span class="fw-semibold">Precio Total:</span> <span th:text="${reserva.pago.importe + ' €'}"></span></p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
-                    </a>
+
                 </div>
 
             </div>
