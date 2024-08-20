@@ -122,8 +122,11 @@ public class ServicioHabitacion extends AbstractBusinessServiceSoloEnt<Habitacio
         // Obtenemos las reservas de la habitación en concreto
         List<Reserva> reservas = repoReserva.findByHabitacionesReservadasId(idHabitacion);
 
+        // Filtramos excluyendo las reservas que hayan sido canceladas
+        List<Reserva> reservasValidas = new ArrayList<>(reservas.stream().filter(reserva -> !reserva.isCancelado()).toList());
+
         // Ordenar reservas por fecha de inicio
-        reservas.sort(Comparator.comparing(Reserva::getFechaInicio));
+        reservasValidas.sort(Comparator.comparing(Reserva::getFechaInicio));
 
         List<Interval> rangosDisponibles = new ArrayList<>();
         LocalDateTime fechaInicio = fechaEntrada;
@@ -136,7 +139,7 @@ public class ServicioHabitacion extends AbstractBusinessServiceSoloEnt<Habitacio
         Habitacion habitacion = habitacionOpt.get();
 
         // Iterar sobre las reservas de la habitación
-        for (Reserva reserva : reservas) {
+        for (Reserva reserva : reservasValidas) {
             // Si hay un intervalo disponible entre la fecha inicio y el inicio de la reserva
             if (reserva.getFechaInicio().isAfter(fechaInicio)) {
                 // Calcular el precio total para este intervalo disponible

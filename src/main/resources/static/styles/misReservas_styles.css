@@ -1054,3 +1054,7 @@ h3 span {
   padding-top: 200px;
   min-height: 100vh;
 }
+
+.text-darkred {
+  color: darkred;
+}

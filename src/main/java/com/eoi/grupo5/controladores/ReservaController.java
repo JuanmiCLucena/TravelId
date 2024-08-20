@@ -8,6 +8,8 @@ import com.eoi.grupo5.servicios.ServicioHabitacion;
 import com.eoi.grupo5.servicios.ServicioMetodoPago;
 import com.eoi.grupo5.servicios.ServicioReserva;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpSession;
+import org.hibernate.Session;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
@@ -223,7 +225,8 @@ public class ReservaController {
             @RequestParam("metodoPagoId") Integer metodoPagoId,
             Principal principal,
             Model modelo,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes,
+            HttpSession session) {
 
         // Obtener el usuario autenticado
         Usuario usuario = repoUsuario.findByNombreUsuario(principal.getName())
@@ -278,6 +281,62 @@ public class ReservaController {
             return "error/paginaError";
         }
     }
+
+    @PostMapping("/cancelar/{id}")
+    public String cancelarReserva(@PathVariable Integer id, Model modelo) {
+        try {
+            // Obtener la reserva por ID
+            Optional<Reserva> optionalReserva = servicioReserva.encuentraPorId(id);
+            if (optionalReserva.isPresent()) {
+                Reserva reserva = optionalReserva.get();
+                Usuario usuario = reserva.getUsu();
+
+                // Cancelar la reserva
+                servicioReserva.cancelarReserva(id);
+
+                // Actualizar el número de asistentes en ReservaActividad
+                for (ReservaActividad reservaActividad : reserva.getReservaActividades()) {
+                    Actividad actividad = reservaActividad.getActividad();
+                    Integer asistentesReservados = reservaActividad.getAsistentes();
+                    actividad.setAsistentesConfirmados(actividad.getAsistentesConfirmados() - asistentesReservados);
+                    // Actualizar la actividad en el repositorio
+                    servicioActividad.guardar(actividad);
+                }
+
+                // Formatear las fechas de la reserva
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy HH:mm");
+                String fechaInicioFormateada = reserva.getFechaInicio().format(formatter);
+                String fechaFinFormateada = reserva.getFechaFin().format(formatter);
+
+                String detallesReserva = servicioReserva.obtenerDetallesReserva(reserva);
+
+                // Enviar correo de confirmación de cancelación
+                emailService.sendSimpleMessage(
+                        usuario.getDetalles().getEmail(),
+                        "Cancelación de tu reserva en TravelId",
+                        "Hola " + usuario.getNombreUsuario() + ",\n\n" +
+                                "Tu reserva en TravelId ha sido cancelada con éxito. A continuación, te proporcionamos los detalles de la reserva cancelada:\n\n" +
+                                "Usuario: " + usuario.getNombreUsuario() + "\n" +
+                                "Email: " + usuario.getDetalles().getEmail() + "\n" +
+                                detallesReserva +
+                                "Fecha de la reserva: " + fechaInicioFormateada + " hasta " + fechaFinFormateada + "\n" +
+                                "Si tienes alguna pregunta o necesitas asistencia adicional, no dudes en contactarnos.\n\n" +
+                                "Lamentamos cualquier inconveniente y esperamos poder servirte en el futuro.\n\n" +
+                                "Saludos cordiales,\n" +
+                                "El equipo de TravelId"
+                );
+
+                return "redirect:/reservas/mis-reservas";
+            } else {
+                modelo.addAttribute("error", "Reserva no encontrada");
+                return "error/paginaError";
+            }
+        } catch (Exception e) {
+            modelo.addAttribute("error", e.getMessage());
+            return "error/paginaError";
+        }
+    }
+
 
 
 

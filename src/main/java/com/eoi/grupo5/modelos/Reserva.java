@@ -60,16 +60,11 @@ public class Reserva {
     )
     private Set<Habitacion> habitacionesReservadas = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "actividadesReservadas",
-            joinColumns = @JoinColumn(name = "idReserva", foreignKey = @ForeignKey(name = "fkActresReservas")),
-            inverseJoinColumns = @JoinColumn(name = "idActividad", foreignKey = @ForeignKey(name = "fkActresActividades"))
-    )
-    private Set<Actividad> actividadesReservadas = new HashSet<>();
+    @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ReservaActividad> reservaActividades = new HashSet<>();
 
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "idPago", referencedColumnName = "id")
     private Pago pago;
 

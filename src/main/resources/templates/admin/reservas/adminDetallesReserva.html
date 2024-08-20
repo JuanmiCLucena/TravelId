@@ -103,6 +103,10 @@
             <input type="number" class="form-control" readonly id="pagoNulo" name="pago.id">
           </div>
 
+          <input type="hidden" name="asientosReservados" th:field="*{asientosReservados}">
+          <input type="hidden" name="habitacionesReservadas" th:field="*{habitacionesReservadas}">
+          <input type="hidden" name="actividadesReservadas" th:field="*{reservaActividades}">
+
           <button type="submit" class="btn btn-primary mt-3">Guardar</button>
         </form>
       </div>

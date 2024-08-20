@@ -2,6 +2,7 @@ package com.eoi.grupo5.controladores.admin;
 
 import com.eoi.grupo5.modelos.*;
 import com.eoi.grupo5.paginacion.PaginaRespuestaReservas;
+import com.eoi.grupo5.repos.RepoReservaActividad;
 import com.eoi.grupo5.servicios.*;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -17,10 +18,12 @@ import java.util.Optional;
 public class AdminReservaController {
 
     private final ServicioReserva servicioReserva;
+    private final RepoReservaActividad repoReservaActividad;
     private final ServicioUsuario servicioUsuario;
 
-    public AdminReservaController(ServicioReserva servicioReserva, ServicioUsuario servicioUsuario) {
+    public AdminReservaController(ServicioReserva servicioReserva, RepoReservaActividad repoReservaActividad, ServicioUsuario servicioUsuario) {
         this.servicioReserva = servicioReserva;
+        this.repoReservaActividad = repoReservaActividad;
         this.servicioUsuario = servicioUsuario;
     }
 
