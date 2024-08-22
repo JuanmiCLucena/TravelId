@@ -76,6 +76,9 @@ public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Int
                         reservaActividad.setReserva(reserva);
                         reservaActividad.setActividad(actividad);
                         reservaActividad.setAsistentes(asistentes);
+
+                        // Agregar el nuevo ReservaActividad al conjunto de la reserva
+                        reserva.getReservaActividades().add(reservaActividad);
                     }
 
                     repoReservaActividad.save(reservaActividad);
@@ -158,8 +161,18 @@ public class ServicioReserva extends AbstractBusinessServiceSoloEnt<Reserva, Int
         return respuesta;
     }
 
-    public List<Reserva> obtenerReservasPorUsuario(Usuario usuario) {
-        return repoReserva.findByUsu(usuario);
+    public PaginaRespuestaReservas<Reserva> obtenerReservasPorUsuarioPaginadas(Usuario usuario, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Reserva> reservaPage = repoReserva.findByUsu(usuario, pageable);
+
+        PaginaRespuestaReservas<Reserva> respuesta = new PaginaRespuestaReservas<>();
+        respuesta.setContent(reservaPage.getContent());
+        respuesta.setSize(reservaPage.getSize());
+        respuesta.setTotalSize(reservaPage.getTotalElements());
+        respuesta.setPage(reservaPage.getNumber());
+        respuesta.setTotalPages(reservaPage.getTotalPages());
+
+        return respuesta;
     }
 
     public String obtenerDetallesReserva(Reserva reserva) {

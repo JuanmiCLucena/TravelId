@@ -2,6 +2,7 @@ package com.eoi.grupo5.controladores;
 
 import com.eoi.grupo5.email.CustomEmailService;
 import com.eoi.grupo5.modelos.*;
+import com.eoi.grupo5.paginacion.PaginaRespuestaReservas;
 import com.eoi.grupo5.repos.RepoUsuario;
 import com.eoi.grupo5.servicios.ServicioActividad;
 import com.eoi.grupo5.servicios.ServicioHabitacion;
@@ -44,15 +45,21 @@ public class ReservaController {
     }
 
     @GetMapping("/mis-reservas")
-    public String verMisReservas(Principal principal, Model modelo) {
+    public String verMisReservas(
+            Principal principal,
+            Model modelo,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
         // Obtener el usuario autenticado
         Optional<Usuario> optionalUsuario = repoUsuario.findByNombreUsuario(principal.getName());
         if (optionalUsuario.isPresent()) {
             Usuario usuario = optionalUsuario.get();
 
             // Obtener las reservas del usuario
-            List<Reserva> reservas = servicioReserva.obtenerReservasPorUsuario(usuario);
+            PaginaRespuestaReservas<Reserva> reservasPage = servicioReserva.obtenerReservasPorUsuarioPaginadas(usuario, page, size);
+            List<Reserva> reservas = reservasPage.getContent();
             modelo.addAttribute("reservas", reservas);
+            modelo.addAttribute("page", reservasPage);
 
             return "reservas/misReservas";
         } else {

@@ -99,7 +99,7 @@
                 <!-- Página anterior -->
                 <li th:if="${page.hasPrevious()}" class="page-item">
                     <a class="page-link"
-                       th:href="@{/templates/admin/asientos(page=${page.page - 1}, size=${page.size})}"
+                       th:href="@{/admin/asientos(page=${page.page - 1}, size=${page.size})}"
                        aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
@@ -109,14 +109,14 @@
                 <li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
                     th:classappend="${i == page.page} ? 'page-item active' : 'page-item'">
                     <a class="page-link"
-                       th:href="@{/templates/admin/asientos(page=${i}, size=${page.size})}"
+                       th:href="@{/admin/asientos(page=${i}, size=${page.size})}"
                        th:text="${i + 1}"></a>
                 </li>
 
                 <!-- Página siguiente -->
                 <li th:if="${page.hasNext()}" class="page-item">
                     <a class="page-link"
-                       th:href="@{/templates/admin/asientos(page=${page.page + 1}, size=${page.size})}"
+                       th:href="@{/admin/asientos(page=${page.page + 1}, size=${page.size})}"
                        aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>

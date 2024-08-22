@@ -1,7 +1,11 @@
 package com.eoi.grupo5.repos;
 
+import com.eoi.grupo5.modelos.Habitacion;
 import com.eoi.grupo5.modelos.Reserva;
 import com.eoi.grupo5.modelos.Usuario;
+import jakarta.annotation.Nonnull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,5 +14,5 @@ import java.util.List;
 @Repository
 public interface RepoReserva extends JpaRepository<Reserva, Integer> {
     List<Reserva> findByHabitacionesReservadasId(Integer idHabitacion);
-    List<Reserva> findByUsu(Usuario usuario);
+    Page<Reserva> findByUsu(Usuario usuario, Pageable pageable);
 }
