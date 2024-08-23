@@ -18,7 +18,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -42,8 +41,8 @@ public class ReservaController {
         this.emailService = emailService;
     }
 
-    @GetMapping("/tus-reservas")
-    public String verTusReservas(Principal principal, Model modelo) {
+    @GetMapping("/mis-reservas")
+    public String verMisReservas(Principal principal, Model modelo) {
         // Obtener el usuario autenticado
         Optional<Usuario> optionalUsuario = repoUsuario.findByNombreUsuario(principal.getName());
         if (optionalUsuario.isPresent()) {
@@ -53,7 +52,7 @@ public class ReservaController {
             List<Reserva> reservas = servicioReserva.obtenerReservasPorUsuario(usuario);
             modelo.addAttribute("reservas", reservas);
 
-            return "reservas/tusReservas";
+            return "reservas/misReservas";
         } else {
             modelo.addAttribute("error", "Usuario no encontrado");
             return "error/paginaError";
@@ -203,7 +202,7 @@ public class ReservaController {
                 );
 
 
-                return "redirect:/reservas/tus-reservas";
+                return "redirect:/reservas/mis-reservas";
             } catch (Exception e) {
                 modelo.addAttribute("error", e.getMessage());
                 return "error/paginaError";
@@ -273,7 +272,7 @@ public class ReservaController {
                             "El equipo de TravelId"
             );
 
-            return "redirect:/reservas/tus-reservas";
+            return "redirect:/reservas/mis-reservas";
         } catch (Exception e) {
             modelo.addAttribute("error", e.getMessage());
             return "error/paginaError";
