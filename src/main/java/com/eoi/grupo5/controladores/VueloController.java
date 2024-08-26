@@ -43,7 +43,7 @@ public class VueloController {
     }
 
     @GetMapping("/vuelo/{id}")
-    public String detallesHotel(Model modelo, @PathVariable Integer id) {
+    public String detallesVuelo(Model modelo, @PathVariable Integer id) {
         Optional<Vuelo> vuelo = servicioVuelo.encuentraPorId(id);
         // Si no encontramos el vuelo no hemos encontrado el hotel
         if(vuelo.isPresent()) {
