@@ -4,10 +4,7 @@ import com.eoi.grupo5.email.CustomEmailService;
 import com.eoi.grupo5.modelos.*;
 import com.eoi.grupo5.paginacion.PaginaRespuestaReservas;
 import com.eoi.grupo5.repos.RepoUsuario;
-import com.eoi.grupo5.servicios.ServicioActividad;
-import com.eoi.grupo5.servicios.ServicioHabitacion;
-import com.eoi.grupo5.servicios.ServicioMetodoPago;
-import com.eoi.grupo5.servicios.ServicioReserva;
+import com.eoi.grupo5.servicios.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpSession;
 import org.hibernate.Session;
@@ -31,14 +28,18 @@ public class ReservaController {
     private final ServicioReserva servicioReserva;
     private final ServicioHabitacion servicioHabitacion;
     private final ServicioActividad servicioActividad;
+    private final ServicioVuelo servicioVuelo;
+    private final ServicioAsiento servicioAsiento;
     private final RepoUsuario repoUsuario;
     private final ServicioMetodoPago servicioMetodoPago;
     private final CustomEmailService emailService;
 
-    public ReservaController(ServicioReserva servicioReserva, ServicioHabitacion servicioHabitacion, ServicioActividad servicioActividad, RepoUsuario repoUsuario, ServicioMetodoPago servicioMetodoPago, CustomEmailService emailService) {
+    public ReservaController(ServicioReserva servicioReserva, ServicioHabitacion servicioHabitacion, ServicioActividad servicioActividad, ServicioVuelo servicioVuelo, ServicioAsiento servicioAsiento, RepoUsuario repoUsuario, ServicioMetodoPago servicioMetodoPago, CustomEmailService emailService) {
         this.servicioReserva = servicioReserva;
         this.servicioHabitacion = servicioHabitacion;
         this.servicioActividad = servicioActividad;
+        this.servicioVuelo = servicioVuelo;
+        this.servicioAsiento = servicioAsiento;
         this.repoUsuario = repoUsuario;
         this.servicioMetodoPago = servicioMetodoPago;
         this.emailService = emailService;
@@ -288,6 +289,90 @@ public class ReservaController {
             return "error/paginaError";
         }
     }
+
+    @PostMapping("/asiento/reservar")
+    public String reservarAsiento(
+            @RequestParam("idAsiento") Integer idAsiento,
+            @RequestParam("idVuelo") Integer idVuelo,
+            @RequestParam("fechaInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaInicio,
+            @RequestParam("fechaFin") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaFin,
+            @RequestParam("precioTotal") Double precioTotal,
+            @RequestParam("metodoPagoId") Integer metodoPagoId,
+            Principal principal,
+            RedirectAttributes redirectAttributes,
+            Model modelo) {
+
+        // Obtener el usuario autenticado
+        Optional<Usuario> optionalUsuario = repoUsuario.findByNombreUsuario(principal.getName());
+        if (optionalUsuario.isPresent()) {
+            Usuario usuario = optionalUsuario.get();
+
+            try {
+                // Verificar si el asiento existe
+                Optional<Asiento> optionalAsiento = servicioAsiento.encuentraPorId(idAsiento);
+                if (optionalAsiento.isPresent()) {
+                    Asiento asiento = optionalAsiento.get();
+
+                    // Verificar si el asiento ya está reservado
+                    boolean reservado = asiento.getReservas().stream()
+                            .anyMatch(reserva -> !reserva.isCancelado());
+                    if (reservado) {
+                        redirectAttributes.addFlashAttribute("error", "El asiento ya ha sido reservado.");
+                        return "redirect:/vuelo/" + idVuelo;
+                    }
+
+                    // Crear la reserva ya que el asiento está disponible
+                    Reserva reserva = servicioReserva.crearReserva(usuario, fechaInicio, fechaFin);
+
+                    // Asignar el asiento a la reserva
+                    servicioReserva.addAsiento(reserva.getId(), idAsiento);
+
+                    // Generar el pago
+                    servicioReserva.generarPago(reserva, precioTotal, metodoPagoId);
+
+                    // Guardar el asiento actualizado
+                    servicioAsiento.guardar(asiento);
+
+                    // Enviar correo de confirmación
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy HH:mm");
+                    String fechaInicioFormateada = reserva.getFechaInicio().format(formatter);
+                    String fechaFinFormateada = reserva.getFechaFin().format(formatter);
+
+                    emailService.sendSimpleMessage(
+                            usuario.getDetalles().getEmail(),
+                            "Confirmación de tu reserva en TravelId",
+                            "Hola " + usuario.getNombreUsuario() + ",\n\n" +
+                                    "Gracias por realizar tu reserva con TravelId. A continuación, encontrarás los detalles de tu reserva:\n\n" +
+                                    "Usuario: " + usuario.getNombreUsuario() + "\n" +
+                                    "Email: " + usuario.getDetalles().getEmail() + "\n" +
+                                    "Vuelo: " + servicioVuelo.encuentraPorId(idVuelo).get().getNombre() + "\n" +
+                                    "Fecha de la reserva: " + fechaInicioFormateada + " hasta " + fechaFinFormateada + "\n" +
+                                    "Asiento: " + asiento.getNumero() + "\n" +
+                                    "Importe Total: " + reserva.getPago().getImporte() + "\n" +
+                                    "Si tienes alguna pregunta o necesitas asistencia adicional, no dudes en contactarnos.\n\n" +
+                                    "¡Gracias por confiar en TravelId!\n\n" +
+                                    "Saludos cordiales,\n" +
+                                    "El equipo de TravelId"
+                    );
+
+                    return "redirect:/reservas/mis-reservas";
+                } else {
+                    redirectAttributes.addFlashAttribute("error", "Asiento no encontrado.");
+                    return "redirect:/vuelo/" + idVuelo;
+                }
+
+            } catch (Exception e) {
+                modelo.addAttribute("error", e.getMessage());
+                return "error/paginaError";
+            }
+        } else {
+            modelo.addAttribute("error", "Usuario no encontrado");
+            return "error/paginaError";
+        }
+    }
+
+
+
 
     @PostMapping("/cancelar/{id}")
     public String cancelarReserva(@PathVariable Integer id, Model modelo) {

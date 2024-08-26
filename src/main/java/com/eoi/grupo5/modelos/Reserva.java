@@ -46,7 +46,7 @@ public class Reserva {
 
     @ManyToMany
     @JoinTable(
-            name = "asientosReservadas",
+            name = "asientosReservados",
             joinColumns = @JoinColumn(name = "idReserva", foreignKey = @ForeignKey(name = "fkAsresReservas")),
             inverseJoinColumns = @JoinColumn(name = "idAsiento", foreignKey = @ForeignKey(name = "fkAsresAsientos"))
     )
