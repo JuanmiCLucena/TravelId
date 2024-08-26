@@ -27,8 +27,7 @@ public class UsuarioRegistroDto {
     @Size(min = 2, max = 45, message = "El nombre de usuario debe tener entre 2 y 45 caracteres")
     private String nombreUsuario;
 
-    @Column(name = "password", nullable = false, length = 150)
-    @NotBlank(message = "La contraseña no puede ser nula")
+    @Column(name = "password", length = 150)
     @Size(min = 5, max = 150, message = "La contraseña debe tener entre 5 y 150 caracteres")
     private String password;
 
@@ -98,7 +97,6 @@ public class UsuarioRegistroDto {
      */
     public void sanitize() {
         this.nombreUsuario = convertEmptyToNull(this.nombreUsuario);
-        this.password = convertEmptyToNull(this.password);
         this.email = convertEmptyToNull(this.email);
         this.dni = convertEmptyToNull(this.dni);
         this.telefono = convertEmptyToNull(this.telefono);
