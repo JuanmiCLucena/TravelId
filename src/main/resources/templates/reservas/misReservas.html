@@ -24,8 +24,8 @@
             rel="stylesheet"
             type="text/css"
     />
-    <link rel="stylesheet" type="text/css" th:href="@{/styles/tusReservas_styles.css}" />
-    <link rel="stylesheet" type="text/css" th:href="@{/styles/tusReservas_responsive.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/misReservas_styles.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/misReservas_responsive.css}" />
 </head>
 
 <body>
@@ -47,78 +47,139 @@
 
                 <!-- Iterar sobre habitaciones -->
                 <div th:each="habitacion : ${reserva.habitacionesReservadas}">
-                        <div class="card mb-3" style="max-width: 800px;">
-                            <a th:href="@{/habitacion/{id}(id=${habitacion.id})}" class="text-decoration-none text-dark">
-                                <div class="row g-0">
-                                    <div class="col-md-4">
-                                        <!-- Imagen del hotel -->
-                                        <img th:src="@{'/imagenes/' + ${habitacion.primeraImagenUrl}}" class="img-fluid rounded-start h-100" alt="Imagen de la habitación">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title fw-bold border-bottom border-dark py-2">Habitación en <span th:text="${habitacion.hotel.nombre}"></span></h5>
-                                            <p><span class="fw-semibold">Tipo de Habitación:</span> <span th:text="${habitacion.tipo.nombre}"></span></p>
-                                            <p><span class="fw-semibold">Localización:</span> <span th:text="${habitacion.hotel.localizacion.nombre}"></span></p>
-                                            <p><span class="fw-semibold">Fecha Inicio:</span> <span th:text="${#temporals.format(reserva.fechaInicio, 'dd MMMM yyyy, HH:mm', #locale)}"></span></p>
-                                            <p><span class="fw-semibold">Fecha Fin:</span> <span th:text="${#temporals.format(reserva.fechaFin, 'dd MMMM yyyy, HH:mm', #locale)}"></span></p>
-                                            <p><span class="fw-semibold">Precio Total:</span> <span th:text="${reserva.pago.importe + ' €'}"></span></p>
+                    <div class="card mb-3" style="max-width: 800px;" th:classappend="${reserva.cancelado} ? 'bg-danger bg-opacity-25' : ''">
+                        <a th:href="@{/habitacion/{id}(id=${habitacion.id})}" class="text-decoration-none text-dark">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <!-- Imagen del hotel -->
+                                    <img th:src="@{'/imagenes/' + ${habitacion.primeraImagenUrl}}" class="img-fluid rounded-start h-100" alt="Imagen de la habitación">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title fw-bold border-bottom border-dark py-2">Habitación en <span th:text="${habitacion.hotel.nombre}"></span></h5>
+                                        <p><span class="fw-semibold">Tipo de Habitación:</span> <span th:text="${habitacion.tipo.nombre}"></span></p>
+                                        <p><span class="fw-semibold">Localización:</span> <span th:text="${habitacion.hotel.localizacion.nombre}"></span></p>
+                                        <p><span class="fw-semibold">Fecha Inicio:</span> <span th:text="${#temporals.format(reserva.fechaInicio, 'dd MMMM yyyy, HH:mm', #locale)}"></span></p>
+                                        <p><span class="fw-semibold">Fecha Fin:</span> <span th:text="${#temporals.format(reserva.fechaFin, 'dd MMMM yyyy, HH:mm', #locale)}"></span></p>
+                                        <p><span class="fw-semibold">Precio Total:</span> <span th:text="${reserva.pago.importe + ' €'}"></span></p>
+                                        <div th:unless="${reserva.cancelado}">
+                                            <form th:action="@{/reservas/cancelar/{id}(id=${reserva.id})}" method="post">
+                                                <button type="submit" class="btn btn-danger">Cancelar Reserva</button>
+                                            </form>
+                                        </div>
+                                        <div th:if="${reserva.cancelado}">
+                                            <p class="text-darkred fw-bold">Esta reserva ha sido cancelada</p>
                                         </div>
                                     </div>
                                 </div>
-                            </a>
-                        </div>
+                            </div>
+                        </a>
+                    </div>
                 </div>
 
-                <!-- Iterar sobre actividades -->
-                <div th:each="actividad : ${reserva.actividadesReservadas}">
-                        <div class="card mb-3" style="max-width: 800px;">
-                            <a th:href="@{/actividad/{id}(id=${actividad.id})}" class="text-decoration-none text-dark">
-                                <div class="row g-0">
-                                    <div class="col-md-4">
-                                        <!-- Imagen de la actividad -->
-                                        <img th:src="@{'/imagenes/' + ${actividad.primeraImagenUrl}}" class="img-fluid rounded-start h-100" alt="Imagen de la actividad">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title fw-bold border-bottom border-dark py-2">Actividad: <span th:text="${actividad.nombre}"></span></h5>
-                                            <p><span class="fw-semibold">Localización:</span> <span th:text="${actividad.localizacion.nombre}"></span></p>
-                                            <p><span class="fw-semibold">Fecha Inicio:</span> <span th:text="${#temporals.format(actividad.fechaInicio, 'dd MMMM yyyy, HH:mm', #locale)}"></span></p>
-                                            <p><span class="fw-semibold">Fecha Fin:</span> <span th:text="${#temporals.format(actividad.fechaFin, 'dd MMMM yyyy, HH:mm', #locale)}"></span></p>
-                                            <p><span class="fw-semibold">Precio Total:</span> <span th:text="${reserva.pago.importe + ' €'}"></span></p>
+                <!-- Iterar sobre actividades reservadas (ReservaActividad) -->
+                <div th:each="reservaActividad : ${reserva.reservaActividades}">
+                    <div class="card mb-3" style="max-width: 800px;" th:classappend="${reserva.cancelado} ? 'bg-danger bg-opacity-25' : ''">
+                        <a th:href="@{/actividad/{id}(id=${reservaActividad.actividad.id})}" class="text-decoration-none text-dark">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <!-- Imagen de la actividad -->
+                                    <img th:src="@{'/imagenes/' + ${reservaActividad.actividad.primeraImagenUrl}}" class="img-fluid rounded-start h-100" alt="Imagen de la actividad">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title fw-bold border-bottom border-dark py-2">Actividad: <span th:text="${reservaActividad.actividad.nombre}"></span></h5>
+                                        <p><span class="fw-semibold">Localización:</span> <span th:text="${reservaActividad.actividad.localizacion.nombre}"></span></p>
+                                        <p><span class="fw-semibold">Fecha Inicio:</span> <span th:text="${#temporals.format(reservaActividad.actividad.fechaInicio, 'dd MMMM yyyy, HH:mm', #locale)}"></span></p>
+                                        <p><span class="fw-semibold">Fecha Fin:</span> <span th:text="${#temporals.format(reservaActividad.actividad.fechaFin, 'dd MMMM yyyy, HH:mm', #locale)}"></span></p>
+                                        <p><span class="fw-semibold">Asistentes Confirmados:</span> <span th:text="${reservaActividad.asistentes}"></span></p>
+                                        <p><span class="fw-semibold">Precio Total:</span> <span th:text="${reserva.pago.importe + ' €'}"></span></p>
+                                        <div th:unless="${reserva.cancelado}">
+                                            <form th:action="@{/reservas/cancelar/{id}(id=${reserva.id})}" method="post">
+                                                <button type="submit" class="btn btn-danger">Cancelar Reserva</button>
+                                            </form>
+                                        </div>
+                                        <div th:if="${reserva.cancelado}">
+                                            <p class="text-darkred fw-bold">Esta reserva ha sido cancelada</p>
                                         </div>
                                     </div>
                                 </div>
-                            </a>
-                        </div>
+                            </div>
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Iterar sobre asientos -->
                 <div th:each="asiento : ${reserva.asientosReservados}">
-                        <div class="card mb-3" style="max-width: 800px;">
-                            <a th:href="@{/vuelo/{id}(id=${asiento.vuelo.id})}" class="text-decoration-none text-dark">
-                                <div class="row g-0">
-                                    <div class="col-md-4">
-                                        <!-- Imagen del vuelo -->
-                                        <img th:src="@{'/imagenes/' + ${asiento.vuelo.imagen.url}}" class="img-fluid rounded-start h-100" alt="Imagen del vuelo">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title fw-bold border-bottom border-dark py-2">Vuelo: <span th:text="${asiento.vuelo.nombre}"></span></h5>
-                                            <p><span class="fw-semibold">Origen:</span> <span th:text="${asiento.vuelo.origen.nombre}"></span></p>
-                                            <p><span class="fw-semibold">Destino:</span> <span th:text="${asiento.vuelo.destino.nombre}"></span></p>
-                                            <p><span class="fw-semibold">Número de Asiento:</span> <span th:text="${asiento.numero}"></span></p>
-                                            <p><span class="fw-semibold">Fecha Salida:</span> <span th:text="${#temporals.format(reserva.fechaInicio, 'dd MMMM yyyy, HH:mm', #locale)}"></span></p>
-                                            <p><span class="fw-semibold">Fecha Llegada:</span> <span th:text="${#temporals.format(reserva.fechaFin, 'dd MMMM yyyy, HH:mm', #locale)}"></span></p>
-                                            <p><span class="fw-semibold">Precio Total:</span> <span th:text="${reserva.pago.importe + ' €'}"></span></p>
+                    <div class="card mb-3" style="max-width: 800px;">
+                        <a th:href="@{/vuelo/{id}(id=${asiento.vuelo.id})}" class="text-decoration-none text-dark">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <!-- Imagen del vuelo -->
+                                    <img th:src="@{'/imagenes/' + ${asiento.vuelo.imagen.url}}" class="img-fluid rounded-start h-100" alt="Imagen del vuelo">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title fw-bold border-bottom border-dark py-2"
+                                            th:classappend="${reserva.cancelado} ? 'text-danger' : ''">
+                                            Vuelo: <span th:text="${asiento.vuelo.nombre}"></span>
+                                        </h5>
+                                        <p><span class="fw-semibold">Origen:</span> <span th:text="${asiento.vuelo.origen.nombre}"></span></p>
+                                        <p><span class="fw-semibold">Destino:</span> <span th:text="${asiento.vuelo.destino.nombre}"></span></p>
+                                        <p><span class="fw-semibold">Número de Asiento:</span> <span th:text="${asiento.numero}"></span></p>
+                                        <p><span class="fw-semibold">Fecha Salida:</span> <span th:text="${#temporals.format(reserva.fechaInicio, 'dd MMMM yyyy, HH:mm', #locale)}"></span></p>
+                                        <p><span class="fw-semibold">Fecha Llegada:</span> <span th:text="${#temporals.format(reserva.fechaFin, 'dd MMMM yyyy, HH:mm', #locale)}"></span></p>
+                                        <p><span class="fw-semibold">Precio Total:</span> <span th:text="${reserva.pago.importe + ' €'}"></span></p>
+                                        <div th:unless="${reserva.cancelado}">
+                                            <form th:action="@{/reservas/cancelar/{id}(id=${reserva.id})}" method="post">
+                                                <button type="submit" class="btn btn-danger">Cancelar Reserva</button>
+                                            </form>
+                                        </div>
+                                        <div th:if="${reserva.cancelado}">
+                                            <p class="text-darkred fw-bold">Esta reserva ha sido cancelada</p>
                                         </div>
                                     </div>
                                 </div>
-                            </a>
-                        </div>
+                            </div>
+                        </a>
+                    </div>
+
                 </div>
 
             </div>
         </div>
+
+        <!-- Paginación -->
+        <div class="d-flex justify-content-center">
+            <ul class="pagination d-flex gap-3" th:if="${page != null && !page.getContent().isEmpty()}">
+                <!-- Página anterior -->
+                <li th:if="${page.hasPrevious()}" class="page-item">
+                    <a class="page-link"
+                       th:href="@{/reservas/mis-reservas(page=${page.page - 1}, size=${page.size})}"
+                       aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                <!-- Páginas numeradas -->
+                <li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+                    th:classappend="${i == page.page} ? 'page-item active' : 'page-item'">
+                    <a class="page-link"
+                   th:href="@{/reservas/mis-reservas(page=${i}, size=${page.size})}"
+                       th:text="${i + 1}"></a>
+                </li>
+
+                <!-- Página siguiente -->
+                <li th:if="${page.hasNext()}" class="page-item">
+                    <a class="page-link"
+                       th:href="@{/reservas/mis-reservas(page=${page.page + 1}, size=${page.size})}"
+                       aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
     </div>
 
     <!-- Footer -->
