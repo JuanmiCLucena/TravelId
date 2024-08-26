@@ -24,26 +24,6 @@
           type="text/css"
   />
   <link
-          th:href="@{/plugins/colorbox/colorbox.css}"
-          rel="stylesheet"
-          type="text/css"
-  />
-  <link
-          rel="stylesheet"
-          type="text/css"
-          th:href="@{/plugins/OwlCarousel2-2.2.1/owl.carousel.css}"
-  />
-  <link
-          rel="stylesheet"
-          type="text/css"
-          th:href="@{/plugins/OwlCarousel2-2.2.1/owl.theme.default.css}"
-  />
-  <link
-          rel="stylesheet"
-          type="text/css"
-          th:href="@{/plugins/OwlCarousel2-2.2.1/animate.css}"
-  />
-  <link
           rel="stylesheet"
           type="text/css"
           th:href="@{/styles/admin_styles.css}"
@@ -100,7 +80,7 @@
       <!-- Página anterior -->
       <li th:if="${page.hasPrevious()}" class="page-item">
         <a class="page-link"
-           th:href="@{/templates/admin/vuelos(page=${page.page - 1}, size=${page.size})}"
+           th:href="@{/admin/vuelos(page=${page.page - 1}, size=${page.size})}"
            aria-label="Previous">
           <span aria-hidden="true">&laquo;</span>
         </a>
@@ -110,14 +90,14 @@
       <li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
           th:classappend="${i == page.page} ? 'page-item active' : 'page-item'">
         <a class="page-link"
-           th:href="@{/templates/admin/vuelos(page=${i}, size=${page.size})}"
+           th:href="@{/admin/vuelos(page=${i}, size=${page.size})}"
            th:text="${i + 1}"></a>
       </li>
 
       <!-- Página siguiente -->
       <li th:if="${page.hasNext()}" class="page-item">
         <a class="page-link"
-           th:href="@{/templates/admin/vuelos(page=${page.page + 1}, size=${page.size})}"
+           th:href="@{/admin/vuelos(page=${page.page + 1}, size=${page.size})}"
            aria-label="Next">
           <span aria-hidden="true">&raquo;</span>
         </a>
@@ -127,10 +107,7 @@
 </div>
 
 <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
-<script th:src="@{/plugins/easing/easing.js}"></script>
-<script th:src="@{/plugins/parallax-js-master/parallax.min.js}"></script>
-<script th:src="@{/plugins/colorbox/jquery.colorbox-min.js}"></script>
-<script th:src="@{/plugins/OwlCarousel2-2.2.1/owl.carousel.js}"></script>
+
 </body>
 </html>
 

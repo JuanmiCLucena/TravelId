@@ -9,6 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
@@ -40,12 +42,15 @@ public class ServicioReservaTest {
     @Mock
     private RepoMetodoPago repoMetodoPago;
 
+    @Mock
+    private RepoReservaActividad repoReservaActividad;
+
     private ServicioReserva servicioReserva;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        servicioReserva = new ServicioReserva(repoReserva, repoHabitacion, repoAsiento, repoActividad, repoPago, repoMetodoPago);
+        servicioReserva = new ServicioReserva(repoReserva, repoHabitacion, repoAsiento, repoActividad,repoReservaActividad, repoPago, repoMetodoPago);
     }
 
     @Test
@@ -104,31 +109,45 @@ public class ServicioReservaTest {
 
     @Test
     public void testAddActividad() {
+        // Configuración de la Reserva
         Reserva reserva = new Reserva();
         reserva.setId(1);
 
+        // Configuración de la Actividad
         Actividad actividad = new Actividad();
         actividad.setId(1);
+        actividad.setMaximosAsistentes(10);
+        actividad.setAsistentesConfirmados(0);
         actividad.setFechaInicio(LocalDateTime.of(2024, 8, 1, 12, 0));
         actividad.setFechaFin(LocalDateTime.of(2024, 8, 5, 12, 0));
-        actividad.setAsistentesConfirmados(0);
-        actividad.setMaximosAsistentes(10);
 
+        // Datos de la reserva de actividad
         LocalDateTime fechaInicio = LocalDateTime.of(2024, 8, 1, 14, 0);
         LocalDateTime fechaFin = LocalDateTime.of(2024, 8, 5, 11, 0);
         Integer asistentes = 5;
 
+        // Configurar mocks
         when(repoActividad.findById(1)).thenReturn(Optional.of(actividad));
-        when(repoActividad.save(any(Actividad.class))).thenReturn(actividad);
+        when(repoReservaActividad.findByReservaAndActividad(reserva, actividad)).thenReturn(Optional.empty());
+        when(repoReservaActividad.save(any(ReservaActividad.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(repoReserva.save(any(Reserva.class))).thenReturn(reserva);
 
+        // Ejecutar el método bajo prueba
         servicioReserva.addActividad(reserva, 1, fechaInicio, fechaFin, asistentes);
 
+        // Verificar que se llamó a los métodos del repositorio correctamente
         verify(repoActividad, times(1)).findById(1);
+        verify(repoReservaActividad, times(1)).findByReservaAndActividad(reserva, actividad);
+        verify(repoReservaActividad, times(1)).save(any(ReservaActividad.class));
         verify(repoActividad, times(1)).save(actividad);
         verify(repoReserva, times(1)).save(reserva);
 
-        assertTrue(reserva.getActividadesReservadas().contains(actividad));
+        // Verificar que la relación se ha establecido correctamente
+        assertEquals(1, reserva.getReservaActividades().size());
+        ReservaActividad reservaActividad = reserva.getReservaActividades().iterator().next();
+        assertEquals(actividad, reservaActividad.getActividad());
+        assertEquals(reserva, reservaActividad.getReserva());
+        assertEquals(asistentes, reservaActividad.getAsistentes());
         assertEquals(asistentes, actividad.getAsistentesConfirmados());
     }
 
@@ -228,20 +247,38 @@ public class ServicioReservaTest {
     }
 
     @Test
-    public void testObtenerReservasPorUsuario() {
+    public void testObtenerReservasPorUsuarioPaginadas() {
+        // Configurar el usuario
         Usuario usuario = new Usuario();
         usuario.setId(1);
         usuario.setNombreUsuario("Test User");
 
+        // Crear una lista de reservas de ejemplo
         List<Reserva> reservas = Arrays.asList(new Reserva(), new Reserva());
 
-        when(repoReserva.findByUsu(usuario)).thenReturn(reservas);
+        // Configurar el Pageable
+        int page = 0;
+        int size = 2;
+        Pageable pageable = PageRequest.of(page, size);
 
-        List<Reserva> result = servicioReserva.obtenerReservasPorUsuario(usuario);
+        // Crear un Page de reservas para simular la respuesta de la consulta paginada
+        Page<Reserva> reservaPage = new PageImpl<>(reservas, pageable, reservas.size());
 
-        verify(repoReserva, times(1)).findByUsu(usuario);
+        // Configurar el comportamiento del repositorio para devolver el Page de reservas
+        when(repoReserva.findByUsu(usuario, pageable)).thenReturn(reservaPage);
 
+        // Llamar al método de servicio
+        PaginaRespuestaReservas<Reserva> result = servicioReserva.obtenerReservasPorUsuarioPaginadas(usuario, page, size);
+
+        // Verificar que se llamó al método del repositorio con los parámetros correctos
+        verify(repoReserva, times(1)).findByUsu(usuario, pageable);
+
+        // Comprobaciones del resultado
         assertNotNull(result);
-        assertEquals(reservas, result);
+        assertEquals(reservas, result.getContent());
+        assertEquals(page, result.getPage());
+        assertEquals(size, result.getSize());
+        assertEquals(1, result.getTotalPages());
+        assertEquals(reservas.size(), result.getTotalSize());
     }
 }

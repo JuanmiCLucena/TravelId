@@ -6,14 +6,18 @@ import com.eoi.grupo5.repos.RepoUsuario;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class ServicioUsuario extends AbstractBusinessServiceSoloEnt<Usuario, Integer, RepoUsuario>{
 
+    private final RepoUsuario repoUsuario;
+
     protected ServicioUsuario(RepoUsuario repoUsuario) {
         super(repoUsuario);
+        this.repoUsuario = repoUsuario;
     }
 
     public PaginaRespuestaUsuarios<Usuario> buscarEntidadesPaginadas(int page, int size) {
@@ -28,5 +32,14 @@ public class ServicioUsuario extends AbstractBusinessServiceSoloEnt<Usuario, Int
         respuesta.setTotalPages(usuarioPage.getTotalPages());
 
         return respuesta;
+    }
+
+    public Optional<Usuario> encuentraPorNombreUsuario(String nombreUsuario) {
+        return repoUsuario.findByNombreUsuario(nombreUsuario);
+    }
+
+    public Usuario guardar(Usuario usuario) {
+        repoUsuario.save(usuario);
+        return usuario;
     }
 }

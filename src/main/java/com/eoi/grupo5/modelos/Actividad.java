@@ -1,7 +1,6 @@
 package com.eoi.grupo5.modelos;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -14,7 +13,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -24,6 +22,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Actividad {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -55,7 +54,6 @@ public class Actividad {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @Column(name = "fechaFin")
     @NotNull(message = "Debes introducir una fecha de fin")
-    @Future(message = "La fecha de fin debe ser posterior a la fecha de Inicio")
     private LocalDateTime fechaFin;
 
     @ManyToOne
@@ -63,16 +61,15 @@ public class Actividad {
     @NotNull(message = "La actividad debe tener un tipo")
     private TipoActividad tipo;
 
-    @ManyToMany(mappedBy = "actividadesReservadas")
-    private Set<Reserva> reservas = new HashSet<>();
-
     @ManyToOne
     @JoinColumn(name = "idLocalizacion", foreignKey = @ForeignKey(name = "fkActividadesLocal"), nullable = false)
     @NotNull(message = "Debes introducir una Localización")
     private Localizacion localizacion;
 
     @OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL, orphanRemoval = true)
-    @NotNull(message = "Debes introducir una imagen")
+    private Set<ReservaActividad> reservaActividades = new HashSet<>();
+
+    @OneToMany(mappedBy = "actividad")
     private Set<Imagen> imagenes = new HashSet<>();
 
     @OneToMany(mappedBy = "actividad")
