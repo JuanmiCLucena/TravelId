@@ -124,22 +124,22 @@
                         <!-- Campo para la contraseña actual -->
                         <div class="form-group">
                             <label for="passwordActual">Contraseña Actual:</label>
-                            <input type="password" class="form-control" id="passwordActual" th:field="*{passwordActual}">
-                            <div class="text-danger" th:if="${#fields.hasErrors('passwordActual')}" th:errors="*{passwordActual}">Valor Error</div>
+                            <input type="password" class="form-control" id="passwordActual" name="passwordActual" th:field="*{passwordActual}">
+                            <div class="text-danger" th:if="${#fields.hasErrors('passwordActual')}" th:errors="*{passwordActual}">Contraseña Actual Error</div>
                         </div>
 
                         <!-- Campo para la nueva contraseña -->
                         <div class="form-group">
                             <label for="nuevaPassword">Nueva Contraseña:</label>
-                            <input type="password" class="form-control" id="nuevaPassword" th:field="*{nuevaPassword}">
-                            <div class="text-danger" th:if="${#fields.hasErrors('nuevaPassword')}" th:errors="*{nuevaPassword}">Valor Error</div>
+                            <input type="password" class="form-control" id="nuevaPassword" name="nuevaPassword" th:field="*{nuevaPassword}">
+                            <div class="text-danger" th:if="${#fields.hasErrors('nuevaPassword')}" th:errors="*{nuevaPassword}">Nueva Contraseña Error</div>
                         </div>
 
                         <!-- Campo para confirmar la nueva contraseña -->
                         <div class="form-group">
                             <label for="confirmarPassword">Confirmar Nueva Contraseña:</label>
-                            <input type="password" class="form-control" id="confirmarPassword" th:field="*{confirmarPassword}">
-                            <div class="text-danger" th:if="${#fields.hasErrors('confirmarPassword')}" th:errors="*{confirmarPassword}">Valor Error</div>
+                            <input type="password" class="form-control" id="confirmarPassword" name="confirmarPassword" th:field="*{confirmarPassword}">
+                            <div class="text-danger" th:if="${#fields.hasErrors('confirmarPassword')}" th:errors="*{confirmarPassword}">Confirmar Contraseña Error</div>
                         </div>
 
                         <button type="submit" class="btn btn-primary mt-3">Cambiar Contraseña</button>

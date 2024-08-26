@@ -38,7 +38,7 @@ public class UsuarioRegistroDto {
     private String email;
 
     @Column(name = "dni", length = 10)
-    @DniPattern
+    @DniPattern(message = "el DNI debe tener 8 números y 1 letra")
     private String dni;
 
     @Column(name = "edad")
