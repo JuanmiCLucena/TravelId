@@ -11,6 +11,14 @@ import lombok.Setter;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Representa un tipo de habitación en el sistema.
+ * <p>
+ * Esta entidad clasifica las habitaciones en distintos tipos, proporcionando un nombre y
+ * una descripción opcional. Cada tipo de habitación puede estar asociado con múltiples
+ * habitaciones en el sistema.
+ * </p>
+ */
 @Entity
 @Table(name = "tipoHabitacion")
 @Getter
@@ -18,6 +26,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TipoHabitacion {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -32,7 +41,13 @@ public class TipoHabitacion {
     @Size(max = 150, message = "La descripción no puede tener más de 150 caracteres")
     private String descripcion;
 
+    /**
+     * Conjunto de habitaciones asociadas a este tipo de habitación.
+     * <p>
+     * Define la relación uno a muchos con la entidad {@link Habitacion}, permitiendo la
+     * obtención de todas las habitaciones que pertenecen a este tipo.
+     * </p>
+     */
     @OneToMany(mappedBy = "tipo")
     private Set<Habitacion> habitaciones = new HashSet<>();
-
 }

@@ -8,7 +8,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
+/**
+ * Representa un método de pago en el sistema.
+ * Incluye información sobre el nombre del método de pago utilizado para transacciones.
+ */
 @Entity
 @Table(name = "metodosPago")
 @Getter
@@ -16,6 +19,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MetodoPago {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

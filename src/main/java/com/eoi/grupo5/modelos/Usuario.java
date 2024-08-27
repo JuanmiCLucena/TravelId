@@ -12,6 +12,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * Entidad que representa a un usuario en el sistema, implementando las interfaces necesarias
+ * para la autenticación y autorización en Spring Security.
+ * <p>
+ * Un usuario posee credenciales de acceso, roles asociados y puede realizar reservas
+ * de servicios. Además, contiene información adicional en la entidad {@link DetallesUsuario}.
+ * </p>
+ */
 @Entity
 @Table(name = "usuarios")
 @Getter
@@ -35,12 +43,29 @@ public class Usuario implements UserDetails, Serializable {
     @Size(min = 5, max = 150, message = "La contraseña debe tener entre 5 y 150 caracteres")
     private String password;
 
-    @OneToOne(mappedBy = "usu",cascade = CascadeType.ALL)
+    /**
+     * Relación uno a uno con {@link DetallesUsuario}.
+     * Cada usuario tiene un conjunto de detalles adicionales como nombre, apellidos, y email.
+     * La relación es bidireccional y utiliza un mapeo desde el lado de {@link DetallesUsuario}.
+     */
+    @OneToOne(mappedBy = "usu", cascade = CascadeType.ALL)
     private DetallesUsuario detalles;
 
+    /**
+     * Relación uno a muchos con la entidad {@link Reserva}.
+     * Un usuario puede tener múltiples reservas, las cuales están asociadas de manera
+     * directa a su cuenta. La carga es EAGER para asegurar que las reservas se cargan
+     * junto con el usuario.
+     */
     @OneToMany(mappedBy = "usu", fetch = FetchType.EAGER)
     private Set<Reserva> reservas = new HashSet<>();
 
+    /**
+     * Relación muchos a muchos con la entidad {@link Role}.
+     * Define los roles de seguridad que un usuario tiene en el sistema.
+     * Utiliza una tabla intermedia llamada `rolesUsuario` para gestionar la relación.
+     * La carga es EAGER para asegurar que los roles se cargan junto con el usuario.
+     */
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "rolesUsuario",
@@ -49,9 +74,18 @@ public class Usuario implements UserDetails, Serializable {
     )
     private Set<Role> roles = new HashSet<>();
 
+    /**
+     * Indica si el usuario está activo o no.
+     * Este campo es utilizado por Spring Security para habilitar o deshabilitar el acceso del usuario.
+     */
     @Basic(optional = false)
     private boolean active = true;
 
+    /**
+     * Devuelve las autoridades (roles) del usuario en el formato esperado por Spring Security.
+     *
+     * @return Colección de {@link GrantedAuthority} que representa los roles del usuario.
+     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
@@ -62,18 +96,39 @@ public class Usuario implements UserDetails, Serializable {
         return authorities;
     }
 
+    /**
+     * Devuelve el nombre de usuario, requerido por Spring Security para la autenticación.
+     *
+     * @return Nombre de usuario.
+     */
     @Override
     public String getUsername() {
         return nombreUsuario;
     }
 
+    /**
+     * Constructor que permite crear un usuario a partir de su nombre de usuario, contraseña y detalles adicionales.
+     *
+     * @param nombreUsuario Nombre del usuario.
+     * @param password      Contraseña del usuario.
+     * @param detalles      Detalles adicionales del usuario.
+     */
     public Usuario(String nombreUsuario, String password, DetallesUsuario detalles) {
         this.nombreUsuario = nombreUsuario;
         this.password = password;
         this.detalles = detalles;
     }
 
-    // Helpers
+    /**
+     * Crea un objeto {@link Usuario} a partir de un DTO de registro.
+     * <p>
+     * Este método es un helper que transforma un {@link UsuarioRegistroDto} en una entidad
+     * de usuario lista para ser persistida en la base de datos.
+     * </p>
+     *
+     * @param usuarioRegistroDto DTO con los datos del usuario a registrar.
+     * @return Instancia de {@link Usuario} con los datos del DTO.
+     */
     public static Usuario from(UsuarioRegistroDto usuarioRegistroDto) {
         Usuario usuario = new Usuario();
         usuario.setId(usuarioRegistroDto.getId());
