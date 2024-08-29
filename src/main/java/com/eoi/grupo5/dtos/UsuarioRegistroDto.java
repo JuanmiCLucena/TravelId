@@ -10,7 +10,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
+/**
+ * DTO para la gestión de usuarios en la administración y en el perfil del usuario.
+ *
+ * <p>Este DTO se utiliza para representar la información del usuario tanto en la administración de la aplicación
+ * como en el perfil del usuario. Permite la captura y validación de datos del usuario, incluyendo detalles
+ * personales y credenciales.</p>
+ *
+ * <p>Incorpora métodos para convertir cadenas vacías a {@code null} y sanitizar campos para asegurar
+ * la validez de los datos antes de su procesamiento.</p>
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,60 +31,54 @@ public class UsuarioRegistroDto {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "nombreUsuario", nullable = false, length = 45)
     @NotBlank(message = "Debes introducir un nombre de usuario")
     @Size(min = 2, max = 45, message = "El nombre de usuario debe tener entre 2 y 45 caracteres")
     private String nombreUsuario;
 
-    @Column(name = "password", length = 150)
     @Size(min = 5, max = 150, message = "La contraseña debe tener entre 5 y 150 caracteres")
     private String password;
 
-    @Column(name = "email", nullable = false, length = 50)
     @NotBlank(message = "Introduce un Correo electrónico")
     @Email(message = "El correo debe ser válido")
     @Size(min = 5, max = 50, message = "El correo debe tener entre 5 y 50 caracteres")
     private String email;
 
-    @Column(name = "dni", length = 10)
-    @DniPattern(message = "el DNI debe tener 8 números y 1 letra")
+    @DniPattern(message = "El DNI debe tener 8 números y 1 letra")
     private String dni;
 
-    @Column(name = "edad")
     @Min(value = 18, message = "Debes tener al menos 18 años")
     private Integer edad;
 
-    @Column(name = "telefono", length = 15)
     @TelefonoPattern
     private String telefono;
 
-    @Column(name="nombre", length = 45)
     @Size(max = 45, message = "El nombre no puede tener más de 45 caracteres")
     private String nombre;
 
-    @Column(name="apellidos", length = 45)
     @Size(max = 45, message = "Los apellidos no pueden tener más de 45 caracteres")
     private String apellidos;
-
 
     @Basic(optional = false)
     private boolean active = true;
 
-    //Helpers
+    /**
+     * Crea una instancia de {@link UsuarioRegistroDto} a partir de una entidad {@link Usuario}.
+     *
+     * @param usuario Entidad de usuario a convertir en DTO.
+     * @return Una instancia de {@link UsuarioRegistroDto} con los datos del usuario proporcionado.
+     */
     public static UsuarioRegistroDto from(Usuario usuario) {
-        UsuarioRegistroDto usuarioRegistroDto = new UsuarioRegistroDto();
-        usuarioRegistroDto.setId(usuario.getId());
-        usuarioRegistroDto.setNombreUsuario(usuario.getNombreUsuario());
-        usuarioRegistroDto.setPassword(usuario.getPassword());
-        usuarioRegistroDto.setEmail(usuario.getDetalles().getEmail());
-        usuarioRegistroDto.setDni(usuario.getDetalles().getDni());
-        usuarioRegistroDto.setEdad(usuario.getDetalles().getEdad());
-        usuarioRegistroDto.setNombre(usuario.getDetalles().getNombre());
-        usuarioRegistroDto.setApellidos(usuario.getDetalles().getApellidos());
-        usuarioRegistroDto.setEmail(usuario.getDetalles().getEmail());
-        usuarioRegistroDto.setTelefono(usuario.getDetalles().getTelefono());
-
-        return usuarioRegistroDto;
+        UsuarioRegistroDto dto = new UsuarioRegistroDto();
+        dto.setId(usuario.getId());
+        dto.setNombreUsuario(usuario.getNombreUsuario());
+        dto.setPassword(usuario.getPassword());
+        dto.setEmail(usuario.getDetalles().getEmail());
+        dto.setDni(usuario.getDetalles().getDni());
+        dto.setEdad(usuario.getDetalles().getEdad());
+        dto.setNombre(usuario.getDetalles().getNombre());
+        dto.setApellidos(usuario.getDetalles().getApellidos());
+        dto.setTelefono(usuario.getDetalles().getTelefono());
+        return dto;
     }
 
     /**
@@ -91,9 +94,8 @@ public class UsuarioRegistroDto {
     /**
      * Sanitiza los campos del DTO, convirtiendo las cadenas vacías en {@code null}.
      *
-     * Este método se utiliza para asegurarse de que los campos que llegan vacíos desde un formulario
-     * se conviertan en {@code null} en lugar de quedarse como cadenas vacías.
-     * Esto evitará posibles errores de validación
+     * <p>Este método asegura que los campos que llegan vacíos desde un formulario se conviertan en {@code null}
+     * en lugar de quedarse como cadenas vacías, evitando posibles errores de validación.</p>
      */
     public void sanitize() {
         this.nombreUsuario = convertEmptyToNull(this.nombreUsuario);
@@ -103,6 +105,4 @@ public class UsuarioRegistroDto {
         this.nombre = convertEmptyToNull(this.nombre);
         this.apellidos = convertEmptyToNull(this.apellidos);
     }
-
-
 }

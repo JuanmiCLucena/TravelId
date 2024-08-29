@@ -15,6 +15,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
+/**
+ * DTO para gestionar la creación y actualización de actividades en la parte de administración.
+ *
+ * <p>Este DTO está diseñado específicamente para la administración de actividades,
+ * proporcionando campos adicionales para manejar operaciones CRUD desde la interfaz administrativa.</p>
+ *
+ * <p>A diferencia del {@link ActividadDto} que se utiliza en la parte de usuario,
+ * el {@code ActividadFormDto} incluye validaciones más estrictas y soporte para
+ * manejo de archivos de imagen, necesarios en la gestión administrativa de las actividades.</p>
+ */
 @Getter
 @Setter
 public class ActividadFormDto {
@@ -57,7 +67,15 @@ public class ActividadFormDto {
 
     private MultipartFile[] imagenes; // Para manejar múltiples archivos de imagen
 
-    // Helpers
+    /**
+     * Helper para convertir una entidad {@link Actividad} en un DTO {@code ActividadFormDto}.
+     *
+     * <p>Este método facilita la conversión desde la entidad a su forma editable en la administración,
+     * mapeando todos los campos necesarios para la gestión de la actividad.</p>
+     *
+     * @param actividad la entidad {@link Actividad} a convertir.
+     * @return un objeto {@code ActividadFormDto} con los datos de la entidad.
+     */
     public static ActividadFormDto from(Actividad actividad) {
         // Crear el DTO y mapear los valores de la entidad Actividad
         ActividadFormDto actividadFormDto = new ActividadFormDto();
