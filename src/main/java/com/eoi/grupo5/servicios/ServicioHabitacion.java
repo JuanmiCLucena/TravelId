@@ -14,6 +14,8 @@ import java.util.*;
 
 /**
  * Servicio para gestionar las operaciones relacionadas con las habitaciones.
+ * Proporciona métodos para manejar el CRUD, obtener precios y rangos de disponibilidad,
+ * y realizar otras operaciones específicas de la entidad {@link Habitacion}.
  */
 @Service
 public class ServicioHabitacion extends AbstractBusinessServiceSoloEnt<Habitacion, Integer, RepoHabitacion> {
@@ -26,6 +28,7 @@ public class ServicioHabitacion extends AbstractBusinessServiceSoloEnt<Habitacio
      *
      * @param repoHabitacion el repositorio de habitaciones.
      * @param repoReserva el repositorio de reservas.
+     * @param servicioHotel el servicio para gestionar hoteles.
      */
     protected ServicioHabitacion(RepoHabitacion repoHabitacion, RepoReserva repoReserva, ServicioHotel servicioHotel) {
         super(repoHabitacion);
@@ -57,9 +60,9 @@ public class ServicioHabitacion extends AbstractBusinessServiceSoloEnt<Habitacio
     /**
      * Obtiene el precio actual de una habitación para una fecha específica.
      *
-     * @param habitacion la habitación.
+     * @param habitacion la habitación a evaluar.
      * @param fechaActual la fecha actual.
-     * @return el precio vigente en la fecha actual.
+     * @return el precio vigente en la fecha actual, o {@code null} si no hay un precio válido.
      */
     public Precio getPrecioActual(Habitacion habitacion, LocalDateTime fechaActual) {
         return habitacion.getPrecio().stream()
@@ -72,7 +75,7 @@ public class ServicioHabitacion extends AbstractBusinessServiceSoloEnt<Habitacio
     /**
      * Obtiene los precios actuales de las habitaciones de un hotel.
      *
-     * @param hotel el hotel.
+     * @param hotel el hotel para el cual se desean obtener los precios de las habitaciones.
      * @return un mapa con los ID de las habitaciones y sus precios actuales.
      */
     public Map<Integer, Double> obtenerPreciosActualesHabitacionesHotel(Hotel hotel) {
@@ -90,10 +93,10 @@ public class ServicioHabitacion extends AbstractBusinessServiceSoloEnt<Habitacio
     /**
      * Calcula el precio total de una habitación para un rango de fechas.
      *
-     * @param habitacion la habitación.
-     * @param fechaInicio la fecha de inicio.
-     * @param fechaFin la fecha de fin.
-     * @return el precio total para el rango de fechas.
+     * @param habitacion la habitación a evaluar.
+     * @param fechaInicio la fecha de inicio del rango.
+     * @param fechaFin la fecha de fin del rango.
+     * @return el precio total para el rango de fechas especificado.
      */
     public Double calcularPrecioTotal(Habitacion habitacion, LocalDateTime fechaInicio, LocalDateTime fechaFin) {
         double precioTotal = 0.0;
@@ -116,7 +119,7 @@ public class ServicioHabitacion extends AbstractBusinessServiceSoloEnt<Habitacio
      * @param idHabitacion el ID de la habitación.
      * @param fechaEntrada la fecha de inicio del rango a verificar.
      * @param fechaSalida la fecha de fin del rango a verificar.
-     * @return una lista de intervalos disponibles.
+     * @return una lista de intervalos disponibles, cada uno con su precio total.
      */
     public List<Interval> obtenerRangosDisponibles(Integer idHabitacion, LocalDateTime fechaEntrada, LocalDateTime fechaSalida) {
         // Obtenemos las reservas de la habitación en concreto
@@ -184,19 +187,41 @@ public class ServicioHabitacion extends AbstractBusinessServiceSoloEnt<Habitacio
             this.intervalPrice = intervalPrice;
         }
 
+        /**
+         * Obtiene la fecha de inicio del intervalo.
+         *
+         * @return la fecha de inicio.
+         */
         public LocalDateTime getStart() {
             return start;
         }
 
+        /**
+         * Obtiene la fecha de fin del intervalo.
+         *
+         * @return la fecha de fin.
+         */
         public LocalDateTime getEnd() {
             return end;
         }
 
+        /**
+         * Obtiene el precio total del intervalo.
+         *
+         * @return el precio total.
+         */
         public Double getIntervalPrice() {
             return intervalPrice;
         }
     }
 
+    /**
+     * Obtiene una lista de hoteles en la misma zona que la habitación especificada.
+     * Limita el resultado a 2 hoteles distintos del hotel de la habitación.
+     *
+     * @param habitacion la habitación cuya zona se quiere consultar.
+     * @return una lista de hoteles en la misma zona, excluyendo el hotel actual.
+     */
     public List<Hotel> obtenerHotelesEnTuZona(Habitacion habitacion) {
         Hotel hotel = habitacion.getHotel();
         return servicioHotel.buscarEntidades()
@@ -205,5 +230,4 @@ public class ServicioHabitacion extends AbstractBusinessServiceSoloEnt<Habitacio
                 .limit(2)
                 .toList();
     }
-
 }
