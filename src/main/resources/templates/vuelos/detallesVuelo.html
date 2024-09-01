@@ -100,20 +100,15 @@
                            + ' Destino: ' +  ${vuelo.destino.nombre}">
                         Origen y Destino del Vuelo
                       </div>
-                    </div>
-                    <div class="hotel_title_button ml-lg-auto text-lg-right">
-                      <div class="button book_button trans_200">
-                        <a href="#">
-                          Reservar
-                        </a>
-                      </div>
+                      <div th:text="'Fecha Salida: ' + ${vuelo.fechaSalida}"></div>
+                      <div th:text="'Fecha Llegada: ' + ${vuelo.fechaLlegada}"></div>
                     </div>
                   </div>
 
                   <!-- Image -->
 
                   <div class="hotel_image" th:object="${vuelo}">
-                    <img th:src="@{${vuelo.imagen == null} ? '/images/Hoteles/Nobu_Hotel.jpg' : '/imagenes/' + ${imagenVuelo}}" alt="Imagen del vuelo" />
+                    <img th:src="@{'/imagenes/' + ${imagenVuelo}}" alt="Imagen del vuelo" />
                   </div>
 
                   <!-- vuelo Info Text -->
@@ -123,17 +118,94 @@
                     </p>
                   </div>
 
-                  <div id="seat-map">
-                    <div th:each="asiento : ${vuelo.asientos}">
-                      <div
-                              class="seat"
-                              th:classappend="${asiento.categoria.nombre.toLowerCase() + ' ' + (asiento.estado != 'Disponible' ? 'reserved' : '')}"
-                              th:text="${asiento.numero}"
-                              th:if="${asiento.estado == 'Disponible'}"
-                              th:onclick="'reserveSeat(' + ${asiento.id} + ',' + ${vuelo.id} + ')'">
+                  <div id="seat-map" class="col d-flex bg-dark">
+                    <div th:each="categoria : ${asientosPorCategoria.entrySet()}" class="seat-category">
+                      <div class="category-name text-center" th:text="${categoria.key}">Categoría</div>
+                      <div th:each="asiento : ${categoria.value}"
+                           th:classappend="'seat ' + ${asiento.categoria + ' ' + (asiento.reservado ? 'reservado' : '')}"
+                           th:data-asientoNumero="${asiento.numero}"
+                           th:data-precio="${asiento.precio}"
+                           th:onclick="'openModal(' + ${asiento.id} + ',' + ${vuelo.id} + ', this)'">
+                        <div th:text="${asiento.numero}"></div>
+                        <div th:text="${asiento.precio + ' €'}"></div>
                       </div>
                     </div>
                   </div>
+
+                </div>
+
+              </div>
+
+
+                <!-- Modal de Confirmación -->
+                  <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header d-flex justify-content-between">
+                          <h5 class="modal-title" id="confirmModalLabel">Confirmar Reserva</h5>
+                          <button type="button" class="close px-2 py-1 rounded-1" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          ¿Estás seguro de que deseas reservar el asiento <span id="seatNumber"></span> en este vuelo?
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                          <button type="button" class="btn btn-primary" onclick="submitReservation()">Confirmar</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Formulario de Reserva (oculto) -->
+                  <form id="reservation-form" th:action="@{/reservas/asiento/reservar}" method="post" style="display:none;">
+                    <input type="hidden" name="idAsiento" id="idAsiento">
+                    <input type="hidden" name="idVuelo" id="idVuelo">
+                    <input type="hidden" name="precioTotal" id="precioTotal">
+                    <div class="form-group mb-3">
+                      <label for="fechaInicio" class="form-label">Fecha Salida:</label>
+                      <input
+                              readonly
+                              type="datetime-local"
+                              name="fechaInicio"
+                              id="fechaInicio"
+                              class="form-control"
+                              th:value="${vuelo.fechaSalida}"
+                      />
+                    </div>
+                    <div class="form-group mb-3">
+                      <label for="fechaFin" class="form-label">Fecha Llegada:</label>
+                      <input
+                              readonly
+                              type="datetime-local"
+                              name="fechaFin"
+                              id="fechaFin"
+                              class="form-control"
+                              th:value="${vuelo.fechaLlegada}"
+                      />
+                    </div>
+                    <div class="form-group mb-3">
+                      <label for="metodoPagoId">Método Pago:</label>
+                      <select class="form-control" name="metodoPagoId" id="metodoPagoId">
+                        <option
+                                th:each="metodoPago : ${metodosPago}"
+                                th:value="${metodoPago.id}"
+                                th:text="${metodoPago.metodo}"
+                        ></option>
+                      </select>
+                    </div>
+                  </form>
+
+                </div>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
 
       <!-- Footer -->
 
@@ -143,6 +215,30 @@
       <div th:replace="~{fragments/plantilla :: copyright}"></div>
     </div>
 
+
+    <script>
+      let selectedSeatId;
+      let selectedVueloId;
+      let selectedSeatNumber;
+      let selectedSeatPrice;
+
+      function openModal(idAsiento, idVuelo, element) {
+        selectedSeatId = idAsiento;
+        selectedVueloId = idVuelo;
+        selectedSeatNumber = element.getAttribute('data-asientoNumero');
+        selectedSeatPrice = element.getAttribute('data-precio');
+
+        document.getElementById('seatNumber').textContent = selectedSeatNumber;
+        $('#confirmModal').modal('show');
+      }
+
+      function submitReservation() {
+        document.getElementById('idAsiento').value = selectedSeatId;
+        document.getElementById('idVuelo').value = selectedVueloId;
+        document.getElementById('precioTotal').value = selectedSeatPrice;
+        $('#reservation-form').submit(); // Envía el formulario solo si se confirma
+      }
+    </script>
     <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
     <script th:src="@{/plugins/easing/easing.js}"></script>
     <script th:src="@{/plugins/parallax-js-master/parallax.min.js}"></script>
