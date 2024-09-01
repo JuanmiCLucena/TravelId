@@ -9,7 +9,16 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
-
+/**
+ * DTO para la gestión de hoteles en la parte administrativa de la aplicación.
+ *
+ * <p>Este DTO se utiliza para crear y actualizar los registros de hoteles,
+ * proporcionando campos para la administración de atributos clave como el nombre, categoría,
+ * descripción, contacto y localización.</p>
+ *
+ * <p>Además, permite la carga de múltiples archivos de imagen,
+ * lo que es útil para gestionar las imágenes del hotel desde la interfaz administrativa.</p>
+ */
 @Getter
 @Setter
 public class HotelFormDto {
@@ -23,7 +32,7 @@ public class HotelFormDto {
     @Size(max = 45, message = "El nombre no puede tener más de 45 caracteres")
     private String nombre;
 
-    @NotNull(message = "El Hotel debe tener una categoria")
+    @NotNull(message = "El Hotel debe tener una categoría")
     @Min(value = 1, message = "La categoría debe ser al menos 1")
     @Max(value = 5, message = "La categoría no puede ser mayor a 5")
     private Byte categoria;
@@ -38,5 +47,6 @@ public class HotelFormDto {
     @NotNull(message = "El hotel debe tener una localización")
     private Integer localizacionId;
 
-    private MultipartFile[] imagenes;
+    private MultipartFile[] imagenes; // Para manejar múltiples archivos de imagen
+
 }

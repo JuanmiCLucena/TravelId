@@ -16,8 +16,16 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(name = "vuelos")
+/**
+ * DTO para la gestión de vuelos en la parte administrativa de la aplicación.
+ *
+ * <p>Este DTO se utiliza para crear y actualizar los registros de vuelos, proporcionando
+ * campos necesarios para definir un vuelo, como el nombre, descripción, fechas de salida y llegada,
+ * y las relaciones con la compañía de vuelo, origen y destino.</p>
+ *
+ * <p>Además, permite la asociación de asientos al vuelo, lo que facilita la administración de
+ * la capacidad y disponibilidad del vuelo en el sistema.</p>
+ */
 @Getter
 @Setter
 @NoArgsConstructor

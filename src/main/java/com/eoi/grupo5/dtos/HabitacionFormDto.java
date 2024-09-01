@@ -12,6 +12,17 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * DTO para la gestión de habitaciones en la parte administrativa de la aplicación.
+ *
+ * <p>Este DTO está diseñado para manejar la creación y actualización de habitaciones,
+ * proporcionando campos específicos para la administración de los atributos clave de una habitación,
+ * incluidos detalles como el número de camas, capacidad, hotel y tipo de habitación.</p>
+ *
+ * <p>A diferencia de los DTOs utilizados en la parte de usuario, el {@code HabitacionFormDto}
+ * incluye validaciones más estrictas y soporte para la carga de múltiples archivos de imagen,
+ * necesarios para gestionar eficientemente las habitaciones desde la interfaz administrativa.</p>
+ */
 @Getter
 @Setter
 public class HabitacionFormDto {
@@ -43,8 +54,17 @@ public class HabitacionFormDto {
     @Size(max = 150, message = "La descripción no puede tener más de 150 caracteres")
     private String descripcion;
 
-    private MultipartFile[] imagenes;
+    private MultipartFile[] imagenes; // Para manejar múltiples archivos de imagen
 
+    /**
+     * Helper para convertir una entidad {@link Habitacion} en un DTO {@code HabitacionFormDto}.
+     *
+     * <p>Este método facilita la conversión desde la entidad a su forma editable en la administración,
+     * mapeando todos los campos necesarios para la gestión de la habitación.</p>
+     *
+     * @param habitacion la entidad {@link Habitacion} a convertir.
+     * @return un objeto {@code HabitacionFormDto} con los datos de la entidad.
+     */
     public static HabitacionFormDto from(Habitacion habitacion) {
         HabitacionFormDto habitacionFormDto = new HabitacionFormDto();
         habitacionFormDto.setId(habitacion.getId());
