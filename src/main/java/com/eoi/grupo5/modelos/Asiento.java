@@ -19,7 +19,8 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Asiento {
+
+public class Asiento implements Comparable<Asiento>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,4 +63,10 @@ public class Asiento {
      */
     @OneToMany(mappedBy = "asiento")
     private Set<Precio> precio = new HashSet<>();
+
+    @Override
+    public int compareTo(@org.jetbrains.annotations.NotNull Asiento asiento) {
+        return this.getId().compareTo(asiento.getId());
+    }
+
 }
