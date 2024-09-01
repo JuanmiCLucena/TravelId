@@ -20,11 +20,13 @@ import org.springframework.web.multipart.MultipartFile;
 import jakarta.validation.Valid;
 
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
+/**
+ * Controlador para gestionar las operaciones relacionadas con los hoteles en la sección de administración.
+ * Proporciona funcionalidades CRUD (Crear, Leer, Actualizar, Eliminar) para los hoteles.
+ */
 @Controller
 @RequestMapping("/admin/hoteles")
 public class AdminHotelController {
@@ -35,6 +37,15 @@ public class AdminHotelController {
     private final ServicioLocalizacion servicioLocalizacion;
     private final FileSystemStorageService fileSystemStorageService;
 
+    /**
+     * Constructor que inyecta las dependencias necesarias para el controlador.
+     *
+     * @param servicioHotel              Servicio para gestionar hoteles.
+     * @param servicioHabitacion         Servicio para gestionar habitaciones.
+     * @param servicioImagen             Servicio para gestionar imágenes de hoteles.
+     * @param servicioLocalizacion       Servicio para gestionar localizaciones.
+     * @param fileSystemStorageService   Servicio para gestionar el almacenamiento de archivos.
+     */
     public AdminHotelController(ServicioHotel servicioHotel, ServicioHabitacion servicioHabitacion, ServicioImagen servicioImagen, ServicioLocalizacion servicioLocalizacion, FileSystemStorageService fileSystemStorageService) {
         this.servicioHotel = servicioHotel;
         this.servicioHabitacion = servicioHabitacion;
@@ -43,6 +54,14 @@ public class AdminHotelController {
         this.fileSystemStorageService = fileSystemStorageService;
     }
 
+    /**
+     * Maneja la solicitud GET para listar todos los hoteles con paginación.
+     *
+     * @param modelo Modelo para pasar datos a la vista.
+     * @param page   Número de página actual (por defecto es 0).
+     * @param size   Tamaño de la página (por defecto es 10).
+     * @return El nombre de la plantilla que muestra la lista de hoteles.
+     */
     @GetMapping
     public String listar(
             Model modelo,
@@ -56,7 +75,12 @@ public class AdminHotelController {
         return "admin/hoteles/adminHoteles";
     }
 
-    // Mostrar página de creación de hotel
+    /**
+     * Maneja la solicitud GET para mostrar la página de creación de un nuevo hotel.
+     *
+     * @param modelo Modelo para pasar datos a la vista.
+     * @return El nombre de la plantilla que muestra el formulario de creación de un nuevo hotel.
+     */
     @GetMapping("/crear")
     public String mostrarPaginaCrear(Model modelo) {
         HotelFormDto hotelFormDto = new HotelFormDto();
@@ -65,6 +89,14 @@ public class AdminHotelController {
         return "admin/hoteles/adminNuevoHotel";
     }
 
+    /**
+     * Maneja la solicitud POST para crear un nuevo hotel.
+     *
+     * @param hotelFormDto Objeto DTO que contiene los datos del formulario.
+     * @param result       Objeto que contiene los errores de validación.
+     * @param modelo       Modelo para pasar datos a la vista.
+     * @return Redirige a la lista de hoteles si la creación es exitosa, de lo contrario, devuelve la página de creación con errores.
+     */
     @PostMapping("/crear")
     public String crear(
             @Valid @ModelAttribute("hotelFormDto") HotelFormDto hotelFormDto,
@@ -120,7 +152,13 @@ public class AdminHotelController {
         return "redirect:/admin/hoteles";
     }
 
-    // Mostrar página de edición de hotel
+    /**
+     * Maneja la solicitud GET para mostrar la página de edición de un hotel existente.
+     *
+     * @param id     ID del hotel a editar.
+     * @param modelo Modelo para pasar datos a la vista.
+     * @return El nombre de la plantilla que muestra el formulario de edición de un hotel.
+     */
     @GetMapping("/editar/{id}")
     public String mostrarPaginaEditar(@PathVariable Integer id, Model modelo) {
         Optional<Hotel> hotelOptional = servicioHotel.encuentraPorId(id);
@@ -145,7 +183,16 @@ public class AdminHotelController {
         }
     }
 
-    // Editar hotel existente
+    /**
+     * Maneja la solicitud PUT para actualizar un hotel existente.
+     *
+     * @param id              ID del hotel a actualizar.
+     * @param imagenes        Array de archivos de imágenes a subir.
+     * @param hotelFormDto    Objeto DTO que contiene los datos del formulario.
+     * @param result          Objeto que contiene los errores de validación.
+     * @param modelo          Modelo para pasar datos a la vista.
+     * @return Redirige a la lista de hoteles si la actualización es exitosa, de lo contrario, devuelve la página de edición con errores.
+     */
     @PutMapping("/editar/{id}")
     public String editar(
             @PathVariable Integer id,
@@ -211,6 +258,12 @@ public class AdminHotelController {
         return "redirect:/admin/hoteles";
     }
 
+    /**
+     * Maneja la solicitud DELETE para eliminar un hotel existente.
+     *
+     * @param id ID del hotel a eliminar.
+     * @return Redirige a la lista de hoteles si la eliminación es exitosa.
+     */
     @DeleteMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Integer id) {
         Optional<Hotel> optionalHotel = servicioHotel.encuentraPorId(id);

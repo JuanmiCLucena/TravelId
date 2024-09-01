@@ -15,6 +15,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Controlador para gestionar las operaciones de administración relacionadas con los vuelos.
+ * Permite listar, crear, editar y eliminar vuelos desde la interfaz de administración.
+ */
 @Controller
 @RequestMapping("/admin/vuelos")
 public class AdminVueloController {
@@ -27,7 +31,16 @@ public class AdminVueloController {
 
     private final FileSystemStorageService fileSystemStorageService;
 
-
+    /**
+     * Constructor que inyecta las dependencias necesarias.
+     *
+     * @param servicioCompaniaVuelo Servicio para manejar las compañías de vuelo.
+     * @param servicioVuelo Servicio para manejar las operaciones de vuelo.
+     * @param servicioAsiento Servicio para manejar los asientos.
+     * @param servicioImagen Servicio para manejar las imágenes.
+     * @param servicioLocalizacion Servicio para manejar las localizaciones.
+     * @param fileSystemStorageService Servicio para manejar el almacenamiento de archivos.
+     */
     public AdminVueloController(ServicioCompaniaVuelo servicioCompaniaVuelo, ServicioVuelo servicioVuelo, ServicioAsiento servicioAsiento, ServicioImagen servicioImagen, ServicioLocalizacion servicioLocalizacion, FileSystemStorageService fileSystemStorageService) {
         this.servicioCompaniaVuelo = servicioCompaniaVuelo;
         this.servicioVuelo = servicioVuelo;
@@ -37,6 +50,14 @@ public class AdminVueloController {
         this.fileSystemStorageService = fileSystemStorageService;
     }
 
+    /**
+     * Maneja la solicitud GET para listar todos los vuelos paginados.
+     *
+     * @param modelo Modelo para pasar datos a la vista.
+     * @param page Número de la página solicitada (por defecto 0).
+     * @param size Tamaño de la página (por defecto 10).
+     * @return El nombre de la plantilla que muestra la lista de vuelos.
+     */
     @GetMapping
     public String listar(
             Model modelo,
@@ -50,6 +71,12 @@ public class AdminVueloController {
         return "admin/vuelos/adminVuelos";
     }
 
+    /**
+     * Muestra la página para crear un nuevo vuelo.
+     *
+     * @param modelo Modelo para pasar datos a la vista.
+     * @return El nombre de la plantilla que muestra el formulario de creación de vuelo.
+     */
     @GetMapping("/crear")
     public String mostrarPaginaCrear(Model modelo) {
         Vuelo vuelo = new Vuelo();
@@ -59,6 +86,13 @@ public class AdminVueloController {
         return "admin/vuelos/adminNuevoVuelo";
     }
 
+    /**
+     * Maneja la solicitud POST para crear un nuevo vuelo.
+     *
+     * @param imagen Imagen asociada al vuelo.
+     * @param vueloFormDto Datos del nuevo vuelo.
+     * @return Redirección a la lista de vuelos.
+     */
     @PostMapping("/crear")
     public String crear(@RequestParam MultipartFile imagen, @ModelAttribute("vuelo") VueloFormDto vueloFormDto) {
         try {
@@ -97,6 +131,13 @@ public class AdminVueloController {
         return "redirect:/admin/vuelos";
     }
 
+    /**
+     * Muestra la página para editar un vuelo existente.
+     *
+     * @param modelo Modelo para pasar datos a la vista.
+     * @param id ID del vuelo que se va a editar.
+     * @return El nombre de la plantilla que muestra el formulario de edición de vuelo, o una vista de error si el vuelo no se encuentra.
+     */
     @GetMapping("editar/{id}")
     public String mostrarPaginaEditar(Model modelo, @PathVariable Integer id) {
         Optional<Vuelo> vuelo = servicioVuelo.encuentraPorId(id);
@@ -112,6 +153,12 @@ public class AdminVueloController {
         }
     }
 
+    /**
+     * Maneja la solicitud DELETE para eliminar un vuelo existente.
+     *
+     * @param id ID del vuelo que se va a eliminar.
+     * @return Redirección a la lista de vuelos.
+     */
     @DeleteMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Integer id) {
         Optional<Vuelo> optionalVuelo = servicioVuelo.encuentraPorId(id);

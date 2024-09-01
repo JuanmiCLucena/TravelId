@@ -8,17 +8,18 @@ import com.eoi.grupo5.servicios.ServicioUsuario;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Controlador para gestionar las operaciones de administración relacionadas con los usuarios.
+ * Permite crear, listar, editar y eliminar usuarios desde la interfaz de administración.
+ */
 @Controller
 @RequestMapping("/admin/usuarios")
 public class AdminUsuarioController {
@@ -27,12 +28,28 @@ public class AdminUsuarioController {
     private final ServicioDetallesUsuario servicioDetallesUsuario;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    /**
+     * Constructor que inyecta las dependencias necesarias.
+     *
+     * @param servicioUsuario Servicio para manejar las operaciones de usuario.
+     * @param servicioDetallesUsuario Servicio para manejar los detalles del usuario.
+     * @param bCryptPasswordEncoder Codificador de contraseñas para asegurar las contraseñas de usuario.
+     */
     public AdminUsuarioController(ServicioUsuario servicioUsuario, ServicioDetallesUsuario servicioDetallesUsuario, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.servicioUsuario = servicioUsuario;
         this.servicioDetallesUsuario = servicioDetallesUsuario;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
+
+    /**
+     * Maneja la solicitud GET para listar todos los usuarios paginados.
+     *
+     * @param modelo Modelo para pasar datos a la vista.
+     * @param page Número de la página solicitada (por defecto 0).
+     * @param size Tamaño de la página (por defecto 10).
+     * @return El nombre de la plantilla que muestra la lista de usuarios.
+     */
     @GetMapping
     public String listar(
             Model modelo,
@@ -46,6 +63,12 @@ public class AdminUsuarioController {
         return "admin/usuarios/adminUsuarios";
     }
 
+    /**
+     * Muestra la página para crear un nuevo usuario.
+     *
+     * @param modelo Modelo para pasar datos a la vista.
+     * @return El nombre de la plantilla que muestra el formulario de creación de usuario.
+     */
     @GetMapping("/crear")
     public String mostrarPaginaCrear(Model modelo) {
         UsuarioRegistroDto usuario = new UsuarioRegistroDto();
@@ -54,6 +77,14 @@ public class AdminUsuarioController {
         return "admin/usuarios/adminNuevoUsuario";
     }
 
+    /**
+     * Maneja la solicitud POST para crear un nuevo usuario.
+     *
+     * @param usuarioRegistroDto Datos del nuevo usuario, validado.
+     * @param result Resultado de la validación de los datos del usuario.
+     * @param modelo Modelo para pasar datos a la vista.
+     * @return Redirección a la lista de usuarios o la vista de creación si hay errores.
+     */
     @PostMapping("/crear")
     public String crear(@Valid @ModelAttribute("usuario") UsuarioRegistroDto usuarioRegistroDto, BindingResult result, Model modelo) {
         if (result.hasErrors()) {
@@ -73,6 +104,13 @@ public class AdminUsuarioController {
         return "redirect:/admin/usuarios";
     }
 
+    /**
+     * Muestra la página para editar un usuario existente.
+     *
+     * @param modelo Modelo para pasar datos a la vista.
+     * @param id ID del usuario que se va a editar.
+     * @return El nombre de la plantilla que muestra el formulario de edición de usuario, o una vista de error si el usuario no se encuentra.
+     */
     @GetMapping("/editar/{id}")
     public String mostrarPaginaEditar(Model modelo, @PathVariable Integer id) {
         Optional<Usuario> usuario = servicioUsuario.encuentraPorId(id);
@@ -87,6 +125,15 @@ public class AdminUsuarioController {
         }
     }
 
+    /**
+     * Maneja la solicitud PUT para editar un usuario existente.
+     *
+     * @param id ID del usuario que se va a actualizar.
+     * @param usuarioRegistroDto Datos del usuario actualizado, validado.
+     * @param result Resultado de la validación de los datos del usuario.
+     * @param modelo Modelo para pasar datos a la vista.
+     * @return Redirección a la lista de usuarios o la vista de edición si hay errores.
+     */
     @PutMapping("/editar/{id}")
     public String editar(@PathVariable Integer id, @Valid @ModelAttribute("usuario") UsuarioRegistroDto usuarioRegistroDto, BindingResult result, Model modelo) {
 
@@ -120,6 +167,12 @@ public class AdminUsuarioController {
         return "redirect:/admin/usuarios";
     }
 
+    /**
+     * Maneja la solicitud DELETE para eliminar un usuario existente.
+     *
+     * @param id ID del usuario que se va a eliminar.
+     * @return Redirección a la lista de usuarios.
+     */
     @DeleteMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Integer id) {
         Optional<Usuario> optionalUsuario = servicioUsuario.encuentraPorId(id);
