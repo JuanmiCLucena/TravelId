@@ -194,7 +194,7 @@ public class AdminActividadController {
      * @param result            Objeto BindingResult para manejar errores de validación.
      * @param modelo            Objeto Model para agregar atributos a la vista.
      * @return Redirección a la lista de actividades si la edición es exitosa, o la vista de edición si hay errores.
-     * @throws IOException si ocurre un error al almacenar las imágenes.
+     * IOException si ocurre un error al almacenar las imágenes.
      */
     @PutMapping("/editar/{id}")
     public String editar(

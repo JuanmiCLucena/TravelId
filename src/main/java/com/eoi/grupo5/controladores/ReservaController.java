@@ -273,7 +273,7 @@ public class ReservaController {
      * @param modelo El objeto {@link Model} utilizado para pasar datos a la vista en caso de error.
      * @return Una redirección a la página de "Mis Reservas" en caso de éxito, o una página de error en caso de que ocurra una excepción.
      *
-     * @throws Exception En caso de que ocurra algún error durante la creación de la reserva o el procesamiento del pago.
+     * Exception En caso de que ocurra algún error durante la creación de la reserva o el procesamiento del pago.
      */
     @PostMapping("/habitacion/{idHabitacion}/reservar")
     public String reservarHabitacion(
@@ -349,7 +349,7 @@ public class ReservaController {
      *
      * @throws UsernameNotFoundException Si el usuario autenticado no es encontrado.
      * @throws EntityNotFoundException Si la actividad especificada no es encontrada.
-     * @throws Exception En caso de que ocurra algún error durante la creación de la reserva o el procesamiento del pago.
+     * Exception En caso de que ocurra algún error durante la creación de la reserva o el procesamiento del pago.
      */
     @PostMapping("/actividad/{idActividad}/reservar")
     public String reservarActividad(
@@ -528,7 +528,7 @@ public class ReservaController {
      * @param modelo El objeto {@link Model} utilizado para pasar datos a la vista en caso de error.
      * @return Una redirección a la página de "Mis Reservas" en caso de éxito, o una página de error en caso de que ocurra una excepción.
      *
-     * @throws Exception En caso de que ocurra algún error durante el proceso de cancelación.
+     * Exception En caso de que ocurra algún error durante el proceso de cancelación.
      */
     @PostMapping("/cancelar/{id}")
     public String cancelarReserva(@PathVariable Integer id, Model modelo) {
