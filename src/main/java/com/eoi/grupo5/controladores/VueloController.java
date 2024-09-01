@@ -41,7 +41,6 @@ public class VueloController {
 
     /**
      * Maneja la solicitud GET para mostrar la lista de vuelos disponibles.
-     *
      * Obtiene una lista paginada de vuelos y la muestra en la vista correspondiente.
      *
      * @param modelo el modelo de datos para la vista.
@@ -67,7 +66,6 @@ public class VueloController {
 
     /**
      * Maneja la solicitud GET para mostrar los detalles de un vuelo específico.
-     *
      * Busca el vuelo por su ID y carga sus detalles, incluyendo la imagen del vuelo
      * y los precios actuales de los asientos disponibles.
      *
