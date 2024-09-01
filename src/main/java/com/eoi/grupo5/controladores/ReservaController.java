@@ -7,6 +7,7 @@ import com.eoi.grupo5.repos.RepoUsuario;
 import com.eoi.grupo5.servicios.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpSession;
+import org.hibernate.Session;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
@@ -19,42 +20,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-
-/**
- * El controlador `ReservaController` gestiona las operaciones relacionadas con las reservas en la aplicación,
- * abarcando una variedad de funcionalidades, desde la visualización y gestión de reservas de habitaciones y actividades,
- * hasta la creación y cancelación de reservas.
- *
- * Este controlador se encarga de interactuar con los servicios y repositorios
- * que manejan la lógica de negocio y la persistencia de datos, así como de enviar notificaciones por correo electrónico
- * a los usuarios sobre el estado de sus reservas.
- *
- * Funcionalidades principales:
- * - **Visualización de reservas**: Permite a los usuarios autenticados ver y gestionar sus reservas existentes.
- * - **Creación de reservas de habitaciones**: Facilita la reserva de habitaciones, mostrando disponibilidad y gestionando
- *   detalles de la reserva.
- * - **Creación de reservas de actividades**: Permite a los usuarios reservar actividades, verificar la disponibilidad
- *   de plazas y gestionar la confirmación de reservas.
- * - **Cancelación de reservas**: Proporciona la capacidad para cancelar reservas existentes y actualizar el estado
- *   de las actividades asociadas.
- * - **Notificación por correo electrónico**: Envía correos electrónicos de confirmación y cancelación de reservas
- *   a los usuarios con los detalles pertinentes.
- *
- * Dependencias:
- * - {@link ServicioReserva}: Servicio que maneja la lógica de negocio de las reservas.
- * - {@link ServicioHabitacion}: Servicio que gestiona la lógica de negocio de las habitaciones.
- * - {@link ServicioActividad}: Servicio que gestiona la lógica de negocio de las actividades.
- * - {@link RepoUsuario}: Repositorio para acceder y gestionar los datos de los usuarios.
- * - {@link ServicioMetodoPago}: Servicio que gestiona los métodos de pago.
- * - {@link CustomEmailService}: Servicio para el envío de correos electrónicos.
- *
- * @see ServicioReserva
- * @see ServicioHabitacion
- * @see ServicioActividad
- * @see RepoUsuario
- * @see ServicioMetodoPago
- * @see CustomEmailService
- */
 
 @Controller
 @RequestMapping("/reservas")
@@ -69,23 +34,7 @@ public class ReservaController {
     private final ServicioMetodoPago servicioMetodoPago;
     private final CustomEmailService emailService;
 
-
     public ReservaController(ServicioReserva servicioReserva, ServicioHabitacion servicioHabitacion, ServicioActividad servicioActividad, ServicioVuelo servicioVuelo, ServicioAsiento servicioAsiento, RepoUsuario repoUsuario, ServicioMetodoPago servicioMetodoPago, CustomEmailService emailService) {
-
-    /**
-     * Constructor de `ReservaController` con inyección de dependencias.
-     *
-     * @param servicioReserva Servicio para gestionar las reservas.
-     * @param servicioHabitacion Servicio para gestionar las habitaciones.
-     * @param servicioActividad Servicio para gestionar las actividades.
-     * @param repoUsuario Repositorio para gestionar los usuarios.
-     * @param servicioMetodoPago Servicio para gestionar los métodos de pago.
-     * @param emailService Servicio para enviar correos electrónicos.
-     */
-    public ReservaController(ServicioReserva servicioReserva, ServicioHabitacion servicioHabitacion,
-                             ServicioActividad servicioActividad, RepoUsuario repoUsuario,
-                             ServicioMetodoPago servicioMetodoPago, CustomEmailService emailService) {
-
         this.servicioReserva = servicioReserva;
         this.servicioHabitacion = servicioHabitacion;
         this.servicioActividad = servicioActividad;
@@ -96,18 +45,6 @@ public class ReservaController {
         this.emailService = emailService;
     }
 
-    /**
-     * Muestra las reservas del usuario autenticado.
-     *
-     * Este método obtiene el usuario autenticado a través del objeto {@link Principal},
-     * luego busca las reservas asociadas a ese usuario en la base de datos, y las muestra en una vista paginada.
-     *
-     * @param principal El objeto {@link Principal} que representa al usuario autenticado.
-     * @param modelo El objeto {@link Model} que se utiliza para pasar datos a la vista.
-     * @param page El número de página para la paginación. Por defecto es 0.
-     * @param size El tamaño de la página para la paginación. Por defecto es 10.
-     * @return La vista "reservas/misReservas" que muestra las reservas del usuario autenticado.
-     */
     @GetMapping("/mis-reservas")
     public String verMisReservas(
             Principal principal,
@@ -132,16 +69,6 @@ public class ReservaController {
         }
     }
 
-    /**
-     * Muestra la página para crear una reserva de una habitación específica.
-     *
-     * Este método obtiene una habitación específica basada en el ID proporcionado, verifica si la habitación existe,
-     * y luego la muestra junto con su precio y una imagen asociada, si están disponibles.
-     *
-     * @param modelo El objeto {@link Model} que se utiliza para pasar datos a la vista.
-     * @param id El ID de la habitación que se desea reservar.
-     * @return La vista "reservas/habitacion/disponibilidadHabitacion" que muestra la disponibilidad y detalles de la habitación.
-     */
     @GetMapping("/habitacion/reservar/{id}")
     public String mostrarPaginaCrear(Model modelo, @PathVariable Integer id) {
         Optional<Habitacion> optionalHabitacion = servicioHabitacion.encuentraPorId(id);
@@ -149,38 +76,23 @@ public class ReservaController {
             Habitacion habitacion = optionalHabitacion.get();
             modelo.addAttribute("habitacion", habitacion);
 
-            // Obtener y mostrar el precio actual si está disponible
-            if (!habitacion.getPrecio().isEmpty()) {
+            if(!habitacion.getPrecio().isEmpty()) {
                 Precio precioActual = servicioHabitacion.getPrecioActual(habitacion, LocalDateTime.now());
                 modelo.addAttribute("precioActual", precioActual.getValor());
             }
 
-            // Obtener y mostrar la primera imagen de la habitación si está disponible
-            if (!habitacion.getImagenesHabitacion().isEmpty()) {
+            if(!habitacion.getImagenesHabitacion().isEmpty()) {
                 String habitacionImagen = habitacion.getImagenesHabitacion().stream().findFirst().get().getUrl();
                 modelo.addAttribute("imagenHabitacion", habitacionImagen);
             }
 
         } else {
             modelo.addAttribute("error", "La habitación no se encuentra.");
-            return "error/paginaError";  // O la vista que maneja errores
+            return "error/paginaError"; // O la vista que maneja errores
         }
         return "reservas/habitacion/disponibilidadHabitacion";
     }
 
-    /**
-     * Crea una nueva reserva para el usuario autenticado.
-     *
-     * Este método toma las fechas de inicio y fin de la reserva, el usuario autenticado,
-     * y crea una nueva reserva en el sistema. Si la creación es exitosa, redirige al usuario a la página principal
-     * de reservas. En caso de error, redirige al usuario a la página de inicio de sesión con un mensaje de error.
-     *
-     * @param fechaInicio La fecha de inicio de la reserva en formato ISO (yyyy-MM-ddTHH:mm:ss).
-     * @param fechaFin La fecha de fin de la reserva en formato ISO (yyyy-MM-ddTHH:mm:ss).
-     * @param principal El objeto {@link Principal} que representa al usuario autenticado.
-     * @param model El objeto {@link Model} utilizado para pasar datos a la vista.
-     * @return Una redirección a la página principal de reservas en caso de éxito, o a la página de inicio de sesión en caso de error.
-     */
     @PostMapping("/crear")
     public String crearReserva(@RequestParam String fechaInicio,
                                @RequestParam String fechaFin,
@@ -214,20 +126,6 @@ public class ReservaController {
         }
     }
 
-    /**
-     * Obtiene los rangos de fechas disponibles para una habitación específica.
-     *
-     * Este método valida las fechas de inicio y fin para asegurarse de que sean posteriores a la fecha actual
-     * y que la fecha de inicio no sea posterior a la fecha de fin. Luego, obtiene los rangos de disponibilidad de la habitación
-     * y los métodos de pago disponibles, y los pasa a la vista para ser mostrados al usuario.
-     *
-     * @param idHabitacion El ID de la habitación para la cual se desea verificar la disponibilidad.
-     * @param fechaInicio La fecha de inicio en formato ISO (yyyy-MM-ddTHH:mm:ss).
-     * @param fechaFin La fecha de fin en formato ISO (yyyy-MM-ddTHH:mm:ss).
-     * @param modelo El objeto {@link Model} utilizado para pasar datos a la vista.
-     * @param redirectAttributes El objeto {@link RedirectAttributes} utilizado para pasar mensajes en caso de redirección.
-     * @return La vista "reservas/habitacion/reservarHabitacion" que muestra la disponibilidad de la habitación, o una redirección en caso de error.
-     */
     @GetMapping("/habitacion/{idHabitacion}/disponibilidad")
     public String obtenerRangosDisponibles(
             @PathVariable Integer idHabitacion,
@@ -252,7 +150,6 @@ public class ReservaController {
             return "redirect:/reservas/habitacion/reservar/" + idHabitacion;
         }
 
-        //Obtener la habitación
         Optional<Habitacion> optionalHabitacion = servicioHabitacion.encuentraPorId(idHabitacion);
 
         Habitacion habitacion = null;
@@ -260,37 +157,18 @@ public class ReservaController {
             habitacion = optionalHabitacion.get();
         }
 
-        //Obtener los rangos de disponibilidad
         List<ServicioHabitacion.Interval> rangosDisponibles = servicioHabitacion.obtenerRangosDisponibles(idHabitacion, fechaInicio, fechaFin);
         modelo.addAttribute("rangosDisponibles", rangosDisponibles);
         modelo.addAttribute("habitacion", habitacion);
         modelo.addAttribute("fechaInicio", fechaInicio);
         modelo.addAttribute("fechaFin", fechaFin);
 
-        //Obtener métodos de pago disponibles
         List<MetodoPago> metodosPago = servicioMetodoPago.buscarEntidades();
         modelo.addAttribute("metodosPago", metodosPago);
 
         return "reservas/habitacion/reservarHabitacion";
     }
 
-    /**
-     * Realiza la reserva de una habitación y procesa el pago correspondiente.
-     *
-     * Este método maneja la lógica para que un usuario autenticado pueda reservar una habitación específica,
-     * procesando el pago y enviando un correo electrónico de confirmación con los detalles de la reserva.
-     *
-     * @param idHabitacion El ID de la habitación que se desea reservar.
-     * @param fechaInicio La fecha y hora de inicio de la reserva en formato ISO (yyyy-MM-ddTHH:mm:ss).
-     * @param fechaFin La fecha y hora de fin de la reserva en formato ISO (yyyy-MM-ddTHH:mm:ss).
-     * @param precioTotal El costo total de la reserva.
-     * @param metodoPagoId El ID del método de pago seleccionado para realizar la transacción.
-     * @param principal El objeto {@link Principal} que representa al usuario autenticado.
-     * @param modelo El objeto {@link Model} utilizado para pasar datos a la vista en caso de error.
-     * @return Una redirección a la página de "Mis Reservas" en caso de éxito, o una página de error en caso de que ocurra una excepción.
-     *
-     * @throws Exception En caso de que ocurra algún error durante la creación de la reserva o el procesamiento del pago.
-     */
     @PostMapping("/habitacion/{idHabitacion}/reservar")
     public String reservarHabitacion(
             @PathVariable("idHabitacion") Integer idHabitacion,
@@ -307,19 +185,16 @@ public class ReservaController {
             Usuario usuario = optionalUsuario.get();
             // Crear la reserva
             try {
-                // Crear la reserva con las fechas proporcionadas
                 Reserva reserva = servicioReserva.crearReserva(usuario, fechaInicio, fechaFin);
-                // Asignar la habitación a la reserva
                 servicioReserva.addHabitacion(reserva, idHabitacion, fechaInicio, fechaFin);
-                // Generar el pago de la reserva
+
                 servicioReserva.generarPago(reserva, precioTotal, metodoPagoId);
 
-                // Formatear las fechas para el correo electrónico
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy HH:mm");
+
                 String fechaInicioFormateada = reserva.getFechaInicio().format(formatter);
                 String fechaFinFormateada = reserva.getFechaFin().format(formatter);
 
-                // Enviar el correo de confirmación al usuario
                 emailService.sendSimpleMessage(
                         usuario.getDetalles().getEmail(),
                         "Confirmación de tu reserva en TravelId",
@@ -336,42 +211,18 @@ public class ReservaController {
                                 "El equipo de TravelId"
                 );
 
-                // Redirigir al usuario a la página de "Mis Reservas"
+
                 return "redirect:/reservas/mis-reservas";
             } catch (Exception e) {
-                // Manejar excepciones y mostrar la página de error
                 modelo.addAttribute("error", e.getMessage());
                 return "error/paginaError";
             }
         } else {
-            // Manejar el caso en que el usuario no se encuentre
             modelo.addAttribute("error", "Usuario no encontrado");
             return "error/paginaError";
         }
     }
 
-    /**
-     * Realiza la reserva de una actividad y procesa el pago correspondiente.
-     *
-     * Este método maneja la lógica para que un usuario autenticado pueda reservar una actividad específica,
-     * procesar el pago, y enviar un correo electrónico de confirmación con los detalles de la reserva.
-     *
-     * @param idActividad El ID de la actividad que se desea reservar.
-     * @param fechaInicio La fecha y hora de inicio de la reserva en formato ISO (yyyy-MM-ddTHH:mm:ss).
-     * @param fechaFin La fecha y hora de fin de la reserva en formato ISO (yyyy-MM-ddTHH:mm:ss).
-     * @param asistentes El número de asistentes para la actividad.
-     * @param precioTotal El costo total de la reserva para la actividad.
-     * @param metodoPagoId El ID del método de pago seleccionado para realizar la transacción.
-     * @param principal El objeto {@link Principal} que representa al usuario autenticado.
-     * @param modelo El objeto {@link Model} utilizado para pasar datos a la vista en caso de error.
-     * @param redirectAttributes El objeto {@link RedirectAttributes} para redirigir con atributos de error.
-     * @param session El objeto {@link HttpSession} utilizado para mantener información durante la sesión.
-     * @return Una redirección a la página de "Mis Reservas" en caso de éxito, o una página de error en caso de que ocurra una excepción.
-     *
-     * @throws UsernameNotFoundException Si el usuario autenticado no es encontrado.
-     * @throws EntityNotFoundException Si la actividad especificada no es encontrada.
-     * @throws Exception En caso de que ocurra algún error durante la creación de la reserva o el procesamiento del pago.
-     */
     @PostMapping("/actividad/{idActividad}/reservar")
     public String reservarActividad(
             @PathVariable("idActividad") Integer idActividad,
@@ -409,12 +260,11 @@ public class ReservaController {
             // Generar el pago
             servicioReserva.generarPago(reserva, precioTotal, metodoPagoId);
 
-            // Formatear las fechas para el correo electrónico
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy HH:mm");
+
             String fechaInicioFormateada = reserva.getFechaInicio().format(formatter);
             String fechaFinFormateada = reserva.getFechaFin().format(formatter);
 
-            // Enviar el correo de confirmación al usuario
             emailService.sendSimpleMessage(
                     usuario.getDetalles().getEmail(),
                     "Confirmación de tu reserva en TravelId",
@@ -432,15 +282,13 @@ public class ReservaController {
                             "Saludos cordiales,\n" +
                             "El equipo de TravelId"
             );
-            // Redirigir al usuario a la página de "Mis Reservas"
+
             return "redirect:/reservas/mis-reservas";
         } catch (Exception e) {
-            // Manejar excepciones y mostrar la página de error
             modelo.addAttribute("error", e.getMessage());
             return "error/paginaError";
         }
     }
-
 
     @PostMapping("/asiento/reservar")
     public String reservarAsiento(
@@ -526,19 +374,6 @@ public class ReservaController {
 
 
 
-
-    /**
-     * Cancela una reserva existente y actualiza los detalles correspondientes.
-     *
-     * Este método maneja la cancelación de una reserva identificada por su ID, actualiza la cantidad de asistentes en las
-     * actividades asociadas a la reserva y envía un correo electrónico de confirmación de la cancelación al usuario.
-     *
-     * @param id El ID de la reserva que se desea cancelar.
-     * @param modelo El objeto {@link Model} utilizado para pasar datos a la vista en caso de error.
-     * @return Una redirección a la página de "Mis Reservas" en caso de éxito, o una página de error en caso de que ocurra una excepción.
-     *
-     * @throws Exception En caso de que ocurra algún error durante el proceso de cancelación.
-     */
     @PostMapping("/cancelar/{id}")
     public String cancelarReserva(@PathVariable Integer id, Model modelo) {
         try {
@@ -565,7 +400,6 @@ public class ReservaController {
                 String fechaInicioFormateada = reserva.getFechaInicio().format(formatter);
                 String fechaFinFormateada = reserva.getFechaFin().format(formatter);
 
-                // Obtener detalles de la reserva cancelada
                 String detallesReserva = servicioReserva.obtenerDetallesReserva(reserva);
 
                 // Enviar correo de confirmación de cancelación
@@ -583,18 +417,20 @@ public class ReservaController {
                                 "Saludos cordiales,\n" +
                                 "El equipo de TravelId"
                 );
-                // Redirigir al usuario a la página de "Mis Reservas"
+
                 return "redirect:/reservas/mis-reservas";
             } else {
-                // Manejar el caso en que la reserva no se encuentra
                 modelo.addAttribute("error", "Reserva no encontrada");
                 return "error/paginaError";
             }
         } catch (Exception e) {
-            // Manejar excepciones y mostrar la página de error
             modelo.addAttribute("error", e.getMessage());
             return "error/paginaError";
         }
     }
+
+
+
+
 
 }
