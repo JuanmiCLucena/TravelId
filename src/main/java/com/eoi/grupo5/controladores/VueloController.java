@@ -1,7 +1,6 @@
 package com.eoi.grupo5.controladores;
 
 import com.eoi.grupo5.dtos.AsientoDto;
-import com.eoi.grupo5.modelos.Asiento;
 import com.eoi.grupo5.modelos.Vuelo;
 import com.eoi.grupo5.paginacion.PaginaRespuestaVuelos;
 import com.eoi.grupo5.servicios.ServicioAsiento;
@@ -17,6 +16,10 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Controlador encargado de gestionar las operaciones relacionadas con los vuelos.
+ * Proporciona funcionalidades para listar y mostrar detalles de los vuelos.
+ */
 @Controller
 public class VueloController {
 
@@ -24,12 +27,28 @@ public class VueloController {
     private final ServicioAsiento servicioAsiento;
     private final ServicioMetodoPago servicioMetodoPago;
 
+    /**
+     * Constructor que inicializa el controlador con los servicios necesarios.
+     *
+     * @param servicioVuelo  Servicio encargado de la lógica de negocio para los vuelos.
+     * @param servicioAsiento Servicio encargado de la gestión de asientos de los vuelos.
+     */
     public VueloController(ServicioVuelo servicioVuelo, ServicioAsiento servicioAsiento, ServicioMetodoPago servicioMetodoPago) {
         this.servicioVuelo = servicioVuelo;
         this.servicioAsiento = servicioAsiento;
         this.servicioMetodoPago = servicioMetodoPago;
     }
 
+    /**
+     * Maneja la solicitud GET para mostrar la lista de vuelos disponibles.
+     *
+     * Obtiene una lista paginada de vuelos y la muestra en la vista correspondiente.
+     *
+     * @param modelo el modelo de datos para la vista.
+     * @param page   número de la página actual (por defecto 0).
+     * @param size   tamaño de la página (por defecto 6).
+     * @return el nombre de la vista para mostrar la lista de vuelos.
+     */
     @GetMapping("vuelos/lista")
     public String listaVuelos(
             Model modelo,
@@ -46,6 +65,16 @@ public class VueloController {
         return "vuelos/listaVuelos";
     }
 
+    /**
+     * Maneja la solicitud GET para mostrar los detalles de un vuelo específico.
+     *
+     * Busca el vuelo por su ID y carga sus detalles, incluyendo la imagen del vuelo
+     * y los precios actuales de los asientos disponibles.
+     *
+     * @param modelo el modelo de datos para la vista.
+     * @param id     el identificador del vuelo.
+     * @return el nombre de la vista para mostrar los detalles del vuelo, o una vista de error si no se encuentra el vuelo.
+     */
     @GetMapping("/vuelo/{id}")
     public String detallesVuelo(Model modelo, @PathVariable Integer id) {
         Optional<Vuelo> vuelo = servicioVuelo.encuentraPorId(id);

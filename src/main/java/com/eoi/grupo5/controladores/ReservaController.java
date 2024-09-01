@@ -7,7 +7,6 @@ import com.eoi.grupo5.repos.RepoUsuario;
 import com.eoi.grupo5.servicios.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpSession;
-import org.hibernate.Session;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
@@ -21,6 +20,35 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
+/**
+ * El controlador de reservas gestiona las operaciones relacionadas con las reservas en la aplicación TravelId.
+ * Este controlador permite a los usuarios realizar reservas de habitaciones, actividades y asientos de un vuelo,
+ * ver sus reservas, y cancelar reservas existentes.
+ *
+ * Está vinculado a varios servicios que manejan la lógica del negocio, como la gestión de habitaciones, actividades y pagos.
+ * Además, se encarga de enviar correos electrónicos de confirmación y cancelación.
+ *
+ * Los métodos de este controlador manejan tanto solicitudes GET como POST.
+ *
+ * Dependencias:
+ * - {@link ServicioReserva}: Servicio para gestionar la lógica de reservas.
+ * - {@link ServicioHabitacion}: Servicio para gestionar la lógica de habitaciones.
+ * - {@link ServicioActividad}: Servicio para gestionar la lógica de actividades.
+ * - {@link ServicioVuelo}: Servicio para gestionar la lógica de vuelos.
+ * - {@link ServicioAsiento}: Servicio para gestionar la lógica de asientos.
+ * - {@link RepoUsuario}: Repositorio para gestionar los datos del usuario.
+ * - {@link ServicioMetodoPago}: Servicio para gestionar los métodos de pago.
+ * - {@link CustomEmailService}: Servicio para el envío de correos electrónicos.
+ *
+ * @see ServicioReserva
+ * @see ServicioHabitacion
+ * @see ServicioActividad
+ * @see ServicioVuelo
+ * @see ServicioAsiento
+ * @see RepoUsuario
+ * @see ServicioMetodoPago
+ * @see CustomEmailService
+ */
 @Controller
 @RequestMapping("/reservas")
 public class ReservaController {
@@ -34,6 +62,18 @@ public class ReservaController {
     private final ServicioMetodoPago servicioMetodoPago;
     private final CustomEmailService emailService;
 
+    /**
+     * Constructor del controlador.
+     *
+     * @param servicioReserva Servicio para la gestión de reservas.
+     * @param servicioHabitacion Servicio para la gestión de habitaciones.
+     * @param servicioActividad Servicio para la gestión de actividades.
+     * @param servicioVuelo Servicio para la gestión de vuelos.
+     * @param servicioAsiento Servicio para la gestión de asientos.
+     * @param repoUsuario Repositorio de usuarios.
+     * @param servicioMetodoPago Servicio para la gestión de métodos de pago.
+     * @param emailService Servicio de envío de correos electrónicos.
+     */
     public ReservaController(ServicioReserva servicioReserva, ServicioHabitacion servicioHabitacion, ServicioActividad servicioActividad, ServicioVuelo servicioVuelo, ServicioAsiento servicioAsiento, RepoUsuario repoUsuario, ServicioMetodoPago servicioMetodoPago, CustomEmailService emailService) {
         this.servicioReserva = servicioReserva;
         this.servicioHabitacion = servicioHabitacion;
@@ -45,6 +85,18 @@ public class ReservaController {
         this.emailService = emailService;
     }
 
+    /**
+     * Muestra las reservas del usuario autenticado.
+     *
+     * Este método obtiene el usuario autenticado a través del objeto {@link Principal},
+     * luego busca las reservas asociadas a ese usuario en la base de datos, y las muestra en una vista paginada.
+     *
+     * @param principal El objeto {@link Principal} que representa al usuario autenticado.
+     * @param modelo El objeto {@link Model} que se utiliza para pasar datos a la vista.
+     * @param page El número de página para la paginación. Por defecto es 0.
+     * @param size El tamaño de la página para la paginación. Por defecto es 10.
+     * @return La vista "reservas/misReservas" que muestra las reservas del usuario autenticado.
+     */
     @GetMapping("/mis-reservas")
     public String verMisReservas(
             Principal principal,
@@ -69,6 +121,16 @@ public class ReservaController {
         }
     }
 
+    /**
+     * Muestra la página para crear una reserva de una habitación específica.
+     *
+     * Este método obtiene una habitación específica basada en el ID proporcionado, verifica si la habitación existe,
+     * y luego la muestra junto con su precio y una imagen asociada, si están disponibles.
+     *
+     * @param modelo El objeto {@link Model} que se utiliza para pasar datos a la vista.
+     * @param id El ID de la habitación que se desea reservar.
+     * @return La vista "reservas/habitacion/disponibilidadHabitacion" que muestra la disponibilidad y detalles de la habitación.
+     */
     @GetMapping("/habitacion/reservar/{id}")
     public String mostrarPaginaCrear(Model modelo, @PathVariable Integer id) {
         Optional<Habitacion> optionalHabitacion = servicioHabitacion.encuentraPorId(id);
@@ -93,6 +155,19 @@ public class ReservaController {
         return "reservas/habitacion/disponibilidadHabitacion";
     }
 
+    /**
+     * Crea una nueva reserva para el usuario autenticado.
+     *
+     * Este método toma las fechas de inicio y fin de la reserva, el usuario autenticado,
+     * y crea una nueva reserva en el sistema. Si la creación es exitosa, redirige al usuario a la página principal
+     * de reservas. En caso de error, redirige al usuario a la página de inicio de sesión con un mensaje de error.
+     *
+     * @param fechaInicio La fecha de inicio de la reserva en formato ISO (yyyy-MM-ddTHH:mm:ss).
+     * @param fechaFin La fecha de fin de la reserva en formato ISO (yyyy-MM-ddTHH:mm:ss).
+     * @param principal El objeto {@link Principal} que representa al usuario autenticado.
+     * @param model El objeto {@link Model} utilizado para pasar datos a la vista.
+     * @return Una redirección a la página principal de reservas en caso de éxito, o a la página de inicio de sesión en caso de error.
+     */
     @PostMapping("/crear")
     public String crearReserva(@RequestParam String fechaInicio,
                                @RequestParam String fechaFin,
@@ -126,6 +201,20 @@ public class ReservaController {
         }
     }
 
+    /**
+     * Obtiene los rangos de fechas disponibles para una habitación específica.
+     *
+     * Este método valida las fechas de inicio y fin para asegurarse de que sean posteriores a la fecha actual
+     * y que la fecha de inicio no sea posterior a la fecha de fin. Luego, obtiene los rangos de disponibilidad de la habitación
+     * y los métodos de pago disponibles, y los pasa a la vista para ser mostrados al usuario.
+     *
+     * @param idHabitacion El ID de la habitación para la cual se desea verificar la disponibilidad.
+     * @param fechaInicio La fecha de inicio en formato ISO (yyyy-MM-ddTHH:mm:ss).
+     * @param fechaFin La fecha de fin en formato ISO (yyyy-MM-ddTHH:mm:ss).
+     * @param modelo El objeto {@link Model} utilizado para pasar datos a la vista.
+     * @param redirectAttributes El objeto {@link RedirectAttributes} utilizado para pasar mensajes en caso de redirección.
+     * @return La vista "reservas/habitacion/reservarHabitacion" que muestra la disponibilidad de la habitación, o una redirección en caso de error.
+     */
     @GetMapping("/habitacion/{idHabitacion}/disponibilidad")
     public String obtenerRangosDisponibles(
             @PathVariable Integer idHabitacion,
@@ -169,6 +258,23 @@ public class ReservaController {
         return "reservas/habitacion/reservarHabitacion";
     }
 
+    /**
+     * Realiza la reserva de una habitación y procesa el pago correspondiente.
+     *
+     * Este método maneja la lógica para que un usuario autenticado pueda reservar una habitación específica,
+     * procesando el pago y enviando un correo electrónico de confirmación con los detalles de la reserva.
+     *
+     * @param idHabitacion El ID de la habitación que se desea reservar.
+     * @param fechaInicio La fecha y hora de inicio de la reserva en formato ISO (yyyy-MM-ddTHH:mm:ss).
+     * @param fechaFin La fecha y hora de fin de la reserva en formato ISO (yyyy-MM-ddTHH:mm:ss).
+     * @param precioTotal El costo total de la reserva.
+     * @param metodoPagoId El ID del método de pago seleccionado para realizar la transacción.
+     * @param principal El objeto {@link Principal} que representa al usuario autenticado.
+     * @param modelo El objeto {@link Model} utilizado para pasar datos a la vista en caso de error.
+     * @return Una redirección a la página de "Mis Reservas" en caso de éxito, o una página de error en caso de que ocurra una excepción.
+     *
+     * @throws Exception En caso de que ocurra algún error durante la creación de la reserva o el procesamiento del pago.
+     */
     @PostMapping("/habitacion/{idHabitacion}/reservar")
     public String reservarHabitacion(
             @PathVariable("idHabitacion") Integer idHabitacion,
@@ -223,6 +329,28 @@ public class ReservaController {
         }
     }
 
+    /**
+     * Realiza la reserva de una actividad y procesa el pago correspondiente.
+     *
+     * Este método maneja la lógica para que un usuario autenticado pueda reservar una actividad específica,
+     * procesar el pago, y enviar un correo electrónico de confirmación con los detalles de la reserva.
+     *
+     * @param idActividad El ID de la actividad que se desea reservar.
+     * @param fechaInicio La fecha y hora de inicio de la reserva en formato ISO (yyyy-MM-ddTHH:mm:ss).
+     * @param fechaFin La fecha y hora de fin de la reserva en formato ISO (yyyy-MM-ddTHH:mm:ss).
+     * @param asistentes El número de asistentes para la actividad.
+     * @param precioTotal El costo total de la reserva para la actividad.
+     * @param metodoPagoId El ID del método de pago seleccionado para realizar la transacción.
+     * @param principal El objeto {@link Principal} que representa al usuario autenticado.
+     * @param modelo El objeto {@link Model} utilizado para pasar datos a la vista en caso de error.
+     * @param redirectAttributes El objeto {@link RedirectAttributes} para redirigir con atributos de error.
+     * @param session El objeto {@link HttpSession} utilizado para mantener información durante la sesión.
+     * @return Una redirección a la página de "Mis Reservas" en caso de éxito, o una página de error en caso de que ocurra una excepción.
+     *
+     * @throws UsernameNotFoundException Si el usuario autenticado no es encontrado.
+     * @throws EntityNotFoundException Si la actividad especificada no es encontrada.
+     * @throws Exception En caso de que ocurra algún error durante la creación de la reserva o el procesamiento del pago.
+     */
     @PostMapping("/actividad/{idActividad}/reservar")
     public String reservarActividad(
             @PathVariable("idActividad") Integer idActividad,
@@ -290,6 +418,25 @@ public class ReservaController {
         }
     }
 
+    /**
+     * Reserva un asiento específico para un vuelo en una fecha y hora determinadas.
+     *
+     * Este método gestiona la creación de una reserva de asiento en un vuelo para el usuario autenticado.
+     * Verifica la disponibilidad del asiento, crea la reserva, asigna el asiento a la reserva,
+     * genera el pago asociado y envía un correo electrónico de confirmación al usuario.
+     *
+     * @param idAsiento El ID del asiento que se desea reservar.
+     * @param idVuelo El ID del vuelo para el cual se desea reservar el asiento.
+     * @param fechaInicio La fecha y hora de inicio de la reserva en formato ISO.
+     * @param fechaFin La fecha y hora de fin de la reserva en formato ISO.
+     * @param precioTotal El importe total de la reserva.
+     * @param metodoPagoId El ID del método de pago utilizado para la reserva.
+     * @param principal El principal que contiene la información del usuario autenticado.
+     * @param redirectAttributes Atributos de redirección para pasar mensajes entre solicitudes.
+     * @param modelo El modelo para pasar datos a la vista en caso de error.
+     * @return Redirección a la página de reservas del usuario si la reserva es exitosa,
+     *         o redirección a la página del vuelo con un mensaje de error si algo falla.
+     */
     @PostMapping("/asiento/reservar")
     public String reservarAsiento(
             @RequestParam("idAsiento") Integer idAsiento,
@@ -371,9 +518,18 @@ public class ReservaController {
         }
     }
 
-
-
-
+    /**
+     * Cancela una reserva existente y actualiza los detalles correspondientes.
+     *
+     * Este método maneja la cancelación de una reserva identificada por su ID, actualiza la cantidad de asistentes en las
+     * actividades asociadas a la reserva y envía un correo electrónico de confirmación de la cancelación al usuario.
+     *
+     * @param id El ID de la reserva que se desea cancelar.
+     * @param modelo El objeto {@link Model} utilizado para pasar datos a la vista en caso de error.
+     * @return Una redirección a la página de "Mis Reservas" en caso de éxito, o una página de error en caso de que ocurra una excepción.
+     *
+     * @throws Exception En caso de que ocurra algún error durante el proceso de cancelación.
+     */
     @PostMapping("/cancelar/{id}")
     public String cancelarReserva(@PathVariable Integer id, Model modelo) {
         try {
@@ -428,9 +584,4 @@ public class ReservaController {
             return "error/paginaError";
         }
     }
-
-
-
-
-
 }
