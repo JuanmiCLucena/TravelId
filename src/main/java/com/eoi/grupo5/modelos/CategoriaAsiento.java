@@ -11,6 +11,10 @@ import lombok.Setter;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Representa una categoría de asiento.
+ * Incluye detalles como el nombre de la categoría y las relaciones con los asientos.
+ */
 @Entity
 @Table(name = "categoriasAsiento")
 @Getter
@@ -18,6 +22,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoriaAsiento {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -28,7 +33,10 @@ public class CategoriaAsiento {
     @Size(max = 45, message = "El nombre no puede tener más de 45 caracteres")
     private String nombre;
 
+    /**
+     * Relación One-to-Many con la entidad {@link Asiento}.
+     * Una categoría de asiento puede estar asociada a múltiples asientos.
+     */
     @OneToMany(mappedBy = "categoria")
     private Set<Asiento> asientos = new HashSet<>();
-
 }

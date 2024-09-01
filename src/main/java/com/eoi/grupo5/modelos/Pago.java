@@ -11,6 +11,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
+/**
+ * Representa un pago en el sistema.
+ * Incluye detalles sobre el importe del pago, la fecha de pago,
+ * la reserva asociada y el método de pago utilizado.
+ */
 @Entity
 @Table(name = "pagos")
 @Getter
@@ -18,6 +23,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Pago {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -33,9 +39,17 @@ public class Pago {
     @NotNull(message = "Debes introducir una fecha de pago")
     private LocalDateTime fechaPago;
 
+    /**
+     * Relación One-to-One con la entidad {@link Reserva}.
+     * Cada pago está asociado a una única reserva.
+     */
     @OneToOne(mappedBy = "pago", cascade = CascadeType.ALL)
     private Reserva reserva;
 
+    /**
+     * Relación Many-to-One con la entidad {@link MetodoPago}.
+     * Cada pago utiliza un método de pago específico.
+     */
     @ManyToOne
     @JoinColumn(name = "idMetodoPago", foreignKey = @ForeignKey(name = "fkPagosMetodos"), nullable = false)
     @NotNull(message = "Debes introducir un método de pago")

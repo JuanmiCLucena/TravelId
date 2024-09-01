@@ -7,6 +7,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Representa los detalles adicionales de un usuario.
+ * Incluye información de contacto, identificativa y personal, además de la relación con la entidad `Usuario`.
+ */
 @Entity
 @Table(name = "detallesUsuario")
 @Getter
@@ -14,6 +18,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DetallesUsuario {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -37,20 +42,31 @@ public class DetallesUsuario {
     @Pattern(regexp = "\\d{9,15}", message = "El teléfono debe tener entre 9 y 15 dígitos")
     private String telefono;
 
-    @Column(name="nombre", length = 45)
+    @Column(name = "nombre", length = 45)
     @Size(max = 45, message = "El nombre no puede tener más de 45 caracteres")
     private String nombre;
 
-    @Column(name="apellidos", length = 45)
+    @Column(name = "apellidos", length = 45)
     @Size(max = 45, message = "Los apellidos no pueden tener más de 45 caracteres")
     private String apellidos;
 
+    /**
+     * Relación One-to-One con la entidad {@link Usuario}.
+     * Cada detalle de usuario está asociado a un único usuario.
+     * Se utiliza `@MapsId` para compartir la clave primaria con la entidad `Usuario`.
+     */
     @OneToOne
     @MapsId
     @JoinColumn(name = "idUsuario")
     private Usuario usu;
 
     // Constructores
+
+    /**
+     * Constructor con el campo `email` como parámetro.
+     *
+     * @param email Correo electrónico del usuario.
+     */
     public DetallesUsuario(String email) {
         this.email = email;
     }

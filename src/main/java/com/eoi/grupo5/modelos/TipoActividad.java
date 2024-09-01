@@ -11,6 +11,15 @@ import lombok.Setter;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Representa un tipo de actividad en el sistema.
+ * <p>
+ * Esta entidad se utiliza para categorizar las actividades, proporcionando un nombre y una
+ * descripción opcional que ayudan en la organización y clasificación de las actividades en
+ * el sistema. Cada tipo de actividad puede tener múltiples actividades asociadas.
+ * </p>
+ */
+
 @Entity
 @Table(name = "tipoActividad")
 @Getter
@@ -32,6 +41,13 @@ public class TipoActividad {
     @Size(max = 150, message = "La descripción no puede tener más de 150 caracteres")
     private String descripcion;
 
+    /**
+     * Conjunto de actividades asociadas a este tipo de actividad.
+     * <p>
+     * Esta relación define las actividades que pertenecen a este tipo. Permite la obtención
+     * de todas las actividades vinculadas con el tipo de actividad específico.
+     * </p>
+     */
     @OneToMany(mappedBy = "tipo")
     private Set<Actividad> actividades = new HashSet<>();
 
