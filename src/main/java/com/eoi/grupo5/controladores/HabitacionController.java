@@ -11,26 +11,52 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+/**
+ * El controlador `HabitacionController` gestiona las solicitudes relacionadas con las habitaciones en la aplicación.
+ * Su principal función es proporcionar detalles sobre una habitación específica, incluyendo información de precios y
+ * imágenes, y también recomendar habitaciones similares en la misma zona.
+ *
+ * Funcionalidades principales:
+ * - **Detalles de la habitación**: Permite a los usuarios ver detalles completos de una habitación específica, incluyendo
+ *   su precio actual, imágenes y recomendaciones de otras habitaciones en la misma zona.
+ *
+ * Dependencias:
+ * - {@link ServicioHabitacion}: Servicio que gestiona la lógica de negocio relacionada con las habitaciones, incluyendo
+ *   la búsqueda de habitaciones por ID, la obtención del precio actual y la recomendación de habitaciones similares.
+ *
+ * @see ServicioHabitacion
+ */
 @Controller
 public class HabitacionController {
 
     private final ServicioHabitacion servicioHabitacion;
 
+    /**
+     * Constructor del controlador `HabitacionController`.
+     *
+     * @param servicioHabitacion Servicio para manejar la lógica de negocio relacionada con las habitaciones.
+     */
     public HabitacionController(ServicioHabitacion servicioHabitacion) {
         this.servicioHabitacion = servicioHabitacion;
     }
 
+    /**
+     * Muestra los detalles de una habitación específica.
+     *
+     * @param id El identificador de la habitación a mostrar.
+     * @param modelo El objeto Model que se utiliza para pasar datos a la vista.
+     * @return La vista que muestra los detalles de la habitación si se encuentra; de lo contrario, muestra una página de error.
+     */
     @GetMapping("/habitacion/{id}")
     public String detallesHabitacion(@PathVariable Integer id, Model modelo) {
         Optional<Habitacion> habitacion = servicioHabitacion.encuentraPorId(id);
-        // Si no encontramos el hotel no hemos encontrado el hotel
-        if (habitacion.isPresent()) {
 
+        if (habitacion.isPresent()) {
             modelo.addAttribute("habitacion", habitacion.get());
 
             if(!habitacion.get().getPrecio().isEmpty()) {
-            Precio precioActual = servicioHabitacion.getPrecioActual(habitacion.get(), LocalDateTime.now());
-            modelo.addAttribute("precioActual", precioActual.getValor());
+                Precio precioActual = servicioHabitacion.getPrecioActual(habitacion.get(), LocalDateTime.now());
+                modelo.addAttribute("precioActual", precioActual.getValor());
             }
 
             if(!habitacion.get().getImagenesHabitacion().isEmpty()) {
@@ -42,12 +68,8 @@ public class HabitacionController {
 
             return "habitaciones/detallesHabitacion";
         } else {
-            // Hotel no encontrado - htlm
+            // En caso de que la habitación no sea encontrada
             return "habitacionNoEncontrado";
         }
-
-
     }
-
 }
-

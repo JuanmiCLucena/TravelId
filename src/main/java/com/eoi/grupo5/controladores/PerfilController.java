@@ -3,7 +3,6 @@ package com.eoi.grupo5.controladores;
 import com.eoi.grupo5.dtos.PasswordChangeDto;
 import com.eoi.grupo5.dtos.UsuarioRegistroDto;
 import com.eoi.grupo5.modelos.Usuario;
-import com.eoi.grupo5.servicios.ServicioDetallesUsuario;
 import com.eoi.grupo5.servicios.ServicioUsuario;
 import jakarta.validation.Valid;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +15,22 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+/**
+ * El controlador `PerfilController` gestiona las operaciones relacionadas con el perfil de usuario en la aplicación.
+ * Permite a los usuarios autenticados ver y actualizar sus datos de perfil, así como cambiar su contraseña.
+ *
+ * Funcionalidades principales:
+ * - **Mostrar Perfil**: Muestra la página de perfil del usuario autenticado, incluyendo la información del perfil y un formulario para cambiar la contraseña.
+ * - **Actualizar Perfil**: Procesa la actualización de la información del perfil del usuario, incluyendo la posibilidad de actualizar el nombre de usuario y otros detalles.
+ * - **Cambiar Contraseña**: Permite al usuario cambiar su contraseña, incluyendo la validación de la contraseña actual y la coincidencia de la nueva contraseña.
+ *
+ * Dependencias:
+ * - {@link ServicioUsuario}: Servicio que maneja la lógica de negocio relacionada con los usuarios, incluyendo la recuperación y actualización de datos del usuario.
+ * - {@link BCryptPasswordEncoder}: Utilidad para la encriptación y comparación de contraseñas.
+ *
+ * @see ServicioUsuario
+ * @see BCryptPasswordEncoder
+ */
 @Controller
 @RequestMapping("/perfil")
 public class PerfilController {
@@ -23,12 +38,23 @@ public class PerfilController {
     private final ServicioUsuario servicioUsuario;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    /**
+     * Constructor para inyectar las dependencias necesarias.
+     *
+     * @param servicioUsuario Servicio para gestionar la lógica de negocio relacionada con los usuarios.
+     * @param bCryptPasswordEncoder Utilidad para encriptar y comparar contraseñas.
+     */
     public PerfilController(ServicioUsuario servicioUsuario, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.servicioUsuario = servicioUsuario;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    // Mostrar la página de perfil
+    /**
+     * Muestra la página de perfil del usuario autenticado.
+     *
+     * @param modelo El modelo para añadir atributos a la vista.
+     * @return La vista del perfil del usuario.
+     */
     @GetMapping
     public String mostrarPerfil(Model modelo) {
         String nombreUsuario = obtenerUsuarioAutenticado();
@@ -45,7 +71,15 @@ public class PerfilController {
         }
     }
 
-    // Método para procesar la actualización del perfil
+    /**
+     * Procesa la actualización de la información del perfil del usuario.
+     *
+     * @param usuarioRegistroDto Datos actualizados del usuario.
+     * @param passwordChangeDto Datos para el cambio de contraseña.
+     * @param result Resultado de la validación del formulario.
+     * @param modelo El modelo para añadir atributos a la vista.
+     * @return La vista de perfil del usuario con mensajes de éxito o error.
+     */
     @PostMapping("/actualizar")
     public String actualizarPerfil(@Valid @ModelAttribute("usuario") UsuarioRegistroDto usuarioRegistroDto,
                                    @ModelAttribute("passwordChangeDto") PasswordChangeDto passwordChangeDto,
@@ -76,7 +110,14 @@ public class PerfilController {
         }
     }
 
-    // Método para cambiar la contraseña
+    /**
+     * Procesa el cambio de contraseña del usuario.
+     *
+     * @param passwordChangeDto Datos para el cambio de contraseña.
+     * @param result Resultado de la validación del formulario.
+     * @param modelo El modelo para añadir atributos a la vista.
+     * @return La vista de perfil del usuario con mensajes de éxito o error.
+     */
     @PostMapping("/cambiar-password")
     public String cambiarPassword(@Valid @ModelAttribute("passwordChangeDto") PasswordChangeDto passwordChangeDto,
                                   BindingResult result, Model modelo) {
@@ -114,7 +155,11 @@ public class PerfilController {
         }
     }
 
-    // Método auxiliar para obtener el nombre del usuario autenticado
+    /**
+     * Método auxiliar para obtener el nombre del usuario autenticado.
+     *
+     * @return El nombre de usuario del usuario autenticado.
+     */
     private String obtenerUsuarioAutenticado() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
