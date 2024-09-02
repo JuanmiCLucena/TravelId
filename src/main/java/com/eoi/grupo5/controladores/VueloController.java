@@ -1,7 +1,6 @@
 package com.eoi.grupo5.controladores;
 
 import com.eoi.grupo5.dtos.AsientoDto;
-import com.eoi.grupo5.modelos.Asiento;
 import com.eoi.grupo5.modelos.Vuelo;
 import com.eoi.grupo5.paginacion.PaginaRespuestaVuelos;
 import com.eoi.grupo5.servicios.ServicioAsiento;
@@ -28,16 +27,13 @@ public class VueloController {
     private final ServicioAsiento servicioAsiento;
     private final ServicioMetodoPago servicioMetodoPago;
 
-
-    public VueloController(ServicioVuelo servicioVuelo, ServicioAsiento servicioAsiento, ServicioMetodoPago servicioMetodoPago) {
-
     /**
      * Constructor que inicializa el controlador con los servicios necesarios.
      *
      * @param servicioVuelo  Servicio encargado de la lógica de negocio para los vuelos.
      * @param servicioAsiento Servicio encargado de la gestión de asientos de los vuelos.
      */
-    public VueloController(ServicioVuelo servicioVuelo, ServicioAsiento servicioAsiento) {
+    public VueloController(ServicioVuelo servicioVuelo, ServicioAsiento servicioAsiento, ServicioMetodoPago servicioMetodoPago) {
         this.servicioVuelo = servicioVuelo;
         this.servicioAsiento = servicioAsiento;
         this.servicioMetodoPago = servicioMetodoPago;
@@ -45,7 +41,6 @@ public class VueloController {
 
     /**
      * Maneja la solicitud GET para mostrar la lista de vuelos disponibles.
-     *
      * Obtiene una lista paginada de vuelos y la muestra en la vista correspondiente.
      *
      * @param modelo el modelo de datos para la vista.
@@ -54,22 +49,23 @@ public class VueloController {
      * @return el nombre de la vista para mostrar la lista de vuelos.
      */
     @GetMapping("vuelos/lista")
-    public String listaVuelos(Model modelo,
-                              @RequestParam(defaultValue = "0") int page,
-                              @RequestParam(defaultValue = "6") int size) {
+    public String listaVuelos(
+            Model modelo,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "6") int size
+    ) {
 
         LocalDateTime fechaActual = LocalDateTime.now();
-        PaginaRespuestaVuelos<Vuelo> vuelosPage = servicioVuelo.obtenerVuelosDisponiblesPaginados(page, size, fechaActual);
+
+        PaginaRespuestaVuelos<Vuelo> vuelosPage = servicioVuelo.obtenerVuelosDisponiblesPaginados(page, size,fechaActual);
         List<Vuelo> vuelos = vuelosPage.getContent();
         modelo.addAttribute("lista", vuelos);
         modelo.addAttribute("page", vuelosPage);
-
         return "vuelos/listaVuelos";
     }
 
     /**
      * Maneja la solicitud GET para mostrar los detalles de un vuelo específico.
-     *
      * Busca el vuelo por su ID y carga sus detalles, incluyendo la imagen del vuelo
      * y los precios actuales de los asientos disponibles.
      *
@@ -80,13 +76,12 @@ public class VueloController {
     @GetMapping("/vuelo/{id}")
     public String detallesVuelo(Model modelo, @PathVariable Integer id) {
         Optional<Vuelo> vuelo = servicioVuelo.encuentraPorId(id);
-
-        if (vuelo.isPresent()) {
-            if (vuelo.get().getImagen() != null) {
+        // Si no encontramos el vuelo no hemos encontrado el hotel
+        if(vuelo.isPresent()) {
+            if(vuelo.get().getImagen() != null) {
                 String vueloImagen = vuelo.get().getImagen().getUrl();
                 modelo.addAttribute("imagenVuelo", vueloImagen);
             }
-
             //modelo.addAttribute("recomendados", servicioVuelo.obtenerHotelesEnTuZona(vuelo.get()));
             modelo.addAttribute("vuelo",vuelo.get());
 
@@ -128,14 +123,8 @@ public class VueloController {
         } else {
             // Vuelo no encontrado - htlm
             return "error/paginaError";
-
-            modelo.addAttribute("vuelo", vuelo.get());
-            modelo.addAttribute("preciosActuales", servicioAsiento.obtenerPreciosActualesAsientosVuelo(vuelo.get()));
-
-            return "vuelos/detallesVuelo";
-        } else {
-            // Si no se encuentra el vuelo, se muestra una página de error
-            return "vueloNoEncontrado";
         }
+
     }
+
 }

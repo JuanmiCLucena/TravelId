@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Controlador para gestionar las operaciones de administración relacionadas con los precios.
+ * Permite crear, listar, editar y eliminar precios desde la interfaz de administración.
+ */
 @Controller
 @RequestMapping("/admin/precios")
 public class AdminPrecioController {
@@ -22,6 +26,14 @@ public class AdminPrecioController {
     private final ServicioAsiento servicioAsiento;
     private final ServicioActividad servicioActividad;
 
+    /**
+     * Constructor que inyecta las dependencias necesarias.
+     *
+     * @param servicioPrecio Servicio para manejar las operaciones de precio.
+     * @param servicioHabitacion Servicio para manejar las operaciones de habitación.
+     * @param servicioAsiento Servicio para manejar las operaciones de asiento.
+     * @param servicioActividad Servicio para manejar las operaciones de actividad.
+     */
     public AdminPrecioController(ServicioPrecio servicioPrecio, ServicioHabitacion servicioHabitacion, ServicioAsiento servicioAsiento, ServicioActividad servicioActividad) {
         this.servicioPrecio = servicioPrecio;
         this.servicioHabitacion = servicioHabitacion;
@@ -29,6 +41,14 @@ public class AdminPrecioController {
         this.servicioActividad = servicioActividad;
     }
 
+    /**
+     * Maneja la solicitud GET para listar todos los precios paginados.
+     *
+     * @param modelo Modelo para pasar datos a la vista.
+     * @param page Número de la página solicitada (por defecto 0).
+     * @param size Tamaño de la página (por defecto 10).
+     * @return El nombre de la plantilla que muestra la lista de precios.
+     */
     @GetMapping
     public String listar(
             Model modelo,
@@ -42,6 +62,12 @@ public class AdminPrecioController {
         return "admin/precios/adminPrecios";
     }
 
+    /**
+     * Muestra la página para crear un nuevo precio.
+     *
+     * @param modelo Modelo para pasar datos a la vista.
+     * @return El nombre de la plantilla que muestra el formulario de creación de precio.
+     */
     @GetMapping("/crear")
     public String mostrarPaginaCrear(Model modelo) {
         Precio precio = new Precio();
@@ -52,6 +78,17 @@ public class AdminPrecioController {
         return "admin/precios/adminNuevoPrecio";
     }
 
+    /**
+     * Maneja la solicitud POST para crear un nuevo precio.
+     *
+     * @param precio El precio que se va a crear, validado.
+     * @param bindingResult Resultado de la validación del precio.
+     * @param habitacionId ID de la habitación asociada (opcional).
+     * @param asientoId ID del asiento asociado (opcional).
+     * @param actividadId ID de la actividad asociada (opcional).
+     * @param modelo Modelo para pasar datos a la vista.
+     * @return Redirección a la lista de precios o la vista de creación si hay errores.
+     */
     @PostMapping("/crear")
     public String crear(
             @Valid @ModelAttribute("precio") Precio precio,
@@ -108,6 +145,13 @@ public class AdminPrecioController {
         return "redirect:/admin/precios";
     }
 
+    /**
+     * Muestra la página para editar un precio existente.
+     *
+     * @param modelo Modelo para pasar datos a la vista.
+     * @param id ID del precio que se va a editar.
+     * @return El nombre de la plantilla que muestra el formulario de edición de precio, o una página de error si no se encuentra el precio.
+     */
     @GetMapping("/editar/{id}")
     public String mostrarPaginaEditar(Model modelo, @PathVariable Integer id) {
         Optional<Precio> precio = servicioPrecio.encuentraPorId(id);
@@ -121,6 +165,18 @@ public class AdminPrecioController {
 
     }
 
+    /**
+     * Maneja la solicitud PUT para editar un precio existente.
+     *
+     * @param id ID del precio que se va a actualizar.
+     * @param precio El precio actualizado, validado.
+     * @param bindingResult Resultado de la validación del precio.
+     * @param habitacionId ID de la habitación asociada (opcional).
+     * @param asientoId ID del asiento asociado (opcional).
+     * @param actividadId ID de la actividad asociada (opcional).
+     * @param modelo Modelo para pasar datos a la vista.
+     * @return Redirección a la lista de precios o la vista de edición si hay errores.
+     */
     @PutMapping("/editar/{id}")
     public String editar(
             @PathVariable Integer id,
@@ -178,7 +234,12 @@ public class AdminPrecioController {
         return "redirect:/admin/precios";
     }
 
-
+    /**
+     * Maneja la solicitud DELETE para eliminar un precio existente.
+     *
+     * @param id ID del precio que se va a eliminar.
+     * @return Redirección a la lista de precios.
+     */
     @DeleteMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Integer id) {
         Optional<Precio> optionalPrecio = servicioPrecio.encuentraPorId(id);
@@ -187,5 +248,4 @@ public class AdminPrecioController {
         }
         return "redirect:/admin/precios";
     }
-
 }

@@ -21,41 +21,34 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 /**
- * El controlador `ReservaController` gestiona las operaciones relacionadas con las reservas en la aplicación,
- * abarcando una variedad de funcionalidades, desde la visualización y gestión de reservas de habitaciones y actividades,
- * hasta la creación y cancelación de reservas.
+ * El controlador de reservas gestiona las operaciones relacionadas con las reservas en la aplicación TravelId.
+ * Este controlador permite a los usuarios realizar reservas de habitaciones, actividades y asientos de un vuelo,
+ * ver sus reservas, y cancelar reservas existentes.
  *
- * Este controlador se encarga de interactuar con los servicios y repositorios
- * que manejan la lógica de negocio y la persistencia de datos, así como de enviar notificaciones por correo electrónico
- * a los usuarios sobre el estado de sus reservas.
+ * Está vinculado a varios servicios que manejan la lógica del negocio, como la gestión de habitaciones, actividades y pagos.
+ * Además, se encarga de enviar correos electrónicos de confirmación y cancelación.
  *
- * Funcionalidades principales:
- * - **Visualización de reservas**: Permite a los usuarios autenticados ver y gestionar sus reservas existentes.
- * - **Creación de reservas de habitaciones**: Facilita la reserva de habitaciones, mostrando disponibilidad y gestionando
- *   detalles de la reserva.
- * - **Creación de reservas de actividades**: Permite a los usuarios reservar actividades, verificar la disponibilidad
- *   de plazas y gestionar la confirmación de reservas.
- * - **Cancelación de reservas**: Proporciona la capacidad para cancelar reservas existentes y actualizar el estado
- *   de las actividades asociadas.
- * - **Notificación por correo electrónico**: Envía correos electrónicos de confirmación y cancelación de reservas
- *   a los usuarios con los detalles pertinentes.
+ * Los métodos de este controlador manejan tanto solicitudes GET como POST.
  *
  * Dependencias:
- * - {@link ServicioReserva}: Servicio que maneja la lógica de negocio de las reservas.
- * - {@link ServicioHabitacion}: Servicio que gestiona la lógica de negocio de las habitaciones.
- * - {@link ServicioActividad}: Servicio que gestiona la lógica de negocio de las actividades.
- * - {@link RepoUsuario}: Repositorio para acceder y gestionar los datos de los usuarios.
- * - {@link ServicioMetodoPago}: Servicio que gestiona los métodos de pago.
+ * - {@link ServicioReserva}: Servicio para gestionar la lógica de reservas.
+ * - {@link ServicioHabitacion}: Servicio para gestionar la lógica de habitaciones.
+ * - {@link ServicioActividad}: Servicio para gestionar la lógica de actividades.
+ * - {@link ServicioVuelo}: Servicio para gestionar la lógica de vuelos.
+ * - {@link ServicioAsiento}: Servicio para gestionar la lógica de asientos.
+ * - {@link RepoUsuario}: Repositorio para gestionar los datos del usuario.
+ * - {@link ServicioMetodoPago}: Servicio para gestionar los métodos de pago.
  * - {@link CustomEmailService}: Servicio para el envío de correos electrónicos.
  *
  * @see ServicioReserva
  * @see ServicioHabitacion
  * @see ServicioActividad
+ * @see ServicioVuelo
+ * @see ServicioAsiento
  * @see RepoUsuario
  * @see ServicioMetodoPago
  * @see CustomEmailService
  */
-
 @Controller
 @RequestMapping("/reservas")
 public class ReservaController {
@@ -69,23 +62,19 @@ public class ReservaController {
     private final ServicioMetodoPago servicioMetodoPago;
     private final CustomEmailService emailService;
 
-
-    public ReservaController(ServicioReserva servicioReserva, ServicioHabitacion servicioHabitacion, ServicioActividad servicioActividad, ServicioVuelo servicioVuelo, ServicioAsiento servicioAsiento, RepoUsuario repoUsuario, ServicioMetodoPago servicioMetodoPago, CustomEmailService emailService) {
-
     /**
-     * Constructor de `ReservaController` con inyección de dependencias.
+     * Constructor del controlador.
      *
-     * @param servicioReserva Servicio para gestionar las reservas.
-     * @param servicioHabitacion Servicio para gestionar las habitaciones.
-     * @param servicioActividad Servicio para gestionar las actividades.
-     * @param repoUsuario Repositorio para gestionar los usuarios.
-     * @param servicioMetodoPago Servicio para gestionar los métodos de pago.
-     * @param emailService Servicio para enviar correos electrónicos.
+     * @param servicioReserva Servicio para la gestión de reservas.
+     * @param servicioHabitacion Servicio para la gestión de habitaciones.
+     * @param servicioActividad Servicio para la gestión de actividades.
+     * @param servicioVuelo Servicio para la gestión de vuelos.
+     * @param servicioAsiento Servicio para la gestión de asientos.
+     * @param repoUsuario Repositorio de usuarios.
+     * @param servicioMetodoPago Servicio para la gestión de métodos de pago.
+     * @param emailService Servicio de envío de correos electrónicos.
      */
-    public ReservaController(ServicioReserva servicioReserva, ServicioHabitacion servicioHabitacion,
-                             ServicioActividad servicioActividad, RepoUsuario repoUsuario,
-                             ServicioMetodoPago servicioMetodoPago, CustomEmailService emailService) {
-
+    public ReservaController(ServicioReserva servicioReserva, ServicioHabitacion servicioHabitacion, ServicioActividad servicioActividad, ServicioVuelo servicioVuelo, ServicioAsiento servicioAsiento, RepoUsuario repoUsuario, ServicioMetodoPago servicioMetodoPago, CustomEmailService emailService) {
         this.servicioReserva = servicioReserva;
         this.servicioHabitacion = servicioHabitacion;
         this.servicioActividad = servicioActividad;
@@ -149,21 +138,19 @@ public class ReservaController {
             Habitacion habitacion = optionalHabitacion.get();
             modelo.addAttribute("habitacion", habitacion);
 
-            // Obtener y mostrar el precio actual si está disponible
-            if (!habitacion.getPrecio().isEmpty()) {
+            if(!habitacion.getPrecio().isEmpty()) {
                 Precio precioActual = servicioHabitacion.getPrecioActual(habitacion, LocalDateTime.now());
                 modelo.addAttribute("precioActual", precioActual.getValor());
             }
 
-            // Obtener y mostrar la primera imagen de la habitación si está disponible
-            if (!habitacion.getImagenesHabitacion().isEmpty()) {
+            if(!habitacion.getImagenesHabitacion().isEmpty()) {
                 String habitacionImagen = habitacion.getImagenesHabitacion().stream().findFirst().get().getUrl();
                 modelo.addAttribute("imagenHabitacion", habitacionImagen);
             }
 
         } else {
             modelo.addAttribute("error", "La habitación no se encuentra.");
-            return "error/paginaError";  // O la vista que maneja errores
+            return "error/paginaError"; // O la vista que maneja errores
         }
         return "reservas/habitacion/disponibilidadHabitacion";
     }
@@ -252,7 +239,6 @@ public class ReservaController {
             return "redirect:/reservas/habitacion/reservar/" + idHabitacion;
         }
 
-        //Obtener la habitación
         Optional<Habitacion> optionalHabitacion = servicioHabitacion.encuentraPorId(idHabitacion);
 
         Habitacion habitacion = null;
@@ -260,14 +246,12 @@ public class ReservaController {
             habitacion = optionalHabitacion.get();
         }
 
-        //Obtener los rangos de disponibilidad
         List<ServicioHabitacion.Interval> rangosDisponibles = servicioHabitacion.obtenerRangosDisponibles(idHabitacion, fechaInicio, fechaFin);
         modelo.addAttribute("rangosDisponibles", rangosDisponibles);
         modelo.addAttribute("habitacion", habitacion);
         modelo.addAttribute("fechaInicio", fechaInicio);
         modelo.addAttribute("fechaFin", fechaFin);
 
-        //Obtener métodos de pago disponibles
         List<MetodoPago> metodosPago = servicioMetodoPago.buscarEntidades();
         modelo.addAttribute("metodosPago", metodosPago);
 
@@ -289,7 +273,7 @@ public class ReservaController {
      * @param modelo El objeto {@link Model} utilizado para pasar datos a la vista en caso de error.
      * @return Una redirección a la página de "Mis Reservas" en caso de éxito, o una página de error en caso de que ocurra una excepción.
      *
-     * @throws Exception En caso de que ocurra algún error durante la creación de la reserva o el procesamiento del pago.
+     * Exception En caso de que ocurra algún error durante la creación de la reserva o el procesamiento del pago.
      */
     @PostMapping("/habitacion/{idHabitacion}/reservar")
     public String reservarHabitacion(
@@ -307,19 +291,16 @@ public class ReservaController {
             Usuario usuario = optionalUsuario.get();
             // Crear la reserva
             try {
-                // Crear la reserva con las fechas proporcionadas
                 Reserva reserva = servicioReserva.crearReserva(usuario, fechaInicio, fechaFin);
-                // Asignar la habitación a la reserva
                 servicioReserva.addHabitacion(reserva, idHabitacion, fechaInicio, fechaFin);
-                // Generar el pago de la reserva
+
                 servicioReserva.generarPago(reserva, precioTotal, metodoPagoId);
 
-                // Formatear las fechas para el correo electrónico
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy HH:mm");
+
                 String fechaInicioFormateada = reserva.getFechaInicio().format(formatter);
                 String fechaFinFormateada = reserva.getFechaFin().format(formatter);
 
-                // Enviar el correo de confirmación al usuario
                 emailService.sendSimpleMessage(
                         usuario.getDetalles().getEmail(),
                         "Confirmación de tu reserva en TravelId",
@@ -336,15 +317,13 @@ public class ReservaController {
                                 "El equipo de TravelId"
                 );
 
-                // Redirigir al usuario a la página de "Mis Reservas"
+
                 return "redirect:/reservas/mis-reservas";
             } catch (Exception e) {
-                // Manejar excepciones y mostrar la página de error
                 modelo.addAttribute("error", e.getMessage());
                 return "error/paginaError";
             }
         } else {
-            // Manejar el caso en que el usuario no se encuentre
             modelo.addAttribute("error", "Usuario no encontrado");
             return "error/paginaError";
         }
@@ -370,7 +349,7 @@ public class ReservaController {
      *
      * @throws UsernameNotFoundException Si el usuario autenticado no es encontrado.
      * @throws EntityNotFoundException Si la actividad especificada no es encontrada.
-     * @throws Exception En caso de que ocurra algún error durante la creación de la reserva o el procesamiento del pago.
+     * Exception En caso de que ocurra algún error durante la creación de la reserva o el procesamiento del pago.
      */
     @PostMapping("/actividad/{idActividad}/reservar")
     public String reservarActividad(
@@ -409,12 +388,11 @@ public class ReservaController {
             // Generar el pago
             servicioReserva.generarPago(reserva, precioTotal, metodoPagoId);
 
-            // Formatear las fechas para el correo electrónico
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy HH:mm");
+
             String fechaInicioFormateada = reserva.getFechaInicio().format(formatter);
             String fechaFinFormateada = reserva.getFechaFin().format(formatter);
 
-            // Enviar el correo de confirmación al usuario
             emailService.sendSimpleMessage(
                     usuario.getDetalles().getEmail(),
                     "Confirmación de tu reserva en TravelId",
@@ -432,16 +410,33 @@ public class ReservaController {
                             "Saludos cordiales,\n" +
                             "El equipo de TravelId"
             );
-            // Redirigir al usuario a la página de "Mis Reservas"
+
             return "redirect:/reservas/mis-reservas";
         } catch (Exception e) {
-            // Manejar excepciones y mostrar la página de error
             modelo.addAttribute("error", e.getMessage());
             return "error/paginaError";
         }
     }
 
-
+    /**
+     * Reserva un asiento específico para un vuelo en una fecha y hora determinadas.
+     *
+     * Este método gestiona la creación de una reserva de asiento en un vuelo para el usuario autenticado.
+     * Verifica la disponibilidad del asiento, crea la reserva, asigna el asiento a la reserva,
+     * genera el pago asociado y envía un correo electrónico de confirmación al usuario.
+     *
+     * @param idAsiento El ID del asiento que se desea reservar.
+     * @param idVuelo El ID del vuelo para el cual se desea reservar el asiento.
+     * @param fechaInicio La fecha y hora de inicio de la reserva en formato ISO.
+     * @param fechaFin La fecha y hora de fin de la reserva en formato ISO.
+     * @param precioTotal El importe total de la reserva.
+     * @param metodoPagoId El ID del método de pago utilizado para la reserva.
+     * @param principal El principal que contiene la información del usuario autenticado.
+     * @param redirectAttributes Atributos de redirección para pasar mensajes entre solicitudes.
+     * @param modelo El modelo para pasar datos a la vista en caso de error.
+     * @return Redirección a la página de reservas del usuario si la reserva es exitosa,
+     *         o redirección a la página del vuelo con un mensaje de error si algo falla.
+     */
     @PostMapping("/asiento/reservar")
     public String reservarAsiento(
             @RequestParam("idAsiento") Integer idAsiento,
@@ -523,10 +518,6 @@ public class ReservaController {
         }
     }
 
-
-
-
-
     /**
      * Cancela una reserva existente y actualiza los detalles correspondientes.
      *
@@ -537,7 +528,7 @@ public class ReservaController {
      * @param modelo El objeto {@link Model} utilizado para pasar datos a la vista en caso de error.
      * @return Una redirección a la página de "Mis Reservas" en caso de éxito, o una página de error en caso de que ocurra una excepción.
      *
-     * @throws Exception En caso de que ocurra algún error durante el proceso de cancelación.
+     * Exception En caso de que ocurra algún error durante el proceso de cancelación.
      */
     @PostMapping("/cancelar/{id}")
     public String cancelarReserva(@PathVariable Integer id, Model modelo) {
@@ -565,7 +556,6 @@ public class ReservaController {
                 String fechaInicioFormateada = reserva.getFechaInicio().format(formatter);
                 String fechaFinFormateada = reserva.getFechaFin().format(formatter);
 
-                // Obtener detalles de la reserva cancelada
                 String detallesReserva = servicioReserva.obtenerDetallesReserva(reserva);
 
                 // Enviar correo de confirmación de cancelación
@@ -583,18 +573,15 @@ public class ReservaController {
                                 "Saludos cordiales,\n" +
                                 "El equipo de TravelId"
                 );
-                // Redirigir al usuario a la página de "Mis Reservas"
+
                 return "redirect:/reservas/mis-reservas";
             } else {
-                // Manejar el caso en que la reserva no se encuentra
                 modelo.addAttribute("error", "Reserva no encontrada");
                 return "error/paginaError";
             }
         } catch (Exception e) {
-            // Manejar excepciones y mostrar la página de error
             modelo.addAttribute("error", e.getMessage());
             return "error/paginaError";
         }
     }
-
 }

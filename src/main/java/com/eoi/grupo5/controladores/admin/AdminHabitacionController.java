@@ -17,6 +17,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Controlador para gestionar las operaciones relacionadas con las habitaciones en la sección de administración.
+ * Proporciona funcionalidades CRUD (Crear, Leer, Actualizar, Eliminar) para las habitaciones.
+ */
 @Controller
 @RequestMapping("/admin/habitaciones")
 public class AdminHabitacionController {
@@ -27,6 +31,16 @@ public class AdminHabitacionController {
     private final ServicioImagen servicioImagen;
     private final FileSystemStorageService fileSystemStorageService;
 
+
+    /**
+     * Constructor que inyecta las dependencias necesarias para el controlador.
+     *
+     * @param servicioHabitacion          Servicio para gestionar habitaciones.
+     * @param servicioTipoHabitacion      Servicio para gestionar los tipos de habitaciones.
+     * @param servicioHotel               Servicio para gestionar hoteles.
+     * @param servicioImagen              Servicio para gestionar imágenes de habitaciones.
+     * @param fileSystemStorageService    Servicio para gestionar el almacenamiento de archivos.
+     */
     public AdminHabitacionController(ServicioHabitacion servicioHabitacion, ServicioTipoHabitacion servicioTipoHabitacion, ServicioHotel servicioHotel, ServicioImagen servicioImagen, FileSystemStorageService fileSystemStorageService) {
         this.servicioHabitacion = servicioHabitacion;
         this.servicioTipoHabitacion = servicioTipoHabitacion;
@@ -35,6 +49,14 @@ public class AdminHabitacionController {
         this.fileSystemStorageService = fileSystemStorageService;
     }
 
+    /**
+     * Maneja la solicitud GET para listar todas las habitaciones con paginación.
+     *
+     * @param modelo Modelo para pasar datos a la vista.
+     * @param page   Número de página actual (por defecto es 0).
+     * @param size   Tamaño de la página (por defecto es 10).
+     * @return El nombre de la plantilla que muestra la lista de habitaciones.
+     */
     @GetMapping
     public String listar(
             Model modelo,
@@ -48,6 +70,12 @@ public class AdminHabitacionController {
         return "admin/habitaciones/adminHabitaciones";
     }
 
+    /**
+     * Maneja la solicitud GET para mostrar la página de creación de una nueva habitación.
+     *
+     * @param modelo Modelo para pasar datos a la vista.
+     * @return El nombre de la plantilla que muestra el formulario de creación de una nueva habitación.
+     */
     @GetMapping("/crear")
     public String mostrarPaginaCrear(Model modelo) {
         HabitacionFormDto habitacionFormDto = new HabitacionFormDto();
@@ -57,6 +85,14 @@ public class AdminHabitacionController {
         return "admin/habitaciones/adminNuevaHabitacion";
     }
 
+    /**
+     * Maneja la solicitud POST para crear una nueva habitación.
+     *
+     * @param habitacionFormDto Objeto DTO que contiene los datos del formulario.
+     * @param result            Objeto que contiene los errores de validación.
+     * @param modelo            Modelo para pasar datos a la vista.
+     * @return Redirige a la lista de habitaciones si la creación es exitosa, de lo contrario, devuelve la página de creación con errores.
+     */
     @PostMapping("/crear")
     public String crear(
             @Valid @ModelAttribute("habitacionFormDto") HabitacionFormDto habitacionFormDto,
@@ -115,6 +151,13 @@ public class AdminHabitacionController {
         return "redirect:/admin/habitaciones";
     }
 
+    /**
+     * Maneja la solicitud GET para mostrar la página de edición de una habitación existente.
+     *
+     * @param id     ID de la habitación a editar.
+     * @param modelo Modelo para pasar datos a la vista.
+     * @return El nombre de la plantilla que muestra el formulario de edición de una habitación.
+     */
     @GetMapping("/editar/{id}")
     public String mostrarPaginaEditar(@PathVariable Integer id, Model modelo) {
         Optional<Habitacion> habitacionOptional = servicioHabitacion.encuentraPorId(id);
@@ -134,6 +177,16 @@ public class AdminHabitacionController {
         }
     }
 
+    /**
+     * Maneja la solicitud PUT para actualizar una habitación existente.
+     *
+     * @param id                  ID de la habitación a actualizar.
+     * @param imagenes            Array de archivos de imágenes a subir.
+     * @param habitacionFormDto   Objeto DTO que contiene los datos del formulario.
+     * @param result              Objeto que contiene los errores de validación.
+     * @param modelo              Modelo para pasar datos a la vista.
+     * @return Redirige a la lista de habitaciones si la actualización es exitosa, de lo contrario, devuelve la página de edición con errores.
+     */
     @PutMapping("/editar/{id}")
     public String editar(
             @PathVariable Integer id,
@@ -205,6 +258,13 @@ public class AdminHabitacionController {
         return "redirect:/admin/habitaciones";
     }
 
+    /**
+     * Maneja la solicitud DELETE para eliminar una habitación existente.
+     *
+     * @param id     ID de la habitación a eliminar.
+     * @param modelo Modelo para pasar datos a la vista.
+     * @return Redirige a la lista de habitaciones si la eliminación es exitosa, de lo contrario, devuelve un mensaje de error.
+     */
     @DeleteMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Integer id, Model modelo) {
         Optional<Habitacion> optionalHabitacion = servicioHabitacion.encuentraPorId(id);

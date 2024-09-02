@@ -17,10 +17,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Controlador para la administración de actividades en el sistema.
+ * Proporciona las operaciones CRUD para gestionar actividades, así como la gestión de imágenes asociadas.
+ *
+ * <p>Este controlador maneja rutas bajo el contexto "/admin/actividades".</p>
+ */
 @Controller
 @RequestMapping("/admin/actividades")
 public class AdminActividadController {
@@ -31,6 +36,15 @@ public class AdminActividadController {
     private final ServicioLocalizacion servicioLocalizacion;
     private final FileSystemStorageService fileSystemStorageService;
 
+    /**
+     * Constructor para inicializar los servicios requeridos por el controlador.
+     *
+     * @param servicioActividad        Servicio para la gestión de actividades.
+     * @param servicioTipoActividad    Servicio para la gestión de tipos de actividades.
+     * @param servicioImagen           Servicio para la gestión de imágenes.
+     * @param servicioLocalizacion     Servicio para la gestión de localizaciones.
+     * @param fileSystemStorageService Servicio para la gestión del almacenamiento de archivos.
+     */
     public AdminActividadController(ServicioActividad servicioActividad, ServicioTipoActividad servicioTipoActividad, ServicioImagen servicioImagen, ServicioLocalizacion servicioLocalizacion, FileSystemStorageService fileSystemStorageService) {
         this.servicioActividad = servicioActividad;
         this.servicioTipoActividad = servicioTipoActividad;
@@ -39,6 +53,14 @@ public class AdminActividadController {
         this.fileSystemStorageService = fileSystemStorageService;
     }
 
+    /**
+     * Muestra la lista de actividades en una página de administración con paginación.
+     *
+     * @param modelo Objeto Model para agregar atributos a la vista.
+     * @param page   Número de página para la paginación (por defecto 0).
+     * @param size   Tamaño de la página para la paginación (por defecto 10).
+     * @return El nombre de la vista que muestra la lista de actividades.
+     */
     @GetMapping
     public String listar(
             Model modelo,
@@ -52,6 +74,12 @@ public class AdminActividadController {
         return "admin/actividades/adminActividades";
     }
 
+    /**
+     * Muestra el formulario para crear una nueva actividad.
+     *
+     * @param modelo Objeto Model para agregar atributos a la vista.
+     * @return El nombre de la vista que contiene el formulario de creación de actividad.
+     */
     @GetMapping("/crear")
     public String mostrarPaginaCrear(Model modelo) {
         ActividadFormDto actividad = new ActividadFormDto();
@@ -61,6 +89,14 @@ public class AdminActividadController {
         return "admin/actividades/adminNuevaActividad";
     }
 
+    /**
+     * Procesa la creación de una nueva actividad.
+     *
+     * @param actividadFormDto DTO que contiene los datos del formulario para la creación de la actividad.
+     * @param result           Objeto BindingResult para manejar errores de validación.
+     * @param modelo           Objeto Model para agregar atributos a la vista.
+     * @return Redirección a la lista de actividades si la creación es exitosa, o la vista de creación si hay errores.
+     */
     @PostMapping("/crear")
     public String crear(
             @Valid @ModelAttribute("actividadFormDto") ActividadFormDto actividadFormDto,
@@ -122,6 +158,13 @@ public class AdminActividadController {
         return "redirect:/admin/actividades";
     }
 
+    /**
+     * Muestra el formulario para editar una actividad existente.
+     *
+     * @param id     ID de la actividad a editar.
+     * @param modelo Objeto Model para agregar atributos a la vista.
+     * @return El nombre de la vista que contiene el formulario de edición, o una página de error si la actividad no se encuentra.
+     */
     @GetMapping("/editar/{id}")
     public String mostrarPaginaEditar(@PathVariable Integer id, Model modelo) {
         Optional<Actividad> actividadOptional = servicioActividad.encuentraPorId(id);
@@ -142,7 +185,17 @@ public class AdminActividadController {
         }
     }
 
-
+    /**
+     * Procesa la edición de una actividad existente.
+     *
+     * @param id                ID de la actividad a editar.
+     * @param imagenes          Array de archivos MultipartFile que representan las imágenes nuevas a subir (opcional).
+     * @param actividadFormDto  DTO que contiene los datos del formulario para la edición de la actividad.
+     * @param result            Objeto BindingResult para manejar errores de validación.
+     * @param modelo            Objeto Model para agregar atributos a la vista.
+     * @return Redirección a la lista de actividades si la edición es exitosa, o la vista de edición si hay errores.
+     * IOException si ocurre un error al almacenar las imágenes.
+     */
     @PutMapping("/editar/{id}")
     public String editar(
             @PathVariable Integer id,
@@ -222,7 +275,12 @@ public class AdminActividadController {
         return "redirect:/admin/actividades";
     }
 
-
+    /**
+     * Elimina una actividad existente.
+     *
+     * @param id ID de la actividad a eliminar.
+     * @return Redirección a la lista de actividades tras la eliminación.
+     */
     @DeleteMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Integer id) {
         Optional<Actividad> optionalActividad = servicioActividad.encuentraPorId(id);
