@@ -1,11 +1,15 @@
 package com.eoi.grupo5.controladores;
 
 import com.eoi.grupo5.dtos.AsientoDto;
+import com.eoi.grupo5.dtos.VueloDto;
+import com.eoi.grupo5.filtros.criteria.BusquedaCriteriaVuelos;
+import com.eoi.grupo5.mapper.VuelosMapper;
 import com.eoi.grupo5.modelos.Vuelo;
 import com.eoi.grupo5.paginacion.PaginaRespuestaVuelos;
 import com.eoi.grupo5.servicios.ServicioAsiento;
 import com.eoi.grupo5.servicios.ServicioMetodoPago;
 import com.eoi.grupo5.servicios.ServicioVuelo;
+import com.eoi.grupo5.servicios.filtros.ServicioFiltroVuelos;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +30,8 @@ public class VueloController {
     private final ServicioVuelo servicioVuelo;
     private final ServicioAsiento servicioAsiento;
     private final ServicioMetodoPago servicioMetodoPago;
+    private final ServicioFiltroVuelos servicioFiltroVuelos;
+    private final VuelosMapper vuelosMapper;
 
     /**
      * Constructor que inicializa el controlador con los servicios necesarios.
@@ -33,10 +39,12 @@ public class VueloController {
      * @param servicioVuelo  Servicio encargado de la lógica de negocio para los vuelos.
      * @param servicioAsiento Servicio encargado de la gestión de asientos de los vuelos.
      */
-    public VueloController(ServicioVuelo servicioVuelo, ServicioAsiento servicioAsiento, ServicioMetodoPago servicioMetodoPago) {
+    public VueloController(ServicioVuelo servicioVuelo, ServicioAsiento servicioAsiento, ServicioMetodoPago servicioMetodoPago, ServicioFiltroVuelos servicioFiltroVuelos, VuelosMapper vuelosMapper) {
         this.servicioVuelo = servicioVuelo;
         this.servicioAsiento = servicioAsiento;
         this.servicioMetodoPago = servicioMetodoPago;
+        this.servicioFiltroVuelos = servicioFiltroVuelos;
+        this.vuelosMapper = vuelosMapper;
     }
 
     /**
@@ -125,6 +133,30 @@ public class VueloController {
             return "error/paginaError";
         }
 
+    }
+
+    @GetMapping("/filtrar-vuelos")
+    public String filtrarVuelos(Model modelo, BusquedaCriteriaVuelos criteria) {
+        if (criteria.getSize() == null || criteria.getSize() <= 0) {
+            criteria.setSize(6);
+        }
+
+        if (criteria.getFechaInicio() != null && criteria.getFechaFin() == null || criteria.getFechaInicio() == null && criteria.getFechaFin() != null) {
+            modelo.addAttribute("error", "Debe seleccionar ambas fechas: Fecha de inicio y Fecha de fin.");
+        } else {
+            PaginaRespuestaVuelos<VueloDto> vuelos = servicioFiltroVuelos.buscarVuelos(
+                    vuelosMapper.filtrar(criteria), criteria.getPage(), criteria.getSize());
+
+            modelo.addAttribute("page", vuelos);
+            modelo.addAttribute("lista", vuelos.getContent());
+            modelo.addAttribute("origenNombre", criteria.getOrigenNombre());
+            modelo.addAttribute("destinoNombre", criteria.getDestinoNombre());
+            modelo.addAttribute("fechaInicio", criteria.getFechaInicio());
+            modelo.addAttribute("fechaFin", criteria.getFechaFin());
+
+        }
+
+        return "vuelos/listaVuelos";
     }
 
 }
