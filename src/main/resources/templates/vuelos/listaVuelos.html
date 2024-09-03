@@ -58,46 +58,50 @@
       </div>
 
       <!-- Barra filtro -->
-      <form id="filtrarForm" action="/filtrar-actividades" method="get" >
+      <form id="filtrarForm" action="/filtrar-vuelos" method="get">
         <div class="filter-bar">
-
+          <!-- Filtro por Origen -->
           <div class="filter-group">
-            <label for="localizacionNombre">Destino:</label>
-            <input type="text" name="localizacionNombre" id="localizacionNombre" th:value="${localizacionNombre}" placeholder="Introduce un destino" autocomplete="off"/>
-            <div id="suggestions" class="suggestions-box"></div>
+            <label for="origenNombre">Origen:</label>
+            <input type="text" name="origenNombre" id="origenNombre" th:value="${origenNombre}" placeholder="Introduce un origen" autocomplete="off"/>
+            <div id="origenSuggestions" class="suggestions-box"></div>
           </div>
 
+          <!-- Filtro por Destino -->
           <div class="filter-group">
-            <label for="category">Tipo:</label>
-            <select id="category" name="tipoId">
-              <option value="">Todos</option>
-              <!-- Iterar sobre los tipos de actividad disponibles -->
-              <option th:each="tipo : ${tiposActividad}" th:value="${tipo.id}" th:text="${tipo.nombre}" th:selected="${tipo.id == tipoId}">Tipo
-                Actividad
-              </option>
-            </select>
+            <label for="destinoNombre">Destino:</label>
+            <input type="text" name="destinoNombre" id="destinoNombre" th:value="${destinoNombre}" placeholder="Introduce un destino" autocomplete="off"/>
+            <div id="destinoSuggestions" class="suggestions-box"></div>
           </div>
 
+          <!-- Filtro por Fecha de Inicio -->
           <div class="filter-group">
-            <label for="daterange">RANGO DE FECHAS:</label>
-            <input type="text"  name="daterange" id="daterange"/>
+            <label for="fechaInicio">FECHA DE INICIO:</label>
+            <input type="datetime-local" name="fechaInicio" id="fechaInicio" th:value="${fechaInicio}"/>
+          </div>
+
+          <!-- Filtro por Fecha de Fin -->
+          <div class="filter-group">
+            <label for="fechaFin">FECHA DE FIN:</label>
+            <input type="datetime-local" name="fechaFin" id="fechaFin" th:value="${fechaFin}"/>
           </div>
 
           <input type="hidden" name="page" value="0">
 
+          <!-- Filtro por Tamaño de Página -->
           <div class="filter-group">
             <label for="size" th:if="${page != null}">Tamaño Página:</label>
             <input type="number" name="size" id="size" min="1" th:value="${page.size}" th:if="${page != null}"/>
             <label for="sizeNull" th:if="${page == null}">Tamaño Página:</label>
-            <input type="number" name="size" min="1"  id="sizeNull" th:if="${page == null}"/>
+            <input type="number" name="size" min="1" id="sizeNull" th:if="${page == null}"/>
           </div>
 
+          <!-- Botón de Búsqueda -->
           <div class="filter-group">
             <button type="submit">APLICAR BÚSQUEDA</button>
           </div>
         </div>
       </form>
-
       <h3 th:if="error" th:text="${error}" class="text-danger text-center">
       </h3>
       <!-- Blog -->
@@ -179,7 +183,7 @@
           <!-- Página anterior -->
           <li th:if="${page.hasPrevious()}" class="page-item">
             <a class="page-link"
-               th:href="@{/vuelos/lista(page=${page.page - 1}, size=${page.size})}"
+               th:href="@{/filtrar-vuelos(page=${page.page - 1}, size=${page.size}, origenNombre=${origenNombre}, destinoNombre=${destinoNombre} , fechaInicio=${fechaInicio}, fechaFin=${fechaFin})}"
                aria-label="Previous">
               <span aria-hidden="true">&laquo;</span>
             </a>
@@ -189,14 +193,14 @@
           <li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
               th:classappend="${i == page.page} ? 'page-item active' : 'page-item'">
             <a class="page-link"
-               th:href="@{/vuelos/lista(page=${i}, size=${page.size})}"
+               th:href="@{/filtrar-vuelos(page=${i}, size=${page.size}, origenNombre=${origenNombre}, destinoNombre=${destinoNombre} , fechaInicio=${fechaInicio}, fechaFin=${fechaFin})}"
                th:text="${i + 1}"></a>
           </li>
 
           <!-- Página siguiente -->
           <li th:if="${page.hasNext()}" class="page-item">
             <a class="page-link"
-               th:href="@{/vuelos/lista(page=${page.page + 1}, size=${page.size})}"
+               th:href="@{/filtrar-vuelos(page=${page.page + 1}, size=${page.size}, origenNombre=${origenNombre}, destinoNombre=${destinoNombre} , fechaInicio=${fechaInicio}, fechaFin=${fechaFin})}"
                aria-label="Next">
               <span aria-hidden="true">&raquo;</span>
             </a>
@@ -216,10 +220,7 @@
     <script th:src="@{/plugins/colorbox/jquery.colorbox-min.js}"></script>
     <script th:src="@{/plugins/parallax-js-master/parallax.min.js}"></script>
     <script th:src="@{/js/blog_custom.js}"></script>
-    <script th:src="@{/js/moment.min.js}"></script>
-    <script th:src="@{/js/daterangepicker.js}"></script>
-    <script th:src="@{/js/Hoteles_dropdown.js}"></script>
-    <script th:src="@{/js/jquery.waypoints.min.js}"></script>
-    <script th:src="@{/js/owl.carousel.min.js}"></script>
+    <script th:src="@{/js/vuelos_autocompletado_localizaciones.js}"></script>
+
   </body>
 </html>

@@ -37,12 +37,16 @@ public class ActividadSpec {
      * @return the specification
      */
     public static Specification<Actividad> filtrarPor(FiltroActividades filtroActividades) {
+
+        LocalDateTime fechaActual = LocalDateTime.now();
+
         return Specification
                 .where(esTipo(filtroActividades.tipoId()))
                 .and(tieneFechaMayorQueInicio(filtroActividades.fechaInicio()))
                 .and(tieneFechaMenorQueFin(filtroActividades.fechaFin()))
                 .and(tieneMenosAsistentesConfirmadosQueMaximos())
-                .and(tieneLocalizacionNombre(filtroActividades.localizacionNombre()));
+                .and(tieneLocalizacionNombre(filtroActividades.localizacionNombre()))
+                .and(noHaTerminado(fechaActual));
     }
 
     /**
@@ -103,6 +107,16 @@ public class ActividadSpec {
         return (root, query, cb) -> localizacionNombre == null || localizacionNombre.isEmpty()
                 ? cb.conjunction()
                 : cb.like(cb.lower(root.get("localizacion").get("nombre")), "%" + localizacionNombre.toLowerCase() + "%");
+    }
+
+    /**
+     * Crea una especificación que filtra las actividades cuya fecha de fin es mayor que la fecha actual.
+     *
+     * @param fechaActual La fecha y hora actuales.
+     * @return Una especificación que filtra las actividades que aún no han terminado.
+     */
+    private static Specification<Actividad> noHaTerminado(LocalDateTime fechaActual) {
+        return (root, query, cb) -> cb.greaterThan(root.get("fechaFin"), fechaActual);
     }
 
 }
